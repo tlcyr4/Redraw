@@ -1,15 +1,19 @@
 from pytesseract import pytesseract as pt
 from PIL import Image
 import os
+import sys
+import re
 
-img = Image.open("temp.png")
+img = Image.open(sys.argv[1])
 
 os.environ["TESSDATA_PREFIX"] = ".\\"
 
-os.system("tesseract test.png result hocr")
+output = pt.image_to_string(img).encode("utf-8").strip()
 
-# os.system("tesseract --print-parameters > params.txt")
+print re.findall("[0-6][0-9][0-9]", output) # First digit is floor number
 
-# boxes = pt.run_tesseract('temp.png', 'output', "box", "eng")
+# f = open(sys.argv[2], "w")
 
-# boxes = pt.image_to_boxes(img)
+# f.write(output)
+# f.write('\n')
+# f.close()
