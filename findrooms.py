@@ -1,7 +1,11 @@
 import cv2 as cv
 import numpy as np
 import sys
-
+from pytesseract import pytesseract as pt
+from PIL import Image
+import os
+import re
+kernel = np.ones((3,3),np.uint8)
 def cv_close(img, kernel, depth = 1):
     return cv.erode(cv.dilate(img, kernel, depth), kernel, depth)
 
@@ -34,10 +38,10 @@ def isolate_text(floorplan):
     return floorplan
 
 def find_rooms(floorplan):
-    kernel = np.ones((3,3),np.uint8)
+    
     floorplan = cv_invert(cv.dilate(cv_invert(floorplan), kernel, iterations = 2))
     floorplan = cv_invert(cv.erode(cv_invert(floorplan), kernel, iterations = 2))
-    cv.imwrite("debug.png", floorplan)
+    
     retval, labels, stats, centroids = cv.connectedComponentsWithStats(floorplan)
     LOWER_THRESHOLD = 40000
     UPPER_THRESHOLD = 1280000
@@ -50,6 +54,8 @@ def find_rooms(floorplan):
 inFilename = sys.argv[1]
 outFilename = sys.argv[2]
 
+floor = re.findall("[0-9][0-9].png", inFilename)[0][1]
+
 floorplan = cv.imread(inFilename,cv.IMREAD_GRAYSCALE)
 floorplan = threshold(floorplan)
 
@@ -57,12 +63,44 @@ floorplan = threshold(floorplan)
 text = isolate_text(floorplan)
 no_text = cv.add(floorplan, text)
 
-rooms = find_rooms(no_text)
+rooms_only = find_rooms(no_text)
+
+retval, labels, stats, centroids = cv.connectedComponentsWithStats(rooms_only)
+
+cv.imwrite("debug.png", rooms_only)
+
+# start ocr
+
+os.environ["TESSDATA_PREFIX"] = ".\\"
+
+inverted = cv_invert(floorplan)
+inverted = cv_close(inverted, kernel)
+
+in_color = cv.cvtColor(floorplan, cv.COLOR_GRAY2RGB)
+
+for i in range(1,len(stats)):
+    left = stats[i, cv.CC_STAT_LEFT]
+    right = left + stats[i,cv.CC_STAT_WIDTH]
+    top = stats[i, cv.CC_STAT_TOP]
+    bottom = top + stats[i, cv.CC_STAT_HEIGHT]
+
+    subrect = inverted[top:bottom, left:right]
+
+    img = Image.fromarray(subrect)
+    output = pt.image_to_string(img).encode("utf-8").strip()
+    roomnums = " ".join(re.findall(floor + "[0-9][0-9]", output))
+    if len(roomnums) > 0:
+        cv.rectangle(in_color, (left, top), (right, bottom), (0,0,255), 10)
+        print roomnums
+
+    # cv.imwrite("subrect" + str(i) + ".png", subrect)
 
 
+
+cv.imwrite("debug.png", in_color)
 
 # write image
 
-cv.imwrite("text.png", text)
-cv.imwrite("rooms.png", rooms)
+# cv.imwrite("text.png", text)
+# cv.imwrite("rooms.png", rooms)
 
