@@ -1,0 +1,51 @@
+0007 Witherspoon
+0010 Edwards
+0012 Dod
+0014 Brown
+0019 Blair
+0021 Little (Basement has typo 0071)
+0023 Patton
+0026 Campbell
+0028 Holder
+0029 Hamilton
+0030 Cuyler (Basement is Portrait)
+0040 Pyne
+0042 Foulke
+0043 Henry
+0047 1901_Laughlin
+0049 Lockhart
+0053 1903
+0056 Walker
+0059 Joline
+0060 Dickinson
+0071 1915
+0091 1937
+0092 1938 (Portrait Basement)
+0093 1939
+0094 Dodge_Osborn
+0095 Gauss
+0099 Wilcox
+0147 Alexander
+0148 Forbes_Main
+0153 Spelman
+0162 Feinberg
+0164 1927_Clapp (Basement listed as 0093)
+0592 Annex
+0603 Scully
+0619 Wright (Mixed with Patton)
+0627 Bloomberg
+0631 Buyers
+0636 Lauritzen (Portrait)
+0668 1981 (Vertical, Fourth floor marked as 0068)
+0669 Wendell_B
+0670 Wendell_C
+0671 Fisher
+0672 Hargadon
+0673 Baker_E
+0674 Tower
+0686 Baker_S (Fourth floor vertical)
+0693 Yoseloff
+0694 1967
+0695 Bogle
+0696 Wilf
+0703 1976
