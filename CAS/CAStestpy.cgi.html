@@ -1,0 +1,237 @@
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+        <script type="text/javascript">
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-36516510-3']);
+         _gaq.push(['_trackPageview']);
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+        </script>
+	    <title>Princeton University Authentication Service</title>
+        
+		<!-- spring:theme code="standard.custom.css.file" var="customCssFile" / -->
+        <!-- link type="text/css" rel="stylesheet" href="" / -->
+<link media="only screen and (max-device-width: 480px)" rel="stylesheet" href="/cas/css/small.css" type="text/css">
+<link media="only screen and (min-device-width: 481px)" rel="stylesheet" href="/cas/css/princeton.css" type="text/css">
+<!--[if IE]>
+<link rel="stylesheet" href="/cas/css/princeton.css" type="text/css">
+<![endif]-->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <link rel="icon" href="/cas/images/favicon.ico" type="image/x-icon" />
+	</head>
+	<body id="cas" class="fl-theme-iphone">
+    <div class="flc-screenNavigator-view-container">
+        <div class="fl-screenNavigator-view">
+        <div id="toolbarcontainer">
+          <div id="toolbar">
+            <a href="http://www.princeton.edu/"><img src="/cas/images/pu_signature_web.jpg" alt="Princeton University"/></a>
+          </div>    	</div>
+        <div id="headercontainer">
+      		<div id="header">
+        		<h1 id="casTitle">Central Authentication Service</h1>
+      		</div>
+    	</div>		
+            <div id="content" class="fl-screenNavigator-scroll-container">
+              <div id="borderContainer">
+                <div id="contentcontainer">
+                  <div id="padlockcontent">
+                    <img src="/cas/images/padlock.jpg" alt="" class="topRight" />
+
+
+
+
+
+
+<div class="block" id="login">
+  <form id="fm1" class="fm-v clearfix" action="/cas/login?locale=en&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi" method="post">
+    
+    <!-- Congratulations on bringing CAS online!  The default authentication handler authenticates where usernames equal passwords: go ahead, try it out. -->
+    <!-- h2>
+      Enter your Username and Password
+    </h2 -->
+    <div class="block">
+      <div class="title" id="username-label"><b><label for="username">NetID</label></b></div>
+      
+      
+        
+        <input id="username" name="username" class="required" aria-labelledby="username-label" type="text" value="" size="20" autocomplete="false"/>
+      
+    </div>
+    <div class="block">
+      <div class="title" id="password-label"><b><label for="password">Password</label></b></div>
+      
+      
+      <input id="password" name="password" class="required" aria-labelledby="password-label" type="password" value="" size="20" autocomplete="off"/>
+    </div>
+    <!-- br/ -->
+    <div class="block">
+      <p class="wide">
+        <!-- input id="warn" name="warn" value="false" aria-labelledby="warn-label" type="checkbox" / -->
+        <!-- span id="warn-label" tabindex="-1"><label for="warn">Prompt me before logging into other CAS protected sites.</label></span -->
+      </p>
+    </div>
+    <div class="login">
+      <p>
+        <!-- input type="image" class="button" src="/cas/images/login_T.gif"
+               value="LOGIN"
+               tabindex="-1" alt="login" name="submit" / -->
+        <input class="btn-submit" name="submit"
+               value="LOGIN"
+               type="submit" />
+        <input class="btn-reset" name="reset"
+               value="CLEAR"
+               type="reset" />
+      </p>
+    </div>
+    <div class="block">
+      <input type="hidden" name="lt" value="LT-1985116-bDWy0PDfJQGFnEjQLTC7TSacWASlQv" />
+      <input type="hidden" name="execution" value="e2s1" />
+      <input type="hidden" name="_eventId" value="submit" />
+      <!-- input class="btn-submit" name="submit"
+             value="LOGIN"
+             tabindex="-1" type="submit" / -->
+      <!-- input class="btn-reset" name="reset"
+             value="CLEAR"
+             tabindex="-1" type="reset" / -->
+    </div>
+    <!-- div class="block">
+      <p class="wide">
+        <input id="warn" name="warn" value="false" tabindex="-1" aria-labelledby="warn-label"
+               type="checkbox" />
+        <span id="warn-label" tabindex="-1"><label for="warn">Prompt me before logging into other CAS protected sites.</label></span>
+      </p>
+    </div -->
+  </form>
+</div>
+<!-- div id="sidebar">
+  <div class="sidebar-content">
+    <p class="fl-panel fl-note fl-bevel-white fl-font-size-80">
+      For security reasons, please Log Out and Exit your web browser when you are done accessing services that require authentication!
+    </p>
+    <div id="list-languages" class="fl-panel">
+      
+      
+      
+      <h3>Languages:</h3>
+      
+        
+        
+          
+          <ul>
+            <li class="first"><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=en">English</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=es">Spanish</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=fr">French</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=ru">Russian</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=nl">Nederlands</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=sv">Svenska</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=it">Italiano</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=ur">Urdu</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=zh_CN">Chinese (Simplified)</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=zh_TW">Chinese
+                (Traditional)</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=de">Deutsch</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=ja">Japanese</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=hr">Croatian</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=cs">Czech</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=sl">Slovenian</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=ca">Catalan</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=mk">Macedonian</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=fa">Farsi</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=ar">Arabic</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=pt_PT">Portuguese</a></li>
+            <li><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=pt_BR">Portuguese (Brazil)</a></li>
+            <li class="last"><a href="login?&amp;service=http%3A//www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/CAStestpy.cgi&locale=pl">Polish</a></li>
+          </ul>
+        
+      
+    </div>
+  </div>
+</div -->
+<!-- Attempt to tear down stale PeopleSoft cookies -->
+<script language="javascript">
+  function appendImage(url) {
+      var timer;
+      function clearTimer() {
+          if (timer) {                
+              clearTimeout(timer);
+              timer = null;
+          }
+      }
+      function handleFail() {
+          // kill previous error handlers
+          this.onload = this.onabort = this.onerror = function() {};
+          // stop existing timer
+          clearTimer();
+          // switch to alternate url
+          if (this.src === url) {
+              this.src = "/favicon.ico";
+          }
+      }
+      var img = new Image();
+      img.onerror = img.onabort = handleFail;
+      img.onload = function() {
+          clearTimer();
+      };
+      img.src = url;
+      img.height = 0;
+      img.width = 0;
+      img.border = 0;
+      img.alt = "";
+      timer = setTimeout(function(theImg) { 
+          return function() {
+              handleFail.call(theImg);
+          };
+      }(img), 1000);
+      document.body.appendChild(img);
+  }
+  appendImage("https://phubprod.princeton.edu/psp/phubprod/?cmd=logout");
+  appendImage("https://phcmprod.princeton.edu/psp/phcmprod/?cmd=logout");
+  appendImage("https://pcsprod.princeton.edu/psp/pcsprod/?cmd=logout");
+  appendImage("https://pfs.princeton.edu/psp/pfsprod/?cmd=logout");
+</script>
+
+
+
+                    <p class="box">
+                      <a href="/cas/changepassword.htm" onclick="passwordPopup();return false" id="changepassword" alt="Change my Password">Change my Password</a>
+                      or
+                      <a href="https://princeton.service-now.com/snap/?id=kb_article&sys_id=c72a27064f9ca20018ddd48e5210c786" onClick="helpWindow();return false" id="helplink" alt="Get Help">Get Help</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+</div>
+                <div id="footercontainer">
+                  <div id="footer">
+			    &copy; 2015-<script>document.write(new Date().getFullYear())</script> The Trustees of <a href="http://www.princeton.edu">Princeton University</a><br>
+                    <!-- Powered by <a href="http://www.jasig.org/cas">Jasig Central Authentication Service 3.6.0</a> -->
+                  </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/cas/js/cas.js"></script>
+    </body>
+</html>
+
+
