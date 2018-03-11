@@ -84,7 +84,7 @@ for i in range(1,len(stats)):
     top = stats[i, cv.CC_STAT_TOP]
     bottom = top + stats[i, cv.CC_STAT_HEIGHT]
 
-    subrect = inverted[top:bottom, left:right]
+    subrect = text[top:bottom, left:right]
 
     img = Image.fromarray(subrect)
     output = pt.image_to_string(img).encode("utf-8").strip()
@@ -101,6 +101,6 @@ cv.imwrite("debug.png", in_color)
 
 # write image
 
-# cv.imwrite("text.png", text)
-# cv.imwrite("rooms.png", rooms)
+cv.imwrite("text.png", text)
+cv.imwrite("rooms.png", rooms_only)
 
