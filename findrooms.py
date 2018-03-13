@@ -1,11 +1,13 @@
-import cv2 as cv
-import numpy as np
-import sys
-from pytesseract import pytesseract as pt
-from PIL import Image
 import os
 import re
-kernel = np.ones((3,3),np.uint8)
+import sys
+
+import cv2 as cv
+import numpy as np
+from pytesseract import pytesseract as pt
+from PIL import Image
+
+
 def cv_close(img, kernel, depth = 1):
     return cv.erode(cv.dilate(img, kernel, depth), kernel, depth)
 
@@ -23,8 +25,7 @@ def threshold(img):
     img = cv_invert(img)
     return img
 
-def isolate_text(floorplan):
-    
+def segment_text(floorplan):
     kernel = np.ones((3,3),np.uint8)
     floorplan = cv_invert(floorplan)
     floorplan = cv_close(floorplan, kernel, depth=4)
@@ -37,8 +38,8 @@ def isolate_text(floorplan):
     floorplan[stats[labels, cv.CC_STAT_AREA] > UPPER_THRESHOLD] = 0
     return floorplan
 
-def find_rooms(floorplan):
-    
+def segment_rooms(floorplan):
+    kernel = np.ones((3,3),np.uint8)
     floorplan = cv_invert(cv.dilate(cv_invert(floorplan), kernel, iterations = 2))
     floorplan = cv_invert(cv.erode(cv_invert(floorplan), kernel, iterations = 2))
     
@@ -50,57 +51,50 @@ def find_rooms(floorplan):
 
     return floorplan
 
+def segment_floorplan(floorplan):
+    segments = {}
+    segments["threshold"] = threshold(floorplan)
+    segments["text"] = segment_text(segments["threshold"])
+    segments["no_text"] = cv.add(segments["threshold"], segments["text"])
+    segments["rooms"] = segment_rooms(segments["no_text"])
+    return segments
 
-inFilename = sys.argv[1]
-outFilename = sys.argv[2]
+def ocr_rooms(segments, in_color, floor):
+    os.environ["TESSDATA_PREFIX"] = ".\\"
+    retval, labels, stats, centroids = cv.connectedComponentsWithStats(segments["rooms"])
 
-floor = re.findall("[0-9][0-9].png", inFilename)[0][1]
+    for i in range(1,len(stats)):
+        left = stats[i, cv.CC_STAT_LEFT]
+        right = left + stats[i,cv.CC_STAT_WIDTH]
+        top = stats[i, cv.CC_STAT_TOP]
+        bottom = top + stats[i, cv.CC_STAT_HEIGHT]
 
-floorplan = cv.imread(inFilename,cv.IMREAD_GRAYSCALE)
-floorplan = threshold(floorplan)
+        subrect = np.copy(segments["text"][top:bottom, left:right])
+        sublabels = labels[top:bottom, left:right]
+        subrect[sublabels != i] = 0
 
+        pil_img = Image.fromarray(subrect)
+        output = pt.image_to_string(pil_img).encode("utf-8").strip()
+        roomnums = " ".join(re.findall(floor + "[0-9][0-9]", output))
+        if len(roomnums) > 0:
+            cv.rectangle(in_color, (left, top), (right, bottom), (0,0,255), 10)
 
-text = isolate_text(floorplan)
-no_text = cv.add(floorplan, text)
+def find_doors(room_segment):
+    pass
 
-rooms_only = find_rooms(no_text)
+def main():
+    inFilename = sys.argv[1]
+    outFilename = sys.argv[2]
 
-retval, labels, stats, centroids = cv.connectedComponentsWithStats(rooms_only)
+    floor = re.findall("[0-9][0-9].png", inFilename)[0][1]
+    floorplan = cv.imread(inFilename,cv.IMREAD_GRAYSCALE)
+    segments = segment_floorplan(floorplan)
 
-cv.imwrite("debug.png", rooms_only)
+    in_color = cv.cvtColor(floorplan, cv.COLOR_GRAY2RGB)
+    ocr_rooms(segments, in_color, floor)
 
-# start ocr
+    cv.imwrite(outFilename, in_color)
+    cv.imwrite("text.png", segments["text"])
+    cv.imwrite("rooms.png", segments["rooms"])
 
-os.environ["TESSDATA_PREFIX"] = ".\\"
-
-inverted = cv_invert(floorplan)
-inverted = cv_close(inverted, kernel)
-
-in_color = cv.cvtColor(floorplan, cv.COLOR_GRAY2RGB)
-
-for i in range(1,len(stats)):
-    left = stats[i, cv.CC_STAT_LEFT]
-    right = left + stats[i,cv.CC_STAT_WIDTH]
-    top = stats[i, cv.CC_STAT_TOP]
-    bottom = top + stats[i, cv.CC_STAT_HEIGHT]
-
-    subrect = text[top:bottom, left:right]
-
-    img = Image.fromarray(subrect)
-    output = pt.image_to_string(img).encode("utf-8").strip()
-    roomnums = " ".join(re.findall(floor + "[0-9][0-9]", output))
-    if len(roomnums) > 0:
-        cv.rectangle(in_color, (left, top), (right, bottom), (0,0,255), 10)
-        print roomnums
-
-    # cv.imwrite("subrect" + str(i) + ".png", subrect)
-
-
-
-cv.imwrite("debug.png", in_color)
-
-# write image
-
-cv.imwrite("text.png", text)
-cv.imwrite("rooms.png", rooms_only)
-
+main()
