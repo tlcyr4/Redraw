@@ -7,9 +7,12 @@ import numpy as np
 from pytesseract import pytesseract as pt
 from PIL import Image
 
+TRIM = 2 # pixels to trim off of convex defect because of walls
+
 
 def cv_close(img, kernel, depth = 1):
-    return cv.erode(cv.dilate(img, kernel, depth), kernel, depth)
+    temp = cv.dilate(img, kernel, depth)
+    return cv.erode(temp, kernel, depth)
 
 def cv_open(img, kernel, depth = 1):
     return cv.dilate(cv.erode(img, kernel, depth), kernel, depth)
@@ -20,15 +23,13 @@ def cv_invert(img):
 def threshold(img):
     img = cv_invert(img)
     throwaway, img = cv.threshold(img, 200, 255, cv.THRESH_BINARY)
-    
-    
     img = cv_invert(img)
     return img
 
 def segment_text(floorplan):
     kernel = np.ones((3,3),np.uint8)
     floorplan = cv_invert(floorplan)
-    floorplan = cv_close(floorplan, kernel, depth=4)
+    floorplan = cv.morphologyEx(floorplan, cv.MORPH_CLOSE, kernel, iterations = 1)
     retval, labels, stats, centroids = cv.connectedComponentsWithStats(floorplan)
 
     # UPPER_THRESHOLD = 750 # Hargadon text
@@ -44,9 +45,9 @@ def segment_rooms(floorplan):
     floorplan = cv_invert(cv.erode(cv_invert(floorplan), kernel, iterations = 2))
     
     retval, labels, stats, centroids = cv.connectedComponentsWithStats(floorplan)
-    LOWER_THRESHOLD = 40000
+    LOWER_THRESHOLD = 20000
     UPPER_THRESHOLD = 1280000
-    floorplan[stats[labels, cv.CC_STAT_AREA] > UPPER_THRESHOLD] = 0
+    # floorplan[stats[labels, cv.CC_STAT_AREA] > UPPER_THRESHOLD] = 0
     floorplan[stats[labels, cv.CC_STAT_AREA] < LOWER_THRESHOLD] = 0
 
     return floorplan
@@ -59,10 +60,11 @@ def segment_floorplan(floorplan):
     segments["rooms"] = segment_rooms(segments["no_text"])
     return segments
 
-def ocr_rooms(segments, in_color, floor):
+def ocr_rooms(segments, floor, in_color):
+    kernel = np.ones((3,3),np.uint8)
     os.environ["TESSDATA_PREFIX"] = ".\\"
     retval, labels, stats, centroids = cv.connectedComponentsWithStats(segments["rooms"])
-
+    rooms = {}
     for i in range(1,len(stats)):
         left = stats[i, cv.CC_STAT_LEFT]
         right = left + stats[i,cv.CC_STAT_WIDTH]
@@ -75,12 +77,58 @@ def ocr_rooms(segments, in_color, floor):
 
         pil_img = Image.fromarray(subrect)
         output = pt.image_to_string(pil_img).encode("utf-8").strip()
-        roomnums = " ".join(re.findall(floor + "[0-9][0-9]", output))
+        roomnums = re.findall(floor + "[0-9][0-9]", output)
         if len(roomnums) > 0:
-            cv.rectangle(in_color, (left, top), (right, bottom), (0,0,255), 10)
+            box = ((left, top), (right, bottom))
+            if roomnums[0] not in rooms:
+                rooms[roomnums[0]] = []
+            rooms[roomnums[0]].append(box)
+            subrect = in_color[top:bottom, left:right]
+            copy = cv.cvtColor(np.copy(subrect), cv.COLOR_RGB2GRAY)
+            copy[sublabels!= i] = 0
+            copy, contours, hierarchy = cv.findContours(copy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+            cv.drawContours(subrect, contours, 0, (0,0,255), thickness = 5)
+    return rooms
 
-def find_doors(room_segment):
-    pass
+def find_doors(segments, in_color):
+    door = cv.imread('door3.png', cv.IMREAD_GRAYSCALE)
+    door, door_contours, hierarchy = cv.findContours(door, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+
+
+    kernel = np.ones((3,3),np.uint8)
+    retval, labels, stats, centroids = cv.connectedComponentsWithStats(segments["rooms"])
+    for i in range(1,len(stats)):
+        left = stats[i, cv.CC_STAT_LEFT]
+        right = left + stats[i,cv.CC_STAT_WIDTH]
+        top = stats[i, cv.CC_STAT_TOP]
+        bottom = top + stats[i, cv.CC_STAT_HEIGHT]
+
+        sublabels = labels[top:bottom, left:right]
+
+        flipped = np.copy(segments["no_text"][top:bottom, left:right])
+        flipped[(sublabels != i) & (sublabels != 0)] = 255
+        flipped[sublabels == i] = 0
+        flipped = cv.morphologyEx(flipped, cv.MORPH_CLOSE, kernel, iterations = 3)
+        retval, defects, defect_stats, defect_centroid = cv.connectedComponentsWithStats(flipped)
+        for j in np.unique(defects):
+            if j == 0:
+                continue
+            cc_left = defect_stats[j, cv.CC_STAT_LEFT]
+            cc_right = cc_left + defect_stats[j,cv.CC_STAT_WIDTH]
+            cc_top = defect_stats[j, cv.CC_STAT_TOP]
+            cc_bottom = cc_top + defect_stats[j, cv.CC_STAT_HEIGHT]
+            defect_box = flipped[cc_top:cc_bottom, cc_left:cc_right]
+            if defect_stats[j, cv.CC_STAT_AREA] > 5000 and defect_stats[j, cv.CC_STAT_AREA] < 20000:
+                defect_box, contours, hierarchy = cv.findContours(defect_box, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+                dooryness = cv.matchShapes(door_contours[0], contours[0], 1, 0.0)    
+
+                if dooryness > .025:# or dooryness == 0.0: seems to be the return value for failure
+                    continue
+
+                defect_box = cv.cvtColor(defect_box, cv.COLOR_GRAY2RGB)
+                
+                subrect = in_color[top+cc_top:top + cc_bottom, left+cc_left:left + cc_right]
+                cv.drawContours(subrect, contours, 0, (0,255,0), thickness = 5)
 
 def main():
     inFilename = sys.argv[1]
@@ -88,13 +136,25 @@ def main():
 
     floor = re.findall("[0-9][0-9].png", inFilename)[0][1]
     floorplan = cv.imread(inFilename,cv.IMREAD_GRAYSCALE)
-    segments = segment_floorplan(floorplan)
-
     in_color = cv.cvtColor(floorplan, cv.COLOR_GRAY2RGB)
-    ocr_rooms(segments, in_color, floor)
+
+
+    segments = segment_floorplan(floorplan)
+    
+
+    
+    rooms = ocr_rooms(segments, floor, in_color)
+    doors = find_doors(segments, in_color)
+
+    # f = open("rooms.txt", 'w')
+    # for number in rooms:
+    #     for subroom in rooms[number]:
+    #         cv.rectangle(in_color, subroom[0], subroom[1], (0,0,255), 10)
+    #     f.write(str(number) + ': ' + str(rooms[number]) + '\n')
 
     cv.imwrite(outFilename, in_color)
     cv.imwrite("text.png", segments["text"])
+    cv.imwrite("no_text.png", segments["no_text"])
     cv.imwrite("rooms.png", segments["rooms"])
 
 main()
