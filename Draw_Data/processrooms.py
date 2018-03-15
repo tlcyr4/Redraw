@@ -17,19 +17,18 @@ while line != '':
     building = tokens.pop(0)
     if tokens[0] == 'OSBORN':
         building += ' ' + tokens.pop(0)
-    occupancy = tokens.pop(0)
+    occupancy = int(tokens.pop(0))
     draw = tokens.pop(0)
-    # print tokens
     if tokens[0] == 'College':
-        draw = ' '.join((draw, tokens.pop(0)))
-    sqft = tokens.pop(0)
-    numrooms = tokens.pop(0)
+        draw += ' ' + tokens.pop(0)
+    sqft = int(tokens.pop(0))
+    numrooms = int(tokens.pop(0))
     # print tokens
     if len(tokens) > 1 and tokens[1] ==  'bathroom':
         bathroom = tokens.pop(0)
         tokens.pop(0)
         if bathroom == 'Shared':
-            bathroom = ' '.join((bathroom, tokens.pop(0)))
+            bathroom += ' ' + tokens.pop(0)
     else:
         bathroom = 'Public'
     # print tokens
@@ -51,6 +50,8 @@ while line != '':
     room['bathroom'] = bathroom
     room['sqft'] = sqft
     room['numrooms'] = numrooms
+
+    
     room['sub-free'] = ('Substance free room' in features)
     if room['sub-free']:
         features = features.replace('Substance free room', '')
