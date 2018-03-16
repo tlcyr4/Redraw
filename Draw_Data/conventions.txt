@@ -1,0 +1,73 @@
+This text file is for standardizing naming conventions of buildings, colleges, etc
+Each line represents a unique entity (e.g. a building)
+Within each line, different names for the entity are separated by tabs.
+The first entry in each line is the accepted standard other names should be converted to.
+
+***Please strip off “ Hall” before using this, those don’t need to be added here***
+
+Usage (python):
+
+Read:
+
+f = open("conventions.txt", "r")
+line = ""
+while line.strip("\n") != ("=" * 80):
+	line = f.readline() #skip this documentation section
+conventions = [line.strip("\n").split("\t") for line in f]
+# conventions is now a list with a sublist for each entity
+
+
+Update:
+Just add things manually in a text editor for now
+
+================================================================================
+1901
+1903
+1915
+1927
+1937
+1938
+1939
+1967
+1981
+2 DICKINSON	2DICKINSON
+BAKER
+BLAIR
+BLOOMBERG
+BOGLE
+BROWN
+YOSELOFF	BUILDING A
+1976	BUILDING D
+BUYERS
+CAMPBELL
+CLAPP
+CUYLER
+DOD
+DODGE OSBORN	DODGEOSBORN
+EDWARDS
+FEINBERG
+FISHER
+FORBES ADDITION	FORBES
+FORBES MAIN INN	FORBES
+FOULKE
+GAUSS
+HAMILTON
+HARGADON
+HENRY
+HOLDER
+JOLINE
+LAUGHLIN
+LAURITZEN
+LITTLE
+LOCKHART
+MURLEY-PIVIROTTO	MURLEY
+WENDELL B	NORTH B WENDELL
+WENDELL C	NORTH C	WENDELL
+PATTON
+PYNE
+SCULLY
+SPELMAN
+WALKER
+WILF
+WITHERSPOON
+WRIGHT
