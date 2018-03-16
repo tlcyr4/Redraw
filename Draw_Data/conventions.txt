@@ -3,7 +3,11 @@ Each line represents a unique entity (e.g. a building)
 Within each line, different names for the entity are separated by tabs.
 The first entry in each line is the accepted standard other names should be converted to.
 
-***Please strip off “ Hall” before using this, those don’t need to be added here***
+Before Use:
+	Strip off “ Hall” or “ College”
+	CAPITALIZE
+	Split up shared buildings such as Baker, Wendell, and Forbes
+
 
 Usage (python):
 
@@ -16,9 +20,21 @@ while line.strip("\n") != ("=" * 80):
 conventions = [line.strip("\n").split("\t") for line in f]
 # conventions is now a list with a sublist for each entity
 
+def standardized(name):
+    found = False
+    for c in conventions:
+        if name in c:
+            found = True    
+            return c[0]
+            break
+    if not found:
+        print "Error: Unknown Term: " + name
+    return name
 
-Update:
+
+To Update:
 Just add things manually in a text editor for now
+Be careful adding new entities
 
 ================================================================================
 1901
@@ -31,7 +47,8 @@ Just add things manually in a text editor for now
 1967
 1981
 2 DICKINSON	2DICKINSON
-BAKER
+BAKER E	BAKERE
+BAKER S	BAKERS
 BLAIR
 BLOOMBERG
 BOGLE
@@ -43,12 +60,12 @@ CAMPBELL
 CLAPP
 CUYLER
 DOD
-DODGE OSBORN	DODGEOSBORN
+DODGE OSBORN	DODGEOSBORN	DODGE-OSBORN
 EDWARDS
 FEINBERG
 FISHER
-FORBES ADDITION	FORBES
-FORBES MAIN INN	FORBES
+FORBES ADDITION
+FORBES MAIN INN	FORBES MAIN
 FOULKE
 GAUSS
 HAMILTON
@@ -61,8 +78,8 @@ LAURITZEN
 LITTLE
 LOCKHART
 MURLEY-PIVIROTTO	MURLEY
-WENDELL B	NORTH B WENDELL
-WENDELL C	NORTH C	WENDELL
+WENDELL B	NORTH B
+WENDELL C	NORTH C
 PATTON
 PYNE
 SCULLY
