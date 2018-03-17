@@ -89,3 +89,6 @@ WALKER
 WILF
 WITHERSPOON
 WRIGHT
+Shared	SH
+Public	PU
+Private	PR

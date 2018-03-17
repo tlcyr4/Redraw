@@ -1,4 +1,21 @@
 import json
+f = open("conventions.txt", "r")
+line = ""
+while line.strip("\n") != ("=" * 80):
+	line = f.readline() #skip this documentation section
+conventions = [line.strip("\n").split("\t") for line in f]
+
+def standardized(name):
+    found = False
+    for c in conventions:
+        if name in c:
+            found = True    
+            return c[0]
+            break
+    if not found:
+        print "Error: Unknown Term: " + name
+    return name
+
 
 data = open('Room_Draw_11.txt', 'U')
 description = data.readline()
@@ -17,10 +34,30 @@ while line != '':
     building = tokens.pop(0)
     if tokens[0] == 'OSBORN':
         building += ' ' + tokens.pop(0)
+    building = building.upper()
+    if building == 'WENDELL':
+        if 'B' in roomnum:
+            building = 'WENDELL B'
+        if 'C' in roomnum:
+            building = 'WENDELL C'
+    if building == 'FORBES':
+        if 'A' in roomnum:
+            building = 'FORBES ADDITION'
+        else:
+            building = 'FORBES MAIN INN'
+    if building == 'BAKER':
+        if 'E' in roomnum:
+            building = 'BAKER E'
+        if 'S' in roomnum:
+            building = 'BAKER S'
+
+    building = standardized(building)
+
+
     occupancy = int(tokens.pop(0))
-    draw = tokens.pop(0)
+    draw = tokens.pop(0).upper()
     if tokens[0] == 'College':
-        draw += ' ' + tokens.pop(0)
+        tokens.pop(0)
     sqft = int(tokens.pop(0))
     numrooms = int(tokens.pop(0))
     # print tokens
