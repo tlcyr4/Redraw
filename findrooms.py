@@ -1,160 +1,186 @@
 import os
 import re
 import sys
+import copy
 
 import cv2 as cv
 import numpy as np
 from pytesseract import pytesseract as pt
 from PIL import Image
 
-TRIM = 2 # pixels to trim off of convex defect because of walls
+class Door:
+    def __init__(self, bbox, contours, outof, into):
+        self.bbox = bbox
+        self.contours = contours
+        self.outof = outof
+        self.into = into
+        self.origin = (bbox[0],bbox[2])
+    def draw(self, img, color = (0,255,0)):
+        # print self.origin
+        cv.drawContours(img, self.contours, 0, color, thickness = -1, offset = self.origin)
 
+class Room:
+    def __init__(self, bbox, label, centroid, area, number, contours):
+        self.bbox = bbox
+        self.label = label
+        self.centroid = centroid
+        self.area = area
+        self.number = number
+        self.contours = contours
+        self.origin = (bbox[0],bbox[2])
+    def draw(self, img, color = (0,0,255)):
+        cv.drawContours(img, self.contours, 0, color, thickness = 5, offset = self.origin)
+        centroid = (int(self.centroid[0]), int(self.centroid[1]))
+        cv.putText(img, self.number, centroid, cv.FONT_HERSHEY_SCRIPT_COMPLEX, 3, (255,0,0), thickness = 3)    
+class Segment:
+    def __init__(self, img):
+        self.img = img
+        self.num_ccs, self.labelled, self.stats, self.centroids = cv.connectedComponentsWithStats(img)
+        self.labels = np.unique(self.labelled)
+    def cc_threshold(self, lower = None, upper = None):
+        if upper != None:
+            self.img[self.stats[self.labelled, cv.CC_STAT_AREA] > upper] = 0
+            self.labels = self.labels[self.stats[self.labels, cv.CC_STAT_AREA] <= upper]
+        if lower != None:
+            self.img[self.stats[self.labelled, cv.CC_STAT_AREA] < lower] = 0
+            self.labels = self.labels[self.stats[self.labels, cv.CC_STAT_AREA] >= lower]
+    def bbox(self, label):
+        left = self.stats[label, cv.CC_STAT_LEFT]
+        right = left + self.stats[label,cv.CC_STAT_WIDTH]
+        top = self.stats[label, cv.CC_STAT_TOP]
+        bottom = top + self.stats[label, cv.CC_STAT_HEIGHT]
+        return left, right, top, bottom
 
-def cv_close(img, kernel, depth = 1):
-    temp = cv.dilate(img, kernel, depth)
-    return cv.erode(temp, kernel, depth)
+    def clone(self):
+        return copy.deepcopy(self)
 
-def cv_open(img, kernel, depth = 1):
-    return cv.dilate(cv.erode(img, kernel, depth), kernel, depth)
+class Floor:
+    def __init__(self, img, ref_door_filename, floornum = 1):
+        self.kernel = np.ones((3,3),np.uint8)
+        self.original = img
+        self.floornum = floornum
+        self.rooms = []
+        self.doors = []
+        self.segments = {}
+        door = cv.imread(ref_door_filename, cv.IMREAD_GRAYSCALE)
+        door, self.ref_door, hierarchy = cv.findContours(door, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+    def invert(self, img):
+        """ Flips black and white """
+        return (255 - img)
+    def segment(self, text_thresh = 300, room_lower_thresh = 20000, room_upper_thresh = 128000, lum_thresh = 200):
+        """ populates segments dictionary with image segments 
+            e.g. image with text filtered out"""
+        segments = self.segments
 
-def cv_invert(img):
-    return (255 - img)
+        # thresholding
+        thresholded = cv.cvtColor(self.original, cv.COLOR_RGB2GRAY)
+        thresholded = self.invert(thresholded)
+        throwaway, thresholded = cv.threshold(thresholded, lum_thresh, 255, cv.THRESH_BINARY)
+        thresholded = self.invert(thresholded)
+        segments["threshold"] = Segment(thresholded)
 
-def threshold(img):
-    img = cv_invert(img)
-    throwaway, img = cv.threshold(img, 200, 255, cv.THRESH_BINARY)
-    img = cv_invert(img)
-    return img
+        # segment text
+        text = cv.morphologyEx(self.invert(thresholded), cv.MORPH_CLOSE, self.kernel, iterations = 1)
+        segments["text"] = Segment(text)
+        segments["text"].cc_threshold(upper = text_thresh)
+        no_text = cv.add(thresholded, text)
+        segments["no_text"] = Segment(no_text)
 
-def segment_text(floorplan):
-    kernel = np.ones((3,3),np.uint8)
-    floorplan = cv_invert(floorplan)
-    floorplan = cv.morphologyEx(floorplan, cv.MORPH_CLOSE, kernel, iterations = 1)
-    retval, labels, stats, centroids = cv.connectedComponentsWithStats(floorplan)
+        # segment rooms
+        rooms = self.invert(cv.morphologyEx(self.invert(no_text), cv.MORPH_CLOSE, self.kernel, iterations = 2))
+        segments["rooms"] = Segment(rooms)
+        segments["rooms"].cc_threshold(room_lower_thresh, room_upper_thresh)
 
-    # UPPER_THRESHOLD = 750 # Hargadon text
-    UPPER_THRESHOLD = 300 # Wendell_C text
+    def find_rooms(self):
+        segments = self.segments
+        kernel = np.ones((3,3),np.uint8)
+        os.environ["TESSDATA_PREFIX"] = ".\\"
+        rooms = segments["rooms"]
+        for room_label in segments["rooms"].labels:
+            if room_label == 0:
+                continue # 0 denotes the blackness
+            left, right, top, bottom = rooms.bbox(room_label)
 
-    # remove large connected components
-    floorplan[stats[labels, cv.CC_STAT_AREA] > UPPER_THRESHOLD] = 0
-    return floorplan
+            # take piece from text segment
+            room_box = np.copy(segments["text"].img[top:bottom, left:right])
+            roomlabels = rooms.labelled[top:bottom, left:right]
+            # filter out other cc's that hang into box
+            room_box[roomlabels != room_label] = 0
 
-def segment_rooms(floorplan):
-    kernel = np.ones((3,3),np.uint8)
-    floorplan = cv_invert(cv.dilate(cv_invert(floorplan), kernel, iterations = 2))
-    floorplan = cv_invert(cv.erode(cv_invert(floorplan), kernel, iterations = 2))
-    
-    retval, labels, stats, centroids = cv.connectedComponentsWithStats(floorplan)
-    LOWER_THRESHOLD = 20000
-    UPPER_THRESHOLD = 1280000
-    # floorplan[stats[labels, cv.CC_STAT_AREA] > UPPER_THRESHOLD] = 0
-    floorplan[stats[labels, cv.CC_STAT_AREA] < LOWER_THRESHOLD] = 0
-
-    return floorplan
-
-def segment_floorplan(floorplan):
-    segments = {}
-    segments["threshold"] = threshold(floorplan)
-    segments["text"] = segment_text(segments["threshold"])
-    segments["no_text"] = cv.add(segments["threshold"], segments["text"])
-    segments["rooms"] = segment_rooms(segments["no_text"])
-    return segments
-
-def ocr_rooms(segments, floor, in_color):
-    kernel = np.ones((3,3),np.uint8)
-    os.environ["TESSDATA_PREFIX"] = ".\\"
-    retval, labels, stats, centroids = cv.connectedComponentsWithStats(segments["rooms"])
-    rooms = {}
-    for i in range(1,len(stats)):
-        left = stats[i, cv.CC_STAT_LEFT]
-        right = left + stats[i,cv.CC_STAT_WIDTH]
-        top = stats[i, cv.CC_STAT_TOP]
-        bottom = top + stats[i, cv.CC_STAT_HEIGHT]
-
-        subrect = np.copy(segments["text"][top:bottom, left:right])
-        sublabels = labels[top:bottom, left:right]
-        subrect[sublabels != i] = 0
-
-        pil_img = Image.fromarray(subrect)
-        output = pt.image_to_string(pil_img).encode("utf-8").strip()
-        roomnums = re.findall(floor + "[0-9][0-9]", output)
-        if len(roomnums) > 0:
-            box = ((left, top), (right, bottom))
-            if roomnums[0] not in rooms:
-                rooms[roomnums[0]] = []
-            rooms[roomnums[0]].append(box)
-            subrect = in_color[top:bottom, left:right]
-            copy = cv.cvtColor(np.copy(subrect), cv.COLOR_RGB2GRAY)
-            copy[sublabels!= i] = 0
-            copy, contours, hierarchy = cv.findContours(copy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-            cv.drawContours(subrect, contours, 0, (0,0,255), thickness = 5)
-    return rooms
-
-def find_doors(segments, in_color):
-    door = cv.imread('door3.png', cv.IMREAD_GRAYSCALE)
-    door, door_contours, hierarchy = cv.findContours(door, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-
-
-    kernel = np.ones((3,3),np.uint8)
-    retval, labels, stats, centroids = cv.connectedComponentsWithStats(segments["rooms"])
-    for i in range(1,len(stats)):
-        left = stats[i, cv.CC_STAT_LEFT]
-        right = left + stats[i,cv.CC_STAT_WIDTH]
-        top = stats[i, cv.CC_STAT_TOP]
-        bottom = top + stats[i, cv.CC_STAT_HEIGHT]
-
-        sublabels = labels[top:bottom, left:right]
-
-        flipped = np.copy(segments["no_text"][top:bottom, left:right])
-        flipped[(sublabels != i) & (sublabels != 0)] = 255
-        flipped[sublabels == i] = 0
-        flipped = cv.morphologyEx(flipped, cv.MORPH_CLOSE, kernel, iterations = 3)
-        retval, defects, defect_stats, defect_centroid = cv.connectedComponentsWithStats(flipped)
-        for j in np.unique(defects):
-            if j == 0:
+            # convert to PIL format for Tesseract
+            pil_img = Image.fromarray(room_box)
+            text = pt.image_to_string(pil_img).encode("utf-8").strip()
+            roomnums = re.findall(self.floornum + "[0-9][0-9]", text)
+            if roomnums == []:
+                roomnum = None
+            else:
+                roomnum = roomnums[0]
+            
+            # found a room number
+            copy = np.copy(segments["rooms"].img[top:bottom, left:right]) # defensive copy for findContours
+            copy[roomlabels != room_label] = 0
+            if roomnum == None:
                 continue
-            cc_left = defect_stats[j, cv.CC_STAT_LEFT]
-            cc_right = cc_left + defect_stats[j,cv.CC_STAT_WIDTH]
-            cc_top = defect_stats[j, cv.CC_STAT_TOP]
-            cc_bottom = cc_top + defect_stats[j, cv.CC_STAT_HEIGHT]
-            defect_box = flipped[cc_top:cc_bottom, cc_left:cc_right]
-            if defect_stats[j, cv.CC_STAT_AREA] > 5000 and defect_stats[j, cv.CC_STAT_AREA] < 20000:
-                defect_box, contours, hierarchy = cv.findContours(defect_box, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-                dooryness = cv.matchShapes(door_contours[0], contours[0], 1, 0.0)    
+            copy, contours, hierarchy = cv.findContours(copy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+            if contours == False:
+                continue
+            centroid = rooms.centroids[room_label]
+            area = rooms.stats[room_label, cv.CC_STAT_AREA]
+            room = Room(rooms.bbox(room_label), room_label, centroid, area, roomnum, contours)
+            # self.spaces.append(room)
+            if roomnum != None:
+                self.rooms.append(room)
+    def find_doors(self, corr_thresh = .025):
+        ref_door = self.ref_door
+        kernel = np.ones((3,3),np.uint8)
+        segments = self.segments
+        rooms = segments["rooms"]
+        for room_label in rooms.labels:
+            if room_label == 0:
+                continue
+            left, right, top, bottom = rooms.bbox(room_label)
+            roomlabels = rooms.labelled[top:bottom, left:right]
 
-                if dooryness > .025:# or dooryness == 0.0: seems to be the return value for failure
+            inverted = np.copy(segments["no_text"].img[top:bottom,left:right])
+            inverted[(roomlabels != room_label) & (roomlabels != 0)] = 255
+            inverted[roomlabels == room_label] = 0
+            inverted = cv.morphologyEx(inverted, cv.MORPH_CLOSE, kernel, iterations = 3)
+            defects = Segment(inverted)
+            defects.cc_threshold(5000, 20000)
+            for defect_label in defects.labels:
+                if defect_label == 0:
                     continue
+                defect_left,defect_right,defect_top,defect_bottom = defects.bbox(defect_label)
+                defect_box = inverted[defect_top:defect_bottom, defect_left:defect_right]
+                defect_box, contours, hierarchy = cv.findContours(defect_box, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+                correlation = cv.matchShapes(ref_door[0], contours[0], 1, 0.0)
+                if correlation < corr_thresh:
+                    bbox = [left+defect_left,left+defect_right,top+defect_top,top+defect_bottom]
+                    centroid = defects.centroids[defect_label]
+                    centroid = (int(centroid[0]), int(centroid[1]))
+                    door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label)
+                    self.doors.append(door)
 
-                defect_box = cv.cvtColor(defect_box, cv.COLOR_GRAY2RGB)
-                
-                subrect = in_color[top+cc_top:top + cc_bottom, left+cc_left:left + cc_right]
-                cv.drawContours(subrect, contours, 0, (0,255,0), thickness = 5)
+
 
 def main():
     inFilename = sys.argv[1]
     outFilename = sys.argv[2]
 
-    floor = re.findall("[0-9][0-9].png", inFilename)[0][1]
-    floorplan = cv.imread(inFilename,cv.IMREAD_GRAYSCALE)
-    in_color = cv.cvtColor(floorplan, cv.COLOR_GRAY2RGB)
-
-
-    segments = segment_floorplan(floorplan)
+    floornum = re.findall("[0-9][0-9].png", inFilename)[0][1]
+    floor = Floor(cv.imread(inFilename, cv.IMREAD_COLOR), "door3.png", floornum = floornum)
     
+    floor.segment(room_upper_thresh = None)
+    # cv.imwrite('debug.png', floor.segments["rooms"].img)
+    floor.find_doors()
+    for door in floor.doors:
+        door.draw(floor.original)
+    floor.find_rooms()
+    for room in floor.rooms:
+        room.draw(floor.original)
 
-    
-    rooms = ocr_rooms(segments, floor, in_color)
-    doors = find_doors(segments, in_color)
+    cv.imwrite("debug.png", floor.original)
 
-    # f = open("rooms.txt", 'w')
-    # for number in rooms:
-    #     for subroom in rooms[number]:
-    #         cv.rectangle(in_color, subroom[0], subroom[1], (0,0,255), 10)
-    #     f.write(str(number) + ': ' + str(rooms[number]) + '\n')
-
-    cv.imwrite(outFilename, in_color)
-    cv.imwrite("text.png", segments["text"])
-    cv.imwrite("no_text.png", segments["no_text"])
-    cv.imwrite("rooms.png", segments["rooms"])
+   
 
 main()
