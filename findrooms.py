@@ -1,7 +1,7 @@
 import os
 import re
 import sys
-import copy
+import json
 
 import cv2 as cv
 import numpy as np
@@ -9,14 +9,14 @@ from pytesseract import pytesseract as pt
 from PIL import Image
 
 class Door:
-    def __init__(self, bbox, contours, outof, into):
+    def __init__(self, bbox, contours, outof, into, rel_origin):
         self.bbox = bbox
         self.contours = contours
         self.outof = outof
         self.into = into
         self.origin = (bbox[0],bbox[2])
+        self.rel_origin = rel_origin
     def draw(self, img, color = (0,255,0)):
-        # print self.origin
         cv.drawContours(img, self.contours, 0, color, thickness = -1, offset = self.origin)
 
 class Room:
@@ -32,6 +32,9 @@ class Room:
         cv.drawContours(img, self.contours, 0, color, thickness = 5, offset = self.origin)
         centroid = (int(self.centroid[0]), int(self.centroid[1]))
         cv.putText(img, self.number, centroid, cv.FONT_HERSHEY_SCRIPT_COMPLEX, 3, (255,0,0), thickness = 3)    
+    def toJSON(self):
+        return {"outline":self.contours[0].tolist(), "origin": self.origin, "number": self.number}
+
 class Segment:
     def __init__(self, img):
         self.img = img
@@ -50,9 +53,6 @@ class Segment:
         top = self.stats[label, cv.CC_STAT_TOP]
         bottom = top + self.stats[label, cv.CC_STAT_HEIGHT]
         return left, right, top, bottom
-
-    def clone(self):
-        return copy.deepcopy(self)
 
 class Floor:
     def __init__(self, img, ref_door_filename, floornum = 1):
@@ -158,10 +158,36 @@ class Floor:
                     bbox = [left+defect_left,left+defect_right,top+defect_top,top+defect_bottom]
                     centroid = defects.centroids[defect_label]
                     centroid = (int(centroid[0]), int(centroid[1]))
-                    door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label)
+                    door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label, (defect_left,defect_top))
                     self.doors.append(door)
+    def transplant_doors(self, closing = 5):
+        rooms = self.segments["rooms"]
+        img = rooms.img
+        labelled = rooms.labelled
+        for door in self.doors:
+            r_left,r_right,r_top,r_bottom = rooms.bbox(door.into)
+            d_left,d_right,d_top,d_bottom = door.bbox
 
+            # expand door-box
+            d_left-=closing
+            d_top-=closing
+            d_bottom+=closing
+            d_right+=closing
 
+            subrect = img[d_top:d_bottom,d_left:d_right]
+            subrect[subrect == subrect] = 0
+            intersect = intersection(rooms.bbox(door.into), (d_left,d_right,d_top,d_bottom))
+            subrect = img[intersect[2]:intersect[3],intersect[0]:intersect[1]]
+            subrect[subrect == subrect] = 255
+        # cv.imwrite('debug.png', img)
+        self.segments["rooms"] = Segment(img)
+                
+def intersection(a,b):
+  left = max(a[0], b[0])
+  right = min(a[1], b[1])
+  top = max(a[2], b[2])
+  bottom = min(a[3], b[3])
+  return (left,right,top,bottom)
 
 def main():
     inFilename = sys.argv[1]
@@ -173,12 +199,15 @@ def main():
     floor.segment(room_upper_thresh = None)
     # cv.imwrite('debug.png', floor.segments["rooms"].img)
     floor.find_doors()
-    for door in floor.doors:
-        door.draw(floor.original)
+    floor.transplant_doors()
+    
+    # for door in floor.doors:
+    #     door.draw(floor.original)
     floor.find_rooms()
     for room in floor.rooms:
         room.draw(floor.original)
-
+    
+    json.dump([room.toJSON() for room in floor.rooms], open(outFilename, "w"))
     cv.imwrite("debug.png", floor.original)
 
    
