@@ -184,34 +184,40 @@ class Floor:
                     door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label, (defect_left,defect_top))
                     self.doors.append(door)
     def transplant_doors(self, closing = 5):
-        # TODO: make this a batch process
         rooms = self.segments["rooms"]
         img = rooms.img
-        labelled = rooms.labelled
+
+        # make auxiliary canvases for doors and rooms' convex hulls
+        room_hull_pic = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+        doors = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+
+        # draw doors and hulls on canvases
         for door in self.doors:
             r_left,r_right,r_top,r_bottom = rooms.bbox(door.into)
 
             # draw room's convex hull on its own canvas
             room_hull = rooms.convex_hull(door.into)
-            room_hull_pic = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
             cv.drawContours(room_hull_pic, room_hull, 0, (255,255,255), thickness=-1, offset=(r_left, r_top))
-            room_hull_pic = cv.cvtColor(room_hull_pic, cv.COLOR_RGB2GRAY)
+            
 
             # draw door in its own canvas and dilate
-            copy = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
-            copy = cv.drawContours(copy, door.contours, 0, (255,255,255), thickness=-1, offset=door.origin)
-            copy = cv.cvtColor(copy, cv.COLOR_RGB2GRAY)
-            copy = cv.dilate(copy, self.kernel, iterations = closing)
+            doors = cv.drawContours(doors, door.contours, 0, (255,255,255), thickness=-1, offset=door.origin)
 
-            # take intersection of two
-            intersect = cv.bitwise_and(copy, room_hull_pic)
+        # convert back to binary
+        doors = cv.cvtColor(doors, cv.COLOR_RGB2GRAY)
+        room_hull_pic = cv.cvtColor(room_hull_pic, cv.COLOR_RGB2GRAY)
 
-            # black out door's rect and whiten intersection
-            img = cv.bitwise_and(img, cv.bitwise_not(copy))
-            img = cv.bitwise_or(img, intersect)
+        # dilate doors
+        doors = cv.dilate(doors, self.kernel, iterations = closing)
 
+        # take intersection of two
+        intersect = cv.bitwise_and(doors, room_hull_pic)
 
-        # # cv.imwrite('debug.png', img)
+        # black out door's rect and whiten intersection
+        img = cv.bitwise_and(img, cv.bitwise_not(doors))
+        img = cv.bitwise_or(img, intersect)
+
+        # update rooms segment
         self.segments["rooms"] = Segment(img)
                 
 def intersection(a,b):
