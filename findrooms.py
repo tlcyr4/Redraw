@@ -53,6 +53,15 @@ class Segment:
         top = self.stats[label, cv.CC_STAT_TOP]
         bottom = top + self.stats[label, cv.CC_STAT_HEIGHT]
         return left, right, top, bottom
+    def convex_hull(self, label):
+        left,right,top,bottom = self.bbox(label)
+        cutout = np.copy(self.img[top:bottom,left:right])
+        sublabelled = self.labelled[top:bottom, left:right]
+        cutout[sublabelled != label] = 0
+        # cv.imwrite("not" + str(label) + ".png", cutout)
+        contours = cv.findContours(cutout, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)[1]
+        return [cv.convexHull(contours[0])]
+
 
 class Floor:
     def __init__(self, img, ref_door_filename, floornum = 1):
@@ -137,14 +146,28 @@ class Floor:
         rooms = segments["rooms"]
         for room_label in rooms.labels:
             if room_label == 0:
-                continue
+                continue # skip the blackness
+
+            # cut out room labels
             left, right, top, bottom = rooms.bbox(room_label)
             roomlabels = rooms.labelled[top:bottom, left:right]
+
+            # get convex hull
+            hull = rooms.convex_hull(room_label)
+            hullDrawing = cv.cvtColor(np.zeros(roomlabels.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            hullDrawing = cv.drawContours(hullDrawing, hull, 0, (255,255,255), thickness = -1)
+            hullDrawing = cv.cvtColor(hullDrawing, cv.COLOR_RGB2GRAY)
+            # cv.imwrite("not" + str(room_label) + ".png", rooms.img[top:bottom, left:right])
+            # cv.imwrite("convex" + str(room_label) + ".png", hullDrawing)
 
             inverted = np.copy(segments["no_text"].img[top:bottom,left:right])
             inverted[(roomlabels != room_label) & (roomlabels != 0)] = 255
             inverted[roomlabels == room_label] = 0
             inverted = cv.morphologyEx(inverted, cv.MORPH_CLOSE, kernel, iterations = 3)
+
+            # new
+            inverted = cv.bitwise_and(inverted, hullDrawing)
+
             defects = Segment(inverted)
             defects.cc_threshold(5000, 20000)
             for defect_label in defects.labels:
@@ -161,25 +184,34 @@ class Floor:
                     door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label, (defect_left,defect_top))
                     self.doors.append(door)
     def transplant_doors(self, closing = 5):
+        # TODO: make this a batch process
         rooms = self.segments["rooms"]
         img = rooms.img
         labelled = rooms.labelled
         for door in self.doors:
             r_left,r_right,r_top,r_bottom = rooms.bbox(door.into)
-            d_left,d_right,d_top,d_bottom = door.bbox
 
-            # expand door-box
-            d_left-=closing
-            d_top-=closing
-            d_bottom+=closing
-            d_right+=closing
+            # draw room's convex hull on its own canvas
+            room_hull = rooms.convex_hull(door.into)
+            room_hull_pic = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            cv.drawContours(room_hull_pic, room_hull, 0, (255,255,255), thickness=-1, offset=(r_left, r_top))
+            room_hull_pic = cv.cvtColor(room_hull_pic, cv.COLOR_RGB2GRAY)
 
-            subrect = img[d_top:d_bottom,d_left:d_right]
-            subrect[subrect == subrect] = 0
-            intersect = intersection(rooms.bbox(door.into), (d_left,d_right,d_top,d_bottom))
-            subrect = img[intersect[2]:intersect[3],intersect[0]:intersect[1]]
-            subrect[subrect == subrect] = 255
-        # cv.imwrite('debug.png', img)
+            # draw door in its own canvas and dilate
+            copy = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            copy = cv.drawContours(copy, door.contours, 0, (255,255,255), thickness=-1, offset=door.origin)
+            copy = cv.cvtColor(copy, cv.COLOR_RGB2GRAY)
+            copy = cv.dilate(copy, self.kernel, iterations = closing)
+
+            # take intersection of two
+            intersect = cv.bitwise_and(copy, room_hull_pic)
+
+            # black out door's rect and whiten intersection
+            img = cv.bitwise_and(img, cv.bitwise_not(copy))
+            img = cv.bitwise_or(img, intersect)
+
+
+        # # cv.imwrite('debug.png', img)
         self.segments["rooms"] = Segment(img)
                 
 def intersection(a,b):
@@ -201,13 +233,13 @@ def main():
     floor.find_doors()
     floor.transplant_doors()
     
-    # for door in floor.doors:
-    #     door.draw(floor.original)
+    for door in floor.doors:
+        door.draw(floor.original)
     floor.find_rooms()
     for room in floor.rooms:
         room.draw(floor.original)
     
-    json.dump([room.toJSON() for room in floor.rooms], open(outFilename, "w"))
+    # json.dump([room.toJSON() for room in floor.rooms], open(outFilename, "w"))
     cv.imwrite("debug.png", floor.original)
 
    
