@@ -260,9 +260,14 @@ class Floor:
             cv.bitwise_and(cutout, cv.bitwise_not(door_canvas), cutout)
             cv.bitwise_or(cutout, intersect, cutout)
 
+            # update centroid and area
+            isolate = np.zeros(img.shape, dtype="uint8")
+            isolate[labelled == door.into] = 255
 
-        # cv.imwrite('debug.png', img)
-        self.segments["rooms"] = Segment(img)
+            # cv.imwrite("debug.png", isolate)
+            blah, bleh, stats, centroids = cv.connectedComponentsWithStats(isolate)
+            rooms.stats[door.into] = stats[1, :]
+            rooms.centroids[door.into] = centroids[1]
 
 def main(inFilename):
     global verbose, efr, cluttered, totalTime, timing, missed, two_digit, closedoor, unmarked
