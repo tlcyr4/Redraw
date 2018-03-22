@@ -3,11 +3,16 @@ import re
 import sys
 import json
 import random
+import time
+import glob
+import winsound
 
 import cv2 as cv
 import numpy as np
 from pytesseract import pytesseract as pt
 from PIL import Image
+
+global verbose, efr, cluttered, totalTime, timing, missed
 
 def randColor():
     return tuple(random.sample(xrange(128,256),3))
@@ -31,13 +36,15 @@ class Room:
         self.area = area
         self.number = number
         self.contours = contours
+        self.poly = cv.approxPolyDP(self.contours[0],10,True)
         self.origin = (bbox[0],bbox[2])
     def draw(self, img, color = (0,0,255)):
-        cv.drawContours(img, self.contours, 0, color, thickness = 5, offset = self.origin)
+        # cv.drawContours(img, self.contours, 0, color, thickness = 5, offset = self.origin)
+        cv.drawContours(img, [self.poly], 0, color, thickness = 5, offset = self.origin)
         centroid = (int(self.centroid[0]), int(self.centroid[1]))
         cv.putText(img, self.number, centroid, cv.FONT_HERSHEY_SCRIPT_COMPLEX, 3, (255,0,0), thickness = 3)    
     def toJSON(self):
-        return {"outline":self.contours[0].tolist(), "origin": self.origin, "number": self.number}
+        return {"outline":self.poly.tolist(), "origin": self.origin, "number": self.number}
 
 class Segment:
     def __init__(self, img):
@@ -108,8 +115,10 @@ class Floor:
         segments["no_text"] = Segment(no_text)
 
         # segment rooms
+        # cv.imwrite("before.png", segments["no_text"].colored())
         rooms = self.invert(cv.morphologyEx(self.invert(no_text), cv.MORPH_CLOSE, self.kernel, iterations = 2))
         segments["rooms"] = Segment(rooms)
+        # cv.imwrite("after.png", segments["rooms"].colored())
         segments["rooms"].cc_threshold(room_lower_thresh, room_upper_thresh)
 
     def find_rooms(self):
@@ -133,6 +142,8 @@ class Floor:
             text = pt.image_to_string(pil_img).encode("utf-8").strip()
             if efr:
                 roomnums = re.findall("[0-9]" + self.floornum + "[0-9]", text)
+            elif two_digit:
+                roomnums = re.findall("[0-9][0-9]", text)
             else:
                 roomnums = re.findall(self.floornum + "[0-9][0-9]", text)
             if roomnums == []:
@@ -156,11 +167,14 @@ class Floor:
                 self.rooms.append(room)
     def find_doors(self, corr_thresh = .025):
         ref_door = self.ref_door
+
+        blah, ref_slant, hierarchy = cv.findContours(cv.imread("slant.png", cv.IMREAD_GRAYSCALE), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+        blah, ref_halfdoor, hierarchy = cv.findContours(cv.imread("halfdoor.png", cv.IMREAD_GRAYSCALE), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
         segments = self.segments
         rooms = segments["rooms"]
-        cv.imwrite("rooms.png", rooms.colored())
         if verbose:
             defect_canvas = cv.cvtColor(np.zeros(rooms.img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            # cv.imwrite("prerooms.png", rooms.colored())
         for room_label in rooms.labels:
             if room_label == 0:
                 continue # skip the blackness
@@ -175,8 +189,10 @@ class Floor:
             inverted[roomlabels == room_label] = 0
 
             # seal up gaps left by gray cabinets in Whitman
-            inverted = cv.morphologyEx(inverted, cv.MORPH_CLOSE, self.kernel, iterations = 3)
-
+            if cluttered:
+                inverted = cv.morphologyEx(inverted, cv.MORPH_CLOSE, self.kernel, iterations = 3)
+            if closedoor:
+                inverted = cv.morphologyEx(inverted, cv.MORPH_OPEN, self.kernel, iterations = 3)
             # filter out everything not in the convex hull of the room
             hull = rooms.convex_hull(room_label)
             hullDrawing = cv.cvtColor(np.zeros(roomlabels.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
@@ -187,12 +203,8 @@ class Floor:
             
 
             defects = Segment(inverted)
-            if room_label == 101:
-                cv.imwrite("before.png", defects.colored())
-            defects.cc_threshold(5000, 25000)
-            if room_label == 101:
-                cv.imwrite("after.png", defects.colored())
-                # exit()
+            defects.cc_threshold(2250, 25000)
+            
             for defect_label in defects.labels:
                 if defect_label == 0:
                     continue
@@ -200,6 +212,8 @@ class Floor:
                 defect_box = inverted[defect_top:defect_bottom, defect_left:defect_right]
                 defect_box, contours, hierarchy = cv.findContours(defect_box, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
                 correlation = cv.matchShapes(ref_door[0], contours[0], 1, 0.0)
+                correlation = min(correlation, cv.matchShapes(ref_slant[0], contours[0], 1, 0.0))
+                correlation = min(correlation, cv.matchShapes(ref_halfdoor[0], contours[0], 1, 0.0))
 
                 if verbose:
                     defect_canvas = cv.drawContours(defect_canvas, contours, 0, randColor(), -1, offset = (left+defect_left,top+defect_top))
@@ -209,6 +223,7 @@ class Floor:
                     centroid = (int(centroid[0]), int(centroid[1]))
                     door = Door(bbox, contours, rooms.labelled[centroid[1],centroid[0]], room_label, (defect_left,defect_top))
                     self.doors.append(door)
+                    
         if verbose:
             cv.imwrite("defects.png", defect_canvas)
     def transplant_doors(self, closing = 5):
@@ -219,40 +234,55 @@ class Floor:
         labelled = rooms.labelled
         for door in self.doors:
             r_left,r_right,r_top,r_bottom = rooms.bbox(door.into)
+            cutout = img[r_top-closing:r_bottom+closing,r_left-closing:r_right+closing]
 
             # draw room's convex hull on its own canvas
             room_hull = rooms.convex_hull(door.into)
-            room_hull_pic = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
-            cv.drawContours(room_hull_pic, room_hull, 0, (255,255,255), thickness=-1, offset=(r_left, r_top))
+            room_hull_pic = cv.cvtColor(np.zeros(cutout.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            cv.drawContours(room_hull_pic, room_hull, 0, (255,255,255), thickness=-1, offset=(closing,closing))
             room_hull_pic = cv.cvtColor(room_hull_pic, cv.COLOR_RGB2GRAY)
 
             # draw door in its own canvas and dilate
-            copy = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
-            copy = cv.drawContours(copy, door.contours, 0, (255,255,255), thickness=-1, offset=door.origin)
-            copy = cv.cvtColor(copy, cv.COLOR_RGB2GRAY)
-            copy = cv.dilate(copy, self.kernel, iterations = closing)
+            offset = (door.rel_origin[0]+closing, door.rel_origin[1]+closing)
+            door_canvas = cv.cvtColor(np.zeros(cutout.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+            door_canvas = cv.drawContours(door_canvas, door.contours, 0, (255,255,255), thickness=-1, offset =offset)
+            door_canvas = cv.cvtColor(door_canvas, cv.COLOR_RGB2GRAY)
+            door_canvas = cv.dilate(door_canvas, self.kernel, iterations = closing)
 
             # take intersection of two
-            intersect = cv.bitwise_and(copy, room_hull_pic)
+            intersect = cv.bitwise_and(door_canvas, room_hull_pic)
+
+            # update labels
+            sublabelled = labelled[r_top-closing:r_bottom+closing,r_left-closing:r_right+closing]
+            sublabelled[intersect == 255] = door.into
 
             # black out door's rect and whiten intersection
-            img = cv.bitwise_and(img, cv.bitwise_not(copy))
-            img = cv.bitwise_or(img, intersect)
+            cv.bitwise_and(cutout, cv.bitwise_not(door_canvas), cutout)
+            cv.bitwise_or(cutout, intersect, cutout)
 
 
-        # # cv.imwrite('debug.png', img)
+        # cv.imwrite('debug.png', img)
         self.segments["rooms"] = Segment(img)
 
-def main():
-    inFilename = sys.argv[1]
-    outFilename = sys.argv[2]
+def main(inFilename):
+    global verbose, efr, cluttered, totalTime, timing, missed, two_digit, closedoor, unmarked
+    outFilename = "results\\" + inFilename.split("\\")[-1]
+    building = inFilename.split("\\")[-2]
+    efr = building  in "1915 Hamilton Joline 1901_Laughlin 1903 Cuyler Foulke Henry Lockhart Pyne 1927_Clapp 1937 1938 Dodge_Osborn Walker"
+    two_digit = building in "Campbell Blair Little Buyers Holder Dickinson Patton Spelman Wright"
+    closedoor = building in "Campbell"
+    cluttered = building in "Wendell_B Wendell_C"
+    unmarked = building in  "Blair Joline Campbell Alexander Cuyler Foulke Henry Lockhart Patton Scully Spelman Wright 1938 Feinberg"
 
-    floornum = re.findall("[0-9][0-9].png", inFilename)[0][1]
+    if timing:
+        start = time.clock()
+
+    floornum = re.findall(".\.png", inFilename)[0][0]
     floor = Floor(cv.imread(inFilename, cv.IMREAD_COLOR), "door3.png", floornum = floornum)
     
-    floor.segment(room_upper_thresh = None, text_thresh=900)
+    floor.segment(room_upper_thresh = None, text_thresh=2200)
     # cv.imwrite('debug.png', floor.segments["rooms"].img)
-    floor.find_doors()
+    floor.find_doors(corr_thresh = .03)
     floor.transplant_doors()
     
     for door in floor.doors:
@@ -261,15 +291,40 @@ def main():
     for room in floor.rooms:
         room.draw(floor.original)
     
-    # json.dump([room.toJSON() for room in floor.rooms], open(outFilename, "w"))
-    cv.imwrite("debug.png", floor.original)
+    jsonFilename = outFilename.split(".")[0]+".json"
+    json.dump([room.toJSON() for room in floor.rooms], open(jsonFilename, "w"))
+    cv.imwrite(outFilename, floor.original)
+    if timing:
+        t = time.clock() - start
+        totalTime += t
+        try:
+            print "Wall Clock Time: ", t
+        except:
+            missed += t
     if verbose:
         cv.imwrite("rooms.png", floor.segments["rooms"].colored())
-        # cv.imwrite("text.png", floor.segments["text"].img)
-        # cv.imwrite("no_text.png", floor.segments["no_text"].colored())
+        cv.imwrite("text.png", floor.segments["text"].img)
+        cv.imwrite("no_text.png", floor.segments["no_text"].img)
 
-global verbose
+
 verbose = "-v" in sys.argv
 efr = "-efr" in sys.argv
+cluttered = "-cluttered" in sys.argv
+timing = "-time" in sys.argv
 
-main()
+totalTime = 0
+missed = 0
+inFiles = glob.glob(sys.argv[1])
+# count = 0
+for inFilename in inFiles:
+    main(inFilename)
+    # print inFilename
+    # outFilename = "results\\" + inFilename.split("\\")[-1]
+    # print outFilename
+    # count += 1
+    # print re.findall(".\.png", inFilename)[0][0]
+# print count
+if timing:
+    print "missed: ", missed
+    print "total time: ", totalTime
+winsound.Beep(600, 250)
