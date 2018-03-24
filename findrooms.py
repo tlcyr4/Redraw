@@ -6,11 +6,14 @@ import random
 import time
 import glob
 import winsound
+import atexit
+atexit.register(winsound.Beep, 600, 250)
 
 import cv2 as cv
 import numpy as np
 from pytesseract import pytesseract as pt
 from PIL import Image
+from numba import jit, cuda
 
 global verbose, efr, cluttered, totalTime, timing, missed
 
@@ -44,9 +47,9 @@ class Room:
         centroid = (int(self.centroid[0]), int(self.centroid[1]))
         cv.putText(img, self.number, centroid, cv.FONT_HERSHEY_SCRIPT_COMPLEX, 3, (255,0,0), thickness = 3)    
     def toJSON(self):
-        return {"outline":self.poly.tolist(), "origin": self.origin, "number": self.number}
+        return {"polygon":self.poly.tolist(), "origin": self.origin, "number": self.number, "building": building.upper(), "floor": floornum}
 
-class Segment:
+class Segment(object):
     def __init__(self, img):
         self.img = img
         self.num_ccs, self.labelled, self.stats, self.centroids = cv.connectedComponentsWithStats(img)
@@ -87,7 +90,7 @@ class Floor:
         self.kernel = np.ones((3,3),np.uint8)
         self.original = img
         self.floornum = floornum
-        self.rooms = []
+        self.rooms = {}
         self.doors = []
         self.segments = {}
         door = cv.imread(ref_door_filename, cv.IMREAD_GRAYSCALE)
@@ -164,7 +167,7 @@ class Floor:
             room = Room(rooms.bbox(room_label), room_label, centroid, area, roomnum, contours)
             # self.spaces.append(room)
             if roomnum != None:
-                self.rooms.append(room)
+                self.rooms[room_label] = room
     def find_doors(self, corr_thresh = .025):
         ref_door = self.ref_door
 
@@ -270,13 +273,15 @@ class Floor:
             rooms.centroids[door.into] = centroids[1]
 
 def main(inFilename):
-    global verbose, efr, cluttered, totalTime, timing, missed, two_digit, closedoor, unmarked
+    img = cv.imread(inFilename, cv.IMREAD_GRAYSCALE)
+
+    global verbose, efr, cluttered, totalTime, timing, missed, two_digit, closedoor, unmarked, building, floornum
     outFilename = "results\\" + inFilename.split("\\")[-1]
     building = inFilename.split("\\")[-2]
-    efr = building  in "1915 Hamilton Joline 1901_Laughlin 1903 Cuyler Foulke Henry Lockhart Pyne 1927_Clapp 1937 1938 Dodge_Osborn Walker"
+    efr = building  in "1915 Hamilton Joline 1901 1903 Cuyler Foulke Henry Lockhart Pyne 1927 1937 1938 Dodge Osborn Walker"
     two_digit = building in "Campbell Blair Little Buyers Holder Dickinson Patton Spelman Wright"
     closedoor = building in "Campbell"
-    cluttered = building in "Wendell_B Wendell_C"
+    cluttered = building in "Wendell B Wendell C"
     unmarked = building in  "Blair Joline Campbell Alexander Cuyler Foulke Henry Lockhart Patton Scully Spelman Wright 1938 Feinberg"
 
     if timing:
@@ -293,11 +298,14 @@ def main(inFilename):
     for door in floor.doors:
         door.draw(floor.original)
     floor.find_rooms()
-    for room in floor.rooms:
+    for room in floor.rooms.values():
         room.draw(floor.original)
+    if unmarked:
+        print len(floor.doors)
+        pass
     
     jsonFilename = outFilename.split(".")[0]+".json"
-    json.dump([room.toJSON() for room in floor.rooms], open(jsonFilename, "w"))
+    json.dump([room.toJSON() for room in floor.rooms.values()], open(jsonFilename, "w"))
     cv.imwrite(outFilename, floor.original)
     if timing:
         t = time.clock() - start
@@ -320,16 +328,10 @@ timing = "-time" in sys.argv
 totalTime = 0
 missed = 0
 inFiles = glob.glob(sys.argv[1])
+# print inFiles
 # count = 0
 for inFilename in inFiles:
     main(inFilename)
-    # print inFilename
-    # outFilename = "results\\" + inFilename.split("\\")[-1]
-    # print outFilename
-    # count += 1
-    # print re.findall(".\.png", inFilename)[0][0]
-# print count
 if timing:
     print "missed: ", missed
     print "total time: ", totalTime
-winsound.Beep(600, 250)
