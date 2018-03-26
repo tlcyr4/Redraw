@@ -82,12 +82,23 @@ DATABASES = {
     }
 }
 
-# webpack to inject link and script tags
+# webpack to inject link and script tags (DEVELOPMENT ONLY COMMENT WHEN PROD)
+#WEBPACK_LOADER = {
+#    'DEFAULT': {
+#        'BUNDLE_DIR_NAME': 'bundles/',
+#        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.dev.json'),
+#    }
+#}
+
+# comment STATICFILES_DIRS and WEBPACK_LOADER below for development
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets"),
+]
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/',
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.dev.json'),
-    }
+            'BUNDLE_DIR_NAME': 'bundles/',
+            'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.prod.json'),
+        }
 }
 
 # Password validation
