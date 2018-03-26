@@ -12,7 +12,6 @@ class App extends Component {
         </header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
-          A react app with django as a backend.
         </p>
       </div>
     );
