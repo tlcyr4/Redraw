@@ -1,1 +1,2 @@
-django>1.10
+Django==1.11.7
+ptvsd==4.0.0a4
