@@ -1,5 +1,8 @@
-debug.png
+debug*
 output.png
 rooms.png
 text.png
+defects.png
+no_text.png
 leader.png
+results/*.png
