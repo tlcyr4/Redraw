@@ -1,12 +1,13 @@
+# Redraw
 ## Table of Contents
 - [Introduction](#introduction)
   - [Design Document](#design-document)
 - [The Team](#the-team)
 - [How To](#how-to)
-  -[Environment Setup](#environment-setup)
-  -[Run ReactJS Local](#run-reactjs-local)
-  -[Run Django Local](#run-django-local)
-  -[Production Build](#production-build)
+  - [Environment Setup](#environment-setup)
+  - [Run ReactJS Local](#run-reactjs-local)
+  - [Run Django Local](#run-django-local)
+  - [Production Build](#production-build)
 - [Other Notes](#other-notes)
 
 ## Introduction
@@ -44,7 +45,7 @@ Run on the terminal
 ```sh
 ./manage.py runserver
 ```
-Open up [localhost:8000](http://localhost:8000/))
+Open up [localhost:8000](http://localhost:8000/)
 
 ### Production Build
 To get a production build after making changes to the front-end,
