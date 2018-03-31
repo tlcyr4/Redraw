@@ -1,8 +1,0 @@
-TigerApp Source Code
-https://github.com/PrincetonUSG/tigerapps/tree/master/tigerapps/rooms
-
-Design Doc
-https://docs.google.com/document/d/1wuS47wI9iSiHFMOLIuvy88WomjZwx7bVfxI-ROWsTGw/edit?usp=sharing
-
-CAS Authentication Instructions
-https://www.cs.princeton.edu/courses/archive/spring17/cos333/CAS/index.html
