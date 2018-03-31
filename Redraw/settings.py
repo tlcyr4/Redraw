@@ -27,7 +27,7 @@ SECRET_KEY = '%@awd+z-nu9z=je!6&!mpovdnk#$nb3nchue8g!(s19nrbgv+w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['predraw.herokuapp.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
