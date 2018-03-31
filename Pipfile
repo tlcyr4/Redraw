@@ -1,0 +1,22 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+Django = "==1.11.7"
+django-webpack-loader = "==0.6.0"
+django-heroku = "*"
+gunicorn = "*"
+
+
+[requires]
+
+python_version = "3.6"
+
+
+[dev-packages]
+
