@@ -21,7 +21,7 @@ import django_cas_ng.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('^accounts/login$', django_cas_ng.views.login, name='cas_ng_login'),
-    re_path('^accounts/logout$', django_cas_ng.views.logout, name='cas_ng_ogout'),
+    re_path('^accounts/logout$', django_cas_ng.views.logout, name='cas_ng_logout'),
     re_path('^accounts/callback$', django_cas_ng.views.callback, name='cas_ng_callback'),
     re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
