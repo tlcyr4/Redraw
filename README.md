@@ -25,7 +25,7 @@ Our design document can be found [Here](https://tigerredraw.azurewebsites.net/).
 
 ## How To
 ### Environment Setup
-Install [Python](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/). Install pipenv from Brew
+Install [Python 3.x](https://www.python.org/downloads/) and [pip](https://pip.pypa.io/en/stable/) for Python 3.x. Install pipenv from Brew
 ```sh
 brew install pipenv
 ```
