@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'RedrawApp.middleware.LoginMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -136,4 +137,4 @@ STATIC_URL = '/static/'
 
 
 # for CAS authentication
-LOGIN_URL = '/login/'
+LOGIN_URL = 'https://fed.princeton.edu/cas/'
