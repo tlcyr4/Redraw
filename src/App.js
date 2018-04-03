@@ -4,21 +4,36 @@ import Image1 from './Image1';
 /*import './App.css';*/
 import {
   Route, 
-  NavLink, 
+  Switch, 
+  Link,
   BrowserRouter
 } from 'react-router-dom';
 
 class App extends Component {
-  render() {
+  render(){
     return (
       <BrowserRouter>
         <div className = "App">
-          <NavLink to="/image1"> <Home /> </NavLink>
-          <Route exact path="/image1" component = {Image1} />
+          <Switch>
+            <Route exact path="/" component = {Main} /> 
+            <Route path = "/image1" component = {Back} />
+          </Switch>
         </div>
       </BrowserRouter>
     );
   }
 }
+
+const Main = () => (
+  <div>
+    <Link to="/image1"> <Home /> </Link>
+  </div>
+)
+
+const Back = () => (
+  <div>
+    <Link to="/"> <Image1 /> </Link>
+  </div>
+)
 
 export default App;
