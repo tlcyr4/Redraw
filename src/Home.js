@@ -6,7 +6,7 @@ class Home extends Component {
 	render () {
 		return (
 			<div>
-				<img src = {Background} className = "background" />
+				<img src = {Background} className = "background" alt = "bg"/>
 			</div>
 		);
 	}
