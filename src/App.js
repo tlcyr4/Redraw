@@ -4,7 +4,7 @@ import Image1 from './Image1';
 /*import './App.css';*/
 import {
   Route, 
-  Redirect, 
+  NavLink, 
   BrowserRouter
 } from 'react-router-dom';
 
@@ -13,9 +13,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className = "App">
-          <Home />
           <NavLink to="/image1"> <Home /> </NavLink>
-          <Route path="/image1" component = {Image1} />
+          <Route exact path="/image1" component = {Image1} />
         </div>
       </BrowserRouter>
     );
