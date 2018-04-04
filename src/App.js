@@ -10,6 +10,7 @@ import {
   BrowserRouter,
 } from 'react-router-dom';
 
+// hold the static components
 class App extends Component {
   render(){
     return (

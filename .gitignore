@@ -4,3 +4,9 @@ leader.png
 output.png
 rooms.png
 text.png
+*.log
+*.pot
+*.pyc
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/__pycache__/
