@@ -25,6 +25,25 @@
   font-size: large;
 }
 
+.Login-page {
+   text-align: center;
+   left: 0;
+   line-height: 30px;
+   margin: auto; 
+   margin-top: -150px;
+   position: absolute;
+   top: 50%;
+   width: 100%;
+}
+
+.Login-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  font-size: 24px;
+  padding: 15px 60px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
