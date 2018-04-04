@@ -18,8 +18,8 @@ class App extends Component {
         <div className = "App">
           <Switch>
             <Route path="/login" component = {Login} />
-            <PrivateRoute exact path="/" component = {Main} />
-            <PrivateRoute path="/image1" component = {Back} />
+            <Route exact path="/" component = {Main} />
+            <Route path="/image1" component = {Back} />
           </Switch>
         </div>
       </BrowserRouter>
@@ -45,7 +45,7 @@ class Login extends Component {
         <h2 className="Description">
           Making room draw a more enjoyable experience
         </h2>
-        <Link to="/">
+        <Link to="/accounts/login">
           <button className="Login-button" onClick = {this.login}>
              Click Here to Login 
           </button>
@@ -67,7 +67,7 @@ const fakeAuth = {
   }
 }
 
-const PrivateRoute = ({ component: Component, ...rest}) => (
+/*const PrivateRoute = ({ component: Component, ...rest}) => (
   <Route 
     {...rest} 
     render={props =>
@@ -83,7 +83,7 @@ const PrivateRoute = ({ component: Component, ...rest}) => (
       )
     }
   />
-);
+);*/
 
 const Main = () => (
   <div>
