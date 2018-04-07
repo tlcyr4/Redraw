@@ -1,0 +1,99 @@
+This text file is for standardizing naming conventions of buildings, colleges, etc
+Each line represents a unique entity (e.g. a building)
+Within each line, different names for the entity are separated by tabs.
+The first entry in each line is the accepted standard other names should be converted to.
+
+Before Use:
+	Strip off " Hall" or " College"
+	CAPITALIZE
+	Split up shared buildings such as Baker, Wendell, and Forbes
+
+
+Usage (python):
+
+Read:
+
+f = open("conventions.txt", "r")
+line = ""
+while line.strip("\n") != ("=" * 80):
+	line = f.readline() #skip this documentation section
+conventions = [line.strip("\n").split("\t") for line in f]
+# conventions is now a list with a sublist for each entity
+
+def standardized(name):
+    found = False
+    for c in conventions:
+        if name in c:
+            found = True    
+            return c[0]
+            break
+    if not found:
+        print "Error: Unknown Term: " + name
+    return name
+
+
+To Update:
+Just add things manually in a text editor for now
+Be careful adding new entities
+
+================================================================================
+1901	1901-LAUGHLIN	1901 LAUGHLIN	LAUGHLIN
+1903
+1915
+1927	1927-CLAPP	1927 CLAPP	CLAPP
+1937
+1938
+1939
+1967
+1981
+2 DICKINSON	2DICKINSON	DICKINSON STREET, 2	DICKINSON
+ALEXANDER
+BAKER E	BAKERE
+BAKER S	BAKERS
+BLAIR
+BLOOMBERG	EMMA BLOOMBERG
+BOGLE
+BROWN
+BUTLER
+YOSELOFF	BUILDING A
+1976	BUILDING D
+BUYERS
+CAMPBELL
+CLAPP
+CUYLER
+DOD
+DODGE OSBORN	DODGEOSBORN	DODGE-OSBORN
+EDWARDS
+FEINBERG
+FISHER
+FORBES ADDITION	ANNEX
+FORBES MAIN INN	FORBES MAIN	FORBES COLLEGE MAIN
+FOULKE
+GAUSS
+HAMILTON
+HARGADON
+HENRY
+HOLDER
+JOLINE
+LAUGHLIN
+LAURITZEN
+LITTLE
+LOCKHART
+MURLEY-PIVIROTTO	MURLEY	MURLEY-PIVIROTTO FAMILY TOWER	TOWER
+WENDELL B	NORTH B	WENDELL BUILDING B
+WENDELL C	NORTH C	WENDELL BUILDING C
+PATTON
+PYNE
+SCULLY
+SPELMAN	SPELMANS
+ROCKEFELLER	ROCKY
+UPPERCLASS	UPPER
+WALKER
+WHITMAN
+WILCOX
+WILF
+WITHERSPOON
+WRIGHT
+Shared	SH
+Public	PU
+Private	PR

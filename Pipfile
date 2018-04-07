@@ -9,6 +9,10 @@ gunicorn = "==19.7.1"
 whitenoise = "==3.3.1"
 django-cas-ng = "*"
 requests = "*"
+psycopg2 = "*"
+dj-database-url = "*"
+Pillow = "*"
+pillow = "*"
 
 [dev-packages]
 

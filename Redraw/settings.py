@@ -92,8 +92,14 @@ WSGI_APPLICATION = 'Redraw.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'PASSWORD': 'Redraw255',
+        'PORT': '5432',
+        'CONN_MAX_AGE': 600,
+        'OPTIOMS': {'sslmode': 'require'},
     }
 }
 
@@ -138,3 +144,8 @@ STATIC_URL = '/static/'
 
 # for CAS authentication
 LOGIN_URL = 'https://fed.princeton.edu/cas/'
+
+# for Heroku Postgres
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# print(DATABASES)

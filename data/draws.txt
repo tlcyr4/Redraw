@@ -1,0 +1,8 @@
+Butler	Yoseloff	Bogle	1976	1915	1967	Bloomberg	Wilf
+Forbes	Forbes Main	Annex
+Mathey	Blair	Campbell	Edwards	Hamilton	Joline	Little
+Rockefeller	Buyers	Campbell	Witherspoon	Holder
+Upperclass	Alexander	1901 Laughlin	1903	Brown	Cuyler	Dickinson	Dod	Foulke	Henry	Little	Lockhart	Patton	Pyne	Scully	Wilf	Wright
+Whitman	1981	Wendell B	Wendell C	Fisher	Hargadon	Lauritzen	Baker E	Baker S	Tower
+Wilson	1927 Clapp	1937	1938	1939	Dodge Osborn	Feinberg	Gauss	Walker	Wilcox
+Independent	1903	Spelman	Dod	Henry	Lockhart	Patton	Pyne	Scully	Little	Wilf
