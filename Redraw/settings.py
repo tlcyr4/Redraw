@@ -146,6 +146,7 @@ STATIC_URL = '/static/'
 LOGIN_URL = 'https://fed.princeton.edu/cas/'
 
 # for Heroku Postgres
-# import dj_database_url
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-# print(DATABASES)
+import dj_database_url
+temp = dj_database_url.config(conn_max_age=600, ssl_require=True)
+if temp != {}:
+    DATABASES['default'] = temp
