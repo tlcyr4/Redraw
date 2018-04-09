@@ -5,6 +5,6 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def logView(request):
-	print(request.user)
-	print("HI")
+	# print(request.user)
+	# print("HI")
 	return redirect('accounts/login')
