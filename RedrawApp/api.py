@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
-from .models import Building, Room
+from .models import Building, Room, Floor
 import json
 
 @login_required
@@ -10,9 +10,12 @@ def query(request):
 		queries['floor__building'] = queries.pop('building')
 	if 'level' in queries:
 		queries['floor__level'] = queries.pop('level')
-	result = Room.objects.filter(**queries)
+	queried = Room.objects.filter(**queries)
+	results = list(queried.values())
 
-	return HttpResponse(json.dumps(list(result.values())), content_type='application/json')
+	for room in results:
+		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
+	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required
 def get_floorplan(request):

@@ -22,7 +22,7 @@ class Building(models.Model):
 class Floor(models.Model):
     building = models.ForeignKey(Building,on_delete=models.CASCADE)
     level = models.CharField(max_length=2)
-    floorplan = models.TextField()
+    dimensions = ArrayField(models.IntegerField(), size=2)
     def __str__(self):
         return self.building.name + " " + self.level
 

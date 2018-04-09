@@ -49,6 +49,6 @@ for buildingname in campus:
                     points = []
                     for point in polygon['polygon']:
                         points.append([point[0][0]+origin[0],point[0][1]+origin[1]])
-                    floor[room]['polygons'] += points
+                    floor[room]['polygons'].append(points)
 json.dump(campus,open("merged.json","w"))
 print(total)
