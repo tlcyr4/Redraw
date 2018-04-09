@@ -67,6 +67,7 @@ class Command(BaseCommand):
         buildings = json.load(open("data/buildings.json", "r"))
         polygons = json.load(open("data/building_polygons.json","r"))
         rooms = json.load(open("data/merged.json","r"))
+        dimensions = json.load(open("data/dimensions.json"))
         from os import path
         import base64
         # load buildings and floors
@@ -99,12 +100,8 @@ class Command(BaseCommand):
 
             floors = building["floors"]
             for floor in floors:
-                fn = buildingnum + "-" + floor + ".pdf"
-                pdf_contents = open(path.join("data/floorplans",fn),"rb").read()
-                floorplan = base64.encodebytes(pdf_contents)
-                # print(floorplan[-10:], floor, name)
-                floor_model = Floor(building=building_model,floorplan=floorplan,level=floor)
-                # print(floor_model)
+                fn = buildingnum + "-" + floor 
+                floor_model = Floor(building=building_model,dimensions=dimensions[fn],level=floor)
                 floor_model.save()
                 if name not in rooms:
                     continue

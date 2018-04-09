@@ -11,3 +11,4 @@ text.png
 */*/__pycache__/
 */__pycache__/
 results/*.png
+.vscode/*

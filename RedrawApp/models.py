@@ -7,6 +7,8 @@ class Draw(models.Model):
     name = models.CharField(max_length=30,primary_key=True)
     res_college = models.BooleanField()
     upperclass = models.BooleanField()
+    def __str__(self):
+        return self.name
 
 
 class Building(models.Model):
@@ -14,11 +16,15 @@ class Building(models.Model):
     number = models.CharField(max_length=4,unique=True)
     coordinates = JSONField()
     draw = models.ManyToManyField(Draw)
+    def __str__(self):
+        return self.name
 
 class Floor(models.Model):
     building = models.ForeignKey(Building,on_delete=models.CASCADE)
     level = models.CharField(max_length=2)
-    floorplan = models.TextField()
+    dimensions = ArrayField(models.IntegerField(), size=2)
+    def __str__(self):
+        return self.building.name + " " + self.level
 
 class Room(models.Model):
     # my key
@@ -39,6 +45,9 @@ class Room(models.Model):
     # collapsed from polygons model
     polygons = JSONField(null=True)
 
+    def __str__(self):
+        return self.floor.building.name + "\t" + self.number
+
 class User(models.Model):
     netid = models.CharField(max_length=30,primary_key=True)
     # should be many to many
@@ -47,6 +56,9 @@ class User(models.Model):
     # should be many to many
     # should always be equal to room_id
     favorites = ArrayField(models.IntegerField(null=True),size=20)
+
+    def __str__(self):
+        return self.netid
     
 class Group(models.Model):
     drawing_in = models.ForeignKey(Draw,null=True,on_delete=models.SET_NULL)
@@ -54,6 +66,11 @@ class Group(models.Model):
     # should be many to many
     # should be netids
     members = ArrayField(models.CharField(max_length=30))
+
+    def __str__(self):
+        names = [ User.objects.get(netid=netid) for netid in list(self.members) if netid != None]
+        return str(names)
+
 
 
 
