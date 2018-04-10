@@ -30,6 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
+CAS_REDIRECT_URL = '/home'
 
 
 # Application definition
@@ -53,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'RedrawApp.middleware.LoginMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [

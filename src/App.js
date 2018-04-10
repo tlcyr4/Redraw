@@ -6,19 +6,46 @@ import {
   Route, 
   Switch,
   Link,
-  Redirect,
   BrowserRouter,
 } from 'react-router-dom';
 
 // hold the static components
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rooms: [],
+    };
+  }
+
+  componentDidMount() {
+    const url = 'https:predraw.herokuapp.com/api/search/?building=FISHER&number=A101';
+    fetch(url, {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+      })
+      .then((response) => {
+        return response;
+      })
+      .then(data => {
+        this.setState({
+          rooms: data
+        });
+        console.log("HI");
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }
+
   render(){
     return (
       <BrowserRouter>
         <div className = "App">
           <Switch>
             <Route path="/login" component = {Login} />
-            <Route exact path="/" component = {Main} />
+            <Route exact path="/home" component = {Main} />
             <Route path="/image1" component = {Back} />
           </Switch>
         </div>
@@ -67,33 +94,20 @@ const fakeAuth = {
   }
 }
 
-/*const PrivateRoute = ({ component: Component, ...rest}) => (
-  <Route 
-    {...rest} 
-    render={props =>
-      fakeAuth.isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect 
-          to = {{
-            pathname: "/login",
-            state: {from: props.location}
-          }}
-        />
-      )
-    }
-  />
-);*/
 
 const Main = () => (
   <div>
+    <form><input
+          type="text"
+          placeholder="Search Room"/>
+    </form>
     <Link to="/image1"> <Home /> </Link>
   </div>
 )
 
 const Back = () => (
   <div>
-    <Link to="/"> <Image1 /> </Link>
+    <Link to="/home"> <Image1 /> </Link>
   </div>
 )
 

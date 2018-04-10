@@ -16,15 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 import django_cas_ng.views
 from RedrawApp import api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^accounts/login$', django_cas_ng.views.login, name='cas_ng_login'),
+    re_path('^$', django_cas_ng.views.login, name='cas_ng_login'),
     re_path('^accounts/logout$', django_cas_ng.views.logout, name='cas_ng_logout'),
     re_path('^accounts/callback$', django_cas_ng.views.callback, name='cas_ng_callback'),
     re_path('^api/search/', api.query, name = "query"),
     re_path('^api/floorplan/', api.get_floorplan, name='floorplan'),
-    re_path('.*', TemplateView.as_view(template_name='index.html')),
+    re_path('.*', login_required(TemplateView.as_view(template_name='index.html'))),
 ]
+
+
