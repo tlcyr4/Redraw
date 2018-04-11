@@ -1,8 +1,12 @@
 {
   "main.css": "static/css/main.a4f44750.css",
   "main.css.map": "static/css/main.a4f44750.css.map",
-  "main.js": "static/js/main.ee44eb73.js",
-  "main.js.map": "static/js/main.ee44eb73.js.map",
+  "main.js": "static/js/main.cacf8d41.js",
+  "main.js.map": "static/js/main.cacf8d41.js.map",
+  "static/js/0.10d10799.chunk.js": "static/js/0.10d10799.chunk.js",
+  "static/js/0.10d10799.chunk.js.map": "static/js/0.10d10799.chunk.js.map",
+  "static/js/1.b7d77bec.chunk.js": "static/js/1.b7d77bec.chunk.js",
+  "static/js/1.b7d77bec.chunk.js.map": "static/js/1.b7d77bec.chunk.js.map",
   "static/media/0014-01.png": "static/media/0014-01.dc169e02.png",
   "static/media/Colleges2009.png": "static/media/Colleges2009.46637820.png"
 }
