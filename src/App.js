@@ -19,15 +19,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const url = 'https:predraw.herokuapp.com/api/search/?building=FISHER&number=A101';
-    fetch(url, {
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-      })
-      .then((response) => {
-        return response;
+    const url = '/api/search/?building=FISHER&number=A101';
+    fetch(url, {credentials: "same-origin"})
+      .then(response => {
+        return response.json();
       })
       .then(data => {
         this.setState({
@@ -36,7 +31,7 @@ class App extends Component {
         console.log("HI");
         console.log(data);
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error));
   }
 
   render(){
