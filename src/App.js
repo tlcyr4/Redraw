@@ -3,7 +3,7 @@ import ImageMapper from 'react-image-mapper';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
-import Spoon5 from './spoon5.jpg';
+import Spoon5 from './wendell2.jpg';
 import Logo from './raw.jpg';
 
 import './App.css';
@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   getQuery() {
-    const url = '/api/search/?building=WITHERSPOON';
+    const url = '/api/search/?building=WENDELL%20C';
 
     fetch(url, {credentials: "same-origin"})
       .then(response => {
@@ -74,7 +74,7 @@ class App extends Component {
     // go through every room in the json file
     for (var i = 0; i < witherspoonQuery.length; i++) {
       var iRoom = witherspoonQuery[i];
-      if (parseInt(iRoom.number, 10) >= 500) {
+      if (iRoom.floor_id === 568) {
         var roomCoords = [];
         var roomRaw = JSON.parse(iRoom.polygons);
         //console.log(roomRaw);
@@ -183,4 +183,6 @@ const fakeAuth = {
 }
 */
 
-export default App;
+export default () => (
+  <App/>
+);
