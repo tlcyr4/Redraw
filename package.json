@@ -7,6 +7,7 @@
     "@fortawesome/react-fontawesome": "0.0.18",
     "ajv": "^6.4.0",
     "ajv-keywords": "^3.1.0",
+    "font-awesome": "^4.7.0",
     "image-map": "^1.0.8",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ImageMapper from 'react-image-mapper';
-import FontAwesome from 'react-fontawesome'
 import './App.css';
 import {
   Route, 
@@ -70,7 +69,7 @@ class App extends Component {
               placeholder="Search Room"
               onChange={this.getQuery}
               onSubmit={this.getFloorplan}/>
-            <button id="submitButton" type="submit"><FontAwesome name = "fas fa-search"/></button>
+            <button id="submitButton" type="submit"><i className = "fas fa-search" name = "fas fa-search"></i></button>
           </form>
 
           <ImageMapper src={URL} map={MAP} width={500} onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>

@@ -22,7 +22,7 @@ input[type=text]:focus {
 }
 
 button#submitButton {
-  width: 5%;
+  width: 3%;
   padding: 12px 20px 12px 40px;
   background: #ddd;
   border: 2px solid #ccc;
