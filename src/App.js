@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import ImageMapper from 'react-image-mapper';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
+import Center from 'react-center';
 import './App.css';
 import {
   Route, 
@@ -54,26 +57,27 @@ class App extends Component {
     var MAP = {
       name: 'my-map',
       areas: [
-        {shape: 'poly', coords: [25,33,27,300,128,240,128,94]},
-        {shape: 'poly', coords: [219,118,220,210,283,210,284,119]},
-        {shape: 'poly', coords: [381,241,383,94,462,53,457,282]},
-        {shape: 'poly', coords: [245,285,290,285,274,239,249,238]},
+        {shape: 'poly', coords: [50,66,54,600,256,480,256,188]},
+        {shape: 'poly', coords: [438,236,440,420,566,420,568,238]},
+        {shape: 'poly', coords: [762,482,766,188,462*2,53*2,457*2,282*2]},
+        {shape: 'poly', coords: [245*2,285*2,290*2,285*2,274*2,239*2,249*2,238*2]},
       ]
     };
     var URL = 'https://c1.staticflickr.com/5/4052/4503898393_303cfbc9fd_b.jpg';
     return (
       <BrowserRouter>
+
         <div className = "App">
           <form>
             <input type="text"
-              placeholder="Search Room"
+              placeholder="Search Room..."
               onChange={this.getQuery}
               onSubmit={this.getFloorplan}/>
-            <button id="submitButton" type="submit"><i className = "fas fa-search" name = "fas fa-search"></i></button>
+            <button id="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
           </form>
-
-          <ImageMapper src={URL} map={MAP} width={500} onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
-          
+        <Center>
+          <ImageMapper src={URL} map={MAP} width={1000} onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
+        </Center>
 
         </div>
       </BrowserRouter>

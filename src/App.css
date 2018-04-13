@@ -11,7 +11,7 @@ input[type=text] {
     font-size: 16px;
     background-color: white;
     background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
+    padding: 12px 15px 12px 15px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
@@ -23,7 +23,7 @@ input[type=text]:focus {
 
 button#submitButton {
   width: 3%;
-  padding: 12px 20px 12px 40px;
+  padding: 12px 30px 12px 15px;
   background: #ddd;
   border: 2px solid #ccc;
   font-size: 16px;
@@ -106,6 +106,12 @@ ul.header li a {
   padding: 15px 60px;
 }
 
+.ImageDiv {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 
 @keyframes App-logo-spin {
