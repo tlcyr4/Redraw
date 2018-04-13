@@ -44,9 +44,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cas_ng',
     'RedrawApp',
+    'corsheaders',
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'predraw.herokuapp.com',
+    'https://fed.princeton.edu/cas/',
+    'localhost:8000',
+    'https://fed.princeton.edu/cas/login?next=http%3A//localhost%3A8000/service-worker.js',
+)
+
+CORS_ALLOW_METHODS = (
+    'FETCH'
+)
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
