@@ -3,6 +3,7 @@ import ImageMapper from 'react-image-mapper';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
+import Spoon5 from './spoon5.jpg';
 import './App.css';
 import {
   Route, 
@@ -24,7 +25,7 @@ class App extends Component {
   }
 
   getQuery() {
-    const url = '/api/search/?building=WITHERSPOON&number=509';
+    const url = '/api/search/?building=WITHERSPOON';
 
     fetch(url, {credentials: "same-origin"})
       .then(response => {
@@ -36,7 +37,8 @@ class App extends Component {
         });
         this.roomid = data[0].room_id;
         console.log(this.roomid);
-        console.log(data);
+        console.log(this.state.rooms);
+        this.forceUpdate();
       })
       .catch(error => console.log(error));
   }
@@ -54,16 +56,34 @@ class App extends Component {
   }
 
   render() {
+    // process the json file
+    var witherspoonQuery = this.state.rooms;
+    var areaArray = [];
+    var ratio = 1000.0/2550.0;
+    // go through every room in the json file
+    for (var i = 0; i < witherspoonQuery.length; i++) {
+      var iRoom = witherspoonQuery[i];
+      if (parseInt(iRoom.number, 10) >= 500) {
+        var roomCoords = [];
+        var roomRaw = JSON.parse(iRoom.polygons);
+        //console.log(roomRaw);
+        //console.log(roomRaw.length);
+        var roomArray = roomRaw[0];
+        for (var j = 0; j < roomArray.length; j++) {
+          roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
+          roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
+        }
+        areaArray.push({shape: 'poly', coords: roomCoords});
+      }
+    }
+    console.log(areaArray);
+
+    // make the MAP to be drawn in
     var MAP = {
       name: 'my-map',
-      areas: [
-        {shape: 'poly', coords: [50,66,54,600,256,480,256,188]},
-        {shape: 'poly', coords: [438,236,440,420,566,420,568,238]},
-        {shape: 'poly', coords: [762,482,766,188,462*2,53*2,457*2,282*2]},
-        {shape: 'poly', coords: [245*2,285*2,290*2,285*2,274*2,239*2,249*2,238*2]},
-      ]
+      areas: areaArray,
     };
-    var URL = 'https://c1.staticflickr.com/5/4052/4503898393_303cfbc9fd_b.jpg';
+    //var URL = 'spoon5.jpg';
     return (
       <BrowserRouter>
 
@@ -76,7 +96,8 @@ class App extends Component {
             <button id="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
           </form>
         <Center>
-          <ImageMapper src={URL} map={MAP} width={1000} onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
+          <ImageMapper src={Spoon5} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
+          onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
         </Center>
 
         </div>
