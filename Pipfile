@@ -13,6 +13,7 @@ psycopg2-binary = "==2.7.4"
 dj-database-url = "*"
 Pillow = "*"
 pillow = "*"
+django-cors-headers = "==2.2.0"
 
 [dev-packages]
 
