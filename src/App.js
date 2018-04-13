@@ -4,6 +4,8 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
 import Spoon5 from './spoon5.jpg';
+import Logo from './raw.jpg';
+
 import './App.css';
 import {
   Route, 
@@ -20,6 +22,7 @@ class App extends Component {
       rooms: [],
     };
     this.roomid = 0;
+    this.roomIDRendered = [];
     this.imagePath = "/api/floorplan/?room_id";
     this.getQuery = this.getQuery.bind(this)
   }
@@ -51,8 +54,16 @@ class App extends Component {
     console.log("HELLO");
   }
 
-  handleClick = () => {
-    console.log("HELLO");
+  handleClick = (obj, num, event) => {
+    var query = this.state.rooms;
+    for (var i = 0; i < query.length; i++) {
+      var iRoom = query[i];
+      // print how many sqft the room is on the console
+      if (iRoom.room_id === this.roomIDRendered[num]) {
+        console.log("Room " + iRoom.room_id + " is " + iRoom.sqft + " sqft.");
+        break;
+      }
+    }
   }
 
   render() {
@@ -74,6 +85,9 @@ class App extends Component {
           roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
         }
         areaArray.push({shape: 'poly', coords: roomCoords});
+        // hold onto the order of the polygons wrt to the rooms
+        // useful for when handling click
+        this.roomIDRendered.push(iRoom.room_id);
       }
     }
     console.log(areaArray);
@@ -88,17 +102,23 @@ class App extends Component {
       <BrowserRouter>
 
         <div className = "App">
-          <form>
-            <input type="text"
-              placeholder="Search Room..."
-              onChange={this.getQuery}
-              onSubmit={this.getFloorplan}/>
-            <button id="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
-          </form>
-        <Center>
-          <ImageMapper src={Spoon5} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
-          onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
-        </Center>
+          <div id = "header">
+            <img id = "headerImg" src={Logo}/>
+            <p>edraw</p>
+          </div>
+          <div id = "formBlock">
+            <form>
+              <input type="text"
+                placeholder="Search Room..."
+                onChange={this.getQuery}
+                onSubmit={this.getFloorplan}/>
+              <button id="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
+            </form>
+          </div>
+          <Center>
+            <ImageMapper src={Spoon5} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
+            onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
+          </Center>
 
         </div>
       </BrowserRouter>
