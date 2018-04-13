@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from .models import Building, Room, Floor
 import json
 
-# @login_required
+@login_required
 def query(request):
 	queries = request.GET.dict()
 	if 'building' in queries:
@@ -17,7 +17,7 @@ def query(request):
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
-# @login_required
+@login_required
 def get_floorplan(request):
 
 	room_id = request.GET.get('room_id','')

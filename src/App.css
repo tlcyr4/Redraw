@@ -2,6 +2,38 @@
   text-align: center;
 }
 
+/* for the input search bar */
+input[type=text] {
+    width: 70%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+input[type=text]:focus {
+    width: 90%;
+}
+
+button#submitButton {
+  width: 5%;
+  padding: 12px 20px 12px 40px;
+  background: #ddd;
+  border: 2px solid #ccc;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button#submitButton:hover {
+  background: #ccc;
+}
+
 .background {
 /*  animation: App-logo-spin infinite 20s linear; */ 
   background-image: url ('Colleges2009.png');
@@ -73,6 +105,8 @@ ul.header li a {
   font-size: 24px;
   padding: 15px 60px;
 }
+
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

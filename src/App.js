@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-//import { Document } from 'react-pdf';
 import ImageMapper from 'react-image-mapper';
-import Home from './Home';
-import Image1 from './Image1';
-//import Test1 from './spoon5.jpg';
+import FontAwesome from 'react-fontawesome'
 import './App.css';
 import {
   Route, 
@@ -73,6 +70,7 @@ class App extends Component {
               placeholder="Search Room"
               onChange={this.getQuery}
               onSubmit={this.getFloorplan}/>
+            <button id="submitButton" type="submit"><FontAwesome name = "fas fa-search"/></button>
           </form>
 
           <ImageMapper src={URL} map={MAP} width={500} onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
@@ -140,17 +138,5 @@ const fakeAuth = {
   }
 }
 */
-
-const Main = () => (
-  <div>
-    <Link to="/image1"> <Home /> </Link>
-  </div>
-)
-
-const Back = () => (
-  <div>
-    <Link to="/home"> <Image1 /> </Link>
-  </div>
-)
 
 export default App;
