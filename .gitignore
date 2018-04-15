@@ -6,3 +6,5 @@ defects.png
 no_text.png
 leader.png
 results/*.png
+*.pyc
+.vscode/
