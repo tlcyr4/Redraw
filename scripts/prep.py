@@ -72,4 +72,9 @@ for fn in inFiles:
     img[:,:] = 0
     for i in cclist:
         img[stats[labelled, cv.CC_STAT_AREA] == areas[i-1]] = 255
+
+    
+
+
+    
     cv.imwrite(outFilename, img)
