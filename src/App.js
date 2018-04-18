@@ -21,12 +21,19 @@ class App extends Component {
     this.state = {
       rooms: [],
     };
+    // roomid 
     this.roomid = 0;
+    // list of all the rooms in the list, used for ImageMapper
     this.roomIDRendered = [];
+    // the path of the image, NOT USED CURRENTLY
     this.imagePath = "/api/floorplan/?room_id";
-    this.getQuery = this.getQuery.bind(this)
+    // hold onto the search input
+    this.searchLink = "";
+    this.getQuery = this.getQuery.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // get query from the url
   getQuery() {
     const url = '/api/search/?building=WENDELL%20C';
 
@@ -39,13 +46,14 @@ class App extends Component {
           rooms: data
         });
         this.roomid = data[0].room_id;
-        console.log(this.roomid);
         console.log(this.state.rooms);
+        console.log(this.searchLink);
         this.forceUpdate();
       })
       .catch(error => console.log(error));
   }
 
+  // get the floorplan
   getFloorplan() {
     if (this.roomid === 0)
       this.imagePath = "/home";
@@ -54,6 +62,7 @@ class App extends Component {
     console.log("HELLO");
   }
 
+  // handle the clicking on image mapper
   handleClick = (obj, num, event) => {
     var query = this.state.rooms;
     for (var i = 0; i < query.length; i++) {
@@ -64,6 +73,15 @@ class App extends Component {
         break;
       }
     }
+  }
+
+  // handle submission of the search query
+  handleSubmit(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    this.searchLink = data.get('search');
+    console.log(this.searchLink);
+    this.getQuery();
   }
 
   render() {
@@ -79,6 +97,7 @@ class App extends Component {
         var roomRaw = JSON.parse(iRoom.polygons);
         //console.log(roomRaw);
         //console.log(roomRaw.length);
+        for (var k = 0; k < roomRaw.length; k++)
         var roomArray = roomRaw[0];
         for (var j = 0; j < roomArray.length; j++) {
           roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
@@ -107,12 +126,11 @@ class App extends Component {
             <p>edraw</p>
           </div>
           <div id = "formBlock">
-            <form>
+            <form onSubmit = {this.handleSubmit}>
               <input type="text"
                 placeholder="Search Room..."
-                onChange={this.getQuery}
-                onSubmit={this.getFloorplan}/>
-              <button id="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
+                name="search"/>
+              <button name="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
             </form>
           </div>
           <Center>
