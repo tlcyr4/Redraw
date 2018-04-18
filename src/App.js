@@ -35,7 +35,7 @@ class App extends Component {
 
   // get query from the url
   getQuery() {
-    const url = '/api/search/?building=WENDELL%20C';
+    const url = '/api/search/?building='+this.searchLink;
 
     fetch(url, {credentials: "same-origin"})
       .then(response => {
@@ -47,7 +47,6 @@ class App extends Component {
         });
         this.roomid = data[0].room_id;
         console.log(this.state.rooms);
-        console.log(this.searchLink);
         this.forceUpdate();
       })
       .catch(error => console.log(error));
@@ -98,7 +97,7 @@ class App extends Component {
         //console.log(roomRaw);
         //console.log(roomRaw.length);
         for (var k = 0; k < roomRaw.length; k++)
-        var roomArray = roomRaw[0];
+        var roomArray = roomRaw[0]; // over a for loop FIX FIX
         for (var j = 0; j < roomArray.length; j++) {
           roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
           roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
