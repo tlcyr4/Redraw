@@ -79,7 +79,9 @@ class App extends Component {
     event.preventDefault();
     const data = new FormData(event.target);
     this.searchLink = data.get('search');
+    // parsing and figuring out appropriate json (api url)
     console.log(this.searchLink);
+    // call getQuery
     this.getQuery();
   }
 
@@ -87,6 +89,7 @@ class App extends Component {
     // process the json file
     var witherspoonQuery = this.state.rooms;
     var areaArray = [];
+    // used to be 2550, now is 1015********************
     var ratio = 1000.0/2550.0;
     // go through every room in the json file
     for (var i = 0; i < witherspoonQuery.length; i++) {
@@ -97,7 +100,7 @@ class App extends Component {
         //console.log(roomRaw);
         //console.log(roomRaw.length);
         for (var k = 0; k < roomRaw.length; k++)
-        var roomArray = roomRaw[0]; // over a for loop FIX FIX
+        var roomArray = roomRaw[0]; // over a for loop FIX FIX******************
         for (var j = 0; j < roomArray.length; j++) {
           roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
           roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
