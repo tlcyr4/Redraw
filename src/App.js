@@ -3,11 +3,8 @@ import ImageMapper from 'react-image-mapper';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
-import src from './wendell2.jpg';
+import Wendell from './wendell2.jpg';
 import Logo from './raw.jpg';
-
-const imgPath = require.context('./jpg/', true); 
-
 import './App.css';
 import {
   BrowserRouter,
@@ -28,7 +25,7 @@ class App extends Component {
     this.roomIDRendered = []; 
 		
     // the path of the image, being tested
-    this.imagePath = "./jpg/0007-00.jpg";
+    this.imagePath = "{Wendell}";
 		
     // hold onto the search input
     this.searchLink = "";
@@ -67,8 +64,7 @@ class App extends Component {
       })
       .then(data => {
 				console.log(data);
-        this.imagePath = data['img'];
-        this.forceUpdate();
+        var iPath = data['img'];
       })
       .catch(error => console.log(error));
   }
@@ -144,7 +140,7 @@ class App extends Component {
 
         <div className = "App">
           <div id = "header">
-            <img id = "headerImg" src={Logo}/>
+            <img id ="headerImg" src={Logo}/>
             <p>edraw</p>
           </div>
           <div id = "formBlock">
@@ -156,10 +152,11 @@ class App extends Component {
             </form>
           </div>
           <Center>
-            <ImageMapper src={src} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
+            <ImageMapper src={Wendell} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
             onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
           </Center>
         </div>
+				
       </BrowserRouter>
       );
   }
