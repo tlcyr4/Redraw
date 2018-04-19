@@ -26,6 +26,7 @@ def get_floorplan(request):
 	floor = Room.objects.get(room_id=room_id).floor
 	number = floor.building.number
 	level = floor.level
-	filename = 'data/floorplans/' + number + '-' + level + '.pdf'
-	floorplan = open(filename,'rb').read()
-	return HttpResponse(floorplan, content_type='application/pdf')
+	filename = './jpg/' + number + '-' + level + '.jpg'
+	res = {}
+	res['img'] = filename
+	return HttpResponse(json.dumps(res), content_type='application/json')

@@ -28,5 +28,9 @@
   "engines": {
     "node": "8.9.4",
     "npm": "5.6.0"
+  },
+  "devDependencies": {
+    "file-loader": "^1.1.11",
+    "url-loader": "^1.0.1"
   }
 }
