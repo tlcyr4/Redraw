@@ -10,35 +10,33 @@ import {
   BrowserRouter,
 } from 'react-router-dom';
 
-// hold the static components
+// Manages the main logic of the page
 class App extends Component {
 	
   constructor(props) {
     super(props);
+		
     this.state = {
-      rooms: [],
-    };
-		// Room-ID, Changed on Click
-    this.roomid = 0;
+			rooms: [], // Contains all rooms returned by getQuery()
+		};
+		this.roomid = 0;		// Room-ID, Changed on Click
+		this.floor_id = 0;	// Floor-ID for the Rooms
+		this.searchLink = ""; // A string to hold the query searched
 		
 		// List of all the rooms that can be displayed, used for ImageMapper
-    this.roomIDRendered = []; 
+		this.roomIDRendered = [];
 		
-    // the path of the image, being tested
-    this.imagePath = Wendell;
+		// Default image path is set to Wendell, but changes on click
+		this.imagePath = Wendell;
 		
-		this.floor_id = 0;
-		
-    // hold onto the search input
-    this.searchLink = "";
-		
-		// Binds methods to the object
-    this.getQuery = this.getQuery.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+		// Bindings
+		this.getQuery = this.getQuery.bind(this);
+		this.getFloorplan = this.getFloorplan.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
-  // get query from the url
-  getQuery() {
+	// Makes an API call to return all rooms associated with the building
+	getQuery() {
     const url = '/api/search/?building='+this.searchLink;
 
     fetch(url, {credentials: "same-origin"})
@@ -49,31 +47,33 @@ class App extends Component {
         this.setState({
           rooms: data
         });
-        this.roomid = data[0].room_id;
-				this.getFloorplan();
-				this.floor_id = data[0].floor_id;
-        console.log(this.state.rooms);
-        this.forceUpdate();
+				if (Array.isArray(data) && data.length)
+				{
+					this.roomid = data[0].room_id;
+					this.getFloorplan();
+					this.floor_id = data[0].floor_id;
+	        console.log(this.state.rooms);
+	        this.forceUpdate();
+				}
       })
       .catch(error => console.log(error));
   }
 
-  // Using ROOM-ID, receive floorplan filepath from Back-End.
-  getFloorplan() {
+	// Using ROOM-ID, receive floorplan filepath from Back-End.
+	getFloorplan() {
 		const url = '/api/floorplan/?room_id='+this.roomid;
 
-    fetch(url, {credentials: 'same-origin'})
-      .then((response) => { return response.blob(); })
+		fetch(url, {credentials: 'same-origin'})
+			.then((response) => { return response.blob(); })
 			.then((data) => {
 				var objectURL = URL.createObjectURL(data);
 				this.imagePath = objectURL;
-				console.log(this.imagePath);
 				this.forceUpdate();
-      })
-      .catch(error => console.log(error));
-  }
+			})
+			.catch(error => console.log(error));
+	}
 
-  // handle the clicking on image mapper
+	// Handles the click for the Polygons in the ImageMapper
   handleClick = (obj, num, event) => {
     var query = this.state.rooms;
     for (var i = 0; i < query.length; i++) {
@@ -86,87 +86,87 @@ class App extends Component {
     }
   }
 
-  // handle submission of the search query
-  handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    const searchData = data.get('search');
+	// Handles the form submission by making a call to the API
+	handleSubmit(event) {
+		event.preventDefault();
+		const data = new FormData(event.target);
+		const searchData = data.get('search');
 		
-		// Needs work to parse the input query
-    console.log(searchData);
-		
-		if (isNaN(searchData)) {
-			this.searchLink = searchData;
-			this.getQuery();
-		}
-    else {
-			this.roomid = searchData; 
-			this.getFloorplan();
-		}
-  }
+		this.searchLink = searchData;
+		this.getQuery();
+	}
 
-  render() {
-    // Process the JSON received from Back-End
-    var retQuery = this.state.rooms;
-    var areaArray = [];
-    // used to be 2550, now is 1015********************
-    var ratio = 1000.0/2550.0;
-    // go through every room in the json file
-    for (var i = 0; i < retQuery.length; i++) {
-      var iRoom = retQuery[i];
-      if (iRoom.floor_id === this.floor_id) {
-        var roomCoords = [];
-        var roomRaw = JSON.parse(iRoom.polygons);
+	render() {
+		// Process the JSON received from Back-End
+		var retQuery = this.state.rooms;
+		var areaArray = [];
+		// IS THIS CALIBRATED CORRECTLY?
+		var ratio = 1000.0/2550.0;
+		// Iterate through all rooms in the json file
+		for (var i = 0; i < retQuery.length; i++) {
+			var iRoom = retQuery[i];
+			// Hard-Coded to only display those on one floor
+			if (iRoom.floor_id === this.floor_id) {
+				var roomCoords = [];
+				var roomRaw = JSON.parse(iRoom.polygons);
 				
-        for (var k = 0; k < roomRaw.length; k++) {
-        	var roomArray = roomRaw[k];
-		      for (var j = 0; j < roomArray.length; j++) {
-		        roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
-		        roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
-		      }
-		      areaArray.push({shape: 'poly', coords: roomCoords});
-		      // hold onto the order of the polygons wrt to the rooms
-		      // useful for when handling click
-		      this.roomIDRendered.push(iRoom.room_id);
+				for (var k = 0; k < roomRaw.length; k++) {
+					var roomArray = roomRaw[k];
+					for (var j = 0; j < roomArray.length; j++) {
+						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
+						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
+					}
+					areaArray.push({shape: 'poly', coords: roomCoords});
+					// hold onto the order of the polygons wrt to the rooms
+					// useful for when handling click
+					this.roomIDRendered.push(iRoom.room_id);
 				}
-      }
-    }
-		// Checks that we have put things into the array
-    console.log(areaArray);
+			}
+		}
+		// Diplays the array of polygns loaded for debugging purposes.
+		console.log(areaArray);
 
-    // make the MAP to be drawn in
-    var MAP = {
-      name: 'my-map',
-      areas: areaArray,
-    };
+		// Make the MAP to be drawn in
+		var MAP = {
+			name: 'my-map',
+			areas: areaArray,
+		};
 		
-    return (
-      <BrowserRouter>
-
-        <div className = "App">
-          <div id = "header">
-            <img id ="headerImg" src={Logo}/>
-            <p>edraw</p>
-          </div>
-          <div id = "formBlock">
-            <form onSubmit = {this.handleSubmit}>
-              <input type="text"
-                placeholder="Search Room..."
-                name="search"/>
-              <button name="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
-            </form>
-          </div>
-          <Center>
-            <ImageMapper src={this.imagePath} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
-            onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
-          </Center>
-        </div>
-				
-      </BrowserRouter>
-      );
-  }
+		return (
+			<BrowserRouter>
+				<div className = "App">
+					<div id = "header">
+						<img id ="headerImg" src={Logo} alt="R"/>
+						<p>edraw</p>
+					</div>
+					<div id ="formBlock">
+						<form onSubmit = {this.handleSubmit}>
+							<input type="text"
+								placeholder="Search Room..."
+								name="search"/>
+							<button 
+								name="submitButton" 
+								type="submit">
+									<FontAwesomeIcon icon = {faSearch}/>
+							</button>
+						</form>
+					</div>
+					<Center>
+						<ImageMapper	
+							src={this.imagePath} 
+							map={MAP} 
+							fillColor="rgba(50,153,255,0.5)"
+							strokeColor="rgba(255, 255, 255, 0.9)"
+							width={1000} 
+							onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+						/>
+					</Center>
+				</div>
+			</BrowserRouter>
+		);
+	}
 }
 
 export default () => (
-  <App/>
+	<App/>
 );
