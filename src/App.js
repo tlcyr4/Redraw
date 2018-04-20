@@ -27,6 +27,8 @@ class App extends Component {
     // the path of the image, being tested
     this.imagePath = Wendell;
 		
+		this.floor_id = 0;
+		
     // hold onto the search input
     this.searchLink = "";
 		
@@ -48,6 +50,8 @@ class App extends Component {
           rooms: data
         });
         this.roomid = data[0].room_id;
+				this.getFloorplan();
+				this.floor_id = data[0].floor_id;
         console.log(this.state.rooms);
         this.forceUpdate();
       })
@@ -110,7 +114,7 @@ class App extends Component {
     // go through every room in the json file
     for (var i = 0; i < retQuery.length; i++) {
       var iRoom = retQuery[i];
-      if (iRoom.floor_id === 36) {
+      if (iRoom.floor_id === this.floor_id) {
         var roomCoords = [];
         var roomRaw = JSON.parse(iRoom.polygons);
 				
@@ -127,6 +131,7 @@ class App extends Component {
 				}
       }
     }
+		// Checks that we have put things into the array
     console.log(areaArray);
 
     // make the MAP to be drawn in
