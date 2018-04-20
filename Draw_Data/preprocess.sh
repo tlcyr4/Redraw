@@ -2,8 +2,8 @@
 
 # available rooms
 
-
-sed 's/SINGLE/\n1/g' AVAIL18.txt |
+sed 's/\r//g' AVAIL18.txt |
+sed 's/SINGLE/\n1/g'  |
 sed 's/DOUBLE/\n2/g' |
 sed 's/TRIPLE/\n3/g' |
 sed 's/QUAD/\n4/g' |
@@ -37,7 +37,8 @@ rm tmp1 tmp2
 
 # past draws
 for f in $(ls HRD*.txt); do
-    cat $f | python antialias.py > $f.new
+    sed 's/\r//g' $f |
+    python antialias.py > $f.new
     sed -i '/^$/d' $f.new;
 done
 
@@ -82,7 +83,8 @@ for f in $(ls HRD*.tsv); do
 done
 
 for f in $(ls HRD*.tsv); do
-    join AVAIL18.tsv $f -t $'\t' >tmp
+    # join AVAIL18.tsv $f -t $'\t' >tmp
+    python join.py AVAIL18.tsv $f >tmp
     mv tmp AVAIL18.tsv
 done
 
