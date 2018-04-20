@@ -25,7 +25,7 @@ class App extends Component {
     this.roomIDRendered = []; 
 		
     // the path of the image, being tested
-    this.imagePath = "{Wendell}";
+    this.imagePath = Wendell;
 		
     // hold onto the search input
     this.searchLink = "";
@@ -59,12 +59,12 @@ class App extends Component {
 		const url = '/api/floorplan/?room_id='+this.roomid;
 
     fetch(url, {credentials: 'same-origin'})
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-				console.log(data);
-        var iPath = data['img'];
+      .then((response) => { return response.blob(); })
+			.then((data) => {
+				var objectURL = URL.createObjectURL(data);
+				this.imagePath = objectURL;
+				console.log(this.imagePath);
+				this.forceUpdate();
       })
       .catch(error => console.log(error));
   }
@@ -152,7 +152,7 @@ class App extends Component {
             </form>
           </div>
           <Center>
-            <ImageMapper src={Wendell} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
+            <ImageMapper src={this.imagePath} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
             onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
           </Center>
         </div>
