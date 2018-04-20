@@ -3,38 +3,40 @@ import ImageMapper from 'react-image-mapper';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
-import Spoon5 from './wendell2.jpg';
+import Wendell from './wendell2.jpg';
 import Logo from './raw.jpg';
-
 import './App.css';
 import {
-  Route, 
-  Switch,
-  Link,
   BrowserRouter,
 } from 'react-router-dom';
 
-// hold the static components
+// Manages the main logic of the page
 class App extends Component {
+	
   constructor(props) {
     super(props);
+		
     this.state = {
-      rooms: [],
-    };
-    // roomid 
-    this.roomid = 0;
-    // list of all the rooms in the list, used for ImageMapper
-    this.roomIDRendered = [];
-    // the path of the image, NOT USED CURRENTLY
-    this.imagePath = "/api/floorplan/?room_id";
-    // hold onto the search input
-    this.searchLink = "";
-    this.getQuery = this.getQuery.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+			rooms: [], // Contains all rooms returned by getQuery()
+		};
+		this.roomid = 0;		// Room-ID, Changed on Click
+		this.floor_id = 0;	// Floor-ID for the Rooms
+		this.searchLink = ""; // A string to hold the query searched
+		
+		// List of all the rooms that can be displayed, used for ImageMapper
+		this.roomIDRendered = [];
+		
+		// Default image path is set to Wendell, but changes on click
+		this.imagePath = Wendell;
+		
+		// Bindings
+		this.getQuery = this.getQuery.bind(this);
+		this.getFloorplan = this.getFloorplan.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
-  // get query from the url
-  getQuery() {
+	// Makes an API call to return all rooms associated with the building
+	getQuery() {
     const url = '/api/search/?building='+this.searchLink;
 
     fetch(url, {credentials: "same-origin"})
@@ -45,23 +47,33 @@ class App extends Component {
         this.setState({
           rooms: data
         });
-        this.roomid = data[0].room_id;
-        console.log(this.state.rooms);
-        this.forceUpdate();
+				if (Array.isArray(data) && data.length)
+				{
+					this.roomid = data[0].room_id;
+					this.getFloorplan();
+					this.floor_id = data[0].floor_id;
+	        console.log(this.state.rooms);
+	        this.forceUpdate();
+				}
       })
       .catch(error => console.log(error));
   }
 
-  // get the floorplan
-  getFloorplan() {
-    if (this.roomid === 0)
-      this.imagePath = "/home";
-    else
-      this.imagePath = '/api/floorplan/?room_id'+this.roomid;
-    console.log("HELLO");
-  }
+	// Using ROOM-ID, receive floorplan filepath from Back-End.
+	getFloorplan() {
+		const url = '/api/floorplan/?room_id='+this.roomid;
 
-  // handle the clicking on image mapper
+		fetch(url, {credentials: 'same-origin'})
+			.then((response) => { return response.blob(); })
+			.then((data) => {
+				var objectURL = URL.createObjectURL(data);
+				this.imagePath = objectURL;
+				this.forceUpdate();
+			})
+			.catch(error => console.log(error));
+	}
+
+	// Handles the click for the Polygons in the ImageMapper
   handleClick = (obj, num, event) => {
     var query = this.state.rooms;
     for (var i = 0; i < query.length; i++) {
@@ -74,135 +86,87 @@ class App extends Component {
     }
   }
 
-  // handle submission of the search query
-  handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    this.searchLink = data.get('search');
-    // parsing and figuring out appropriate json (api url)
-    console.log(this.searchLink);
-    // call getQuery
-    this.getQuery();
-  }
+	// Handles the form submission by making a call to the API
+	handleSubmit(event) {
+		event.preventDefault();
+		const data = new FormData(event.target);
+		const searchData = data.get('search');
+		
+		this.searchLink = searchData;
+		this.getQuery();
+	}
 
-  render() {
-    // process the json file
-    var witherspoonQuery = this.state.rooms;
-    var areaArray = [];
-    // used to be 2550, now is 1015********************
-    var ratio = 1000.0/2550.0;
-    // go through every room in the json file
-    for (var i = 0; i < witherspoonQuery.length; i++) {
-      var iRoom = witherspoonQuery[i];
-      if (iRoom.floor_id === 568) {
-        var roomCoords = [];
-        var roomRaw = JSON.parse(iRoom.polygons);
-        //console.log(roomRaw);
-        //console.log(roomRaw.length);
-        for (var k = 0; k < roomRaw.length; k++)
-        var roomArray = roomRaw[0]; // over a for loop FIX FIX******************
-        for (var j = 0; j < roomArray.length; j++) {
-          roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
-          roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
-        }
-        areaArray.push({shape: 'poly', coords: roomCoords});
-        // hold onto the order of the polygons wrt to the rooms
-        // useful for when handling click
-        this.roomIDRendered.push(iRoom.room_id);
-      }
-    }
-    console.log(areaArray);
+	render() {
+		// Process the JSON received from Back-End
+		var retQuery = this.state.rooms;
+		var areaArray = [];
+		// IS THIS CALIBRATED CORRECTLY?
+		var ratio = 1000.0/2550.0;
+		// Iterate through all rooms in the json file
+		for (var i = 0; i < retQuery.length; i++) {
+			var iRoom = retQuery[i];
+			// Hard-Coded to only display those on one floor
+			if (iRoom.floor_id === this.floor_id) {
+				var roomCoords = [];
+				var roomRaw = JSON.parse(iRoom.polygons);
+				
+				for (var k = 0; k < roomRaw.length; k++) {
+					var roomArray = roomRaw[k];
+					for (var j = 0; j < roomArray.length; j++) {
+						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
+						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
+					}
+					areaArray.push({shape: 'poly', coords: roomCoords});
+					// hold onto the order of the polygons wrt to the rooms
+					// useful for when handling click
+					this.roomIDRendered.push(iRoom.room_id);
+				}
+			}
+		}
+		// Diplays the array of polygns loaded for debugging purposes.
+		console.log(areaArray);
 
-    // make the MAP to be drawn in
-    var MAP = {
-      name: 'my-map',
-      areas: areaArray,
-    };
-    //var URL = 'spoon5.jpg';
-    return (
-      <BrowserRouter>
-
-        <div className = "App">
-          <div id = "header">
-            <img id = "headerImg" src={Logo}/>
-            <p>edraw</p>
-          </div>
-          <div id = "formBlock">
-            <form onSubmit = {this.handleSubmit}>
-              <input type="text"
-                placeholder="Search Room..."
-                name="search"/>
-              <button name="submitButton" type="submit"><FontAwesomeIcon icon = {faSearch}/></button>
-            </form>
-          </div>
-          <Center>
-            <ImageMapper src={Spoon5} map={MAP} fillColor="rgba(127,255,212,0.5)" width={1000} 
-            onClick={(obj, num, event) => this.handleClick(obj, num, event)}/>
-          </Center>
-
-        </div>
-      </BrowserRouter>
-      );
-  }
+		// Make the MAP to be drawn in
+		var MAP = {
+			name: 'my-map',
+			areas: areaArray,
+		};
+		
+		return (
+			<BrowserRouter>
+				<div className = "App">
+					<div id = "header">
+						<img id ="headerImg" src={Logo} alt="R"/>
+						<p>edraw</p>
+					</div>
+					<div id ="formBlock">
+						<form onSubmit = {this.handleSubmit}>
+							<input type="text"
+								placeholder="Search Room..."
+								name="search"/>
+							<button 
+								name="submitButton" 
+								type="submit">
+									<FontAwesomeIcon icon = {faSearch}/>
+							</button>
+						</form>
+					</div>
+					<Center>
+						<ImageMapper	
+							src={this.imagePath} 
+							map={MAP} 
+							fillColor="rgba(50,153,255,0.5)"
+							strokeColor="rgba(255, 255, 255, 0.9)"
+							width={1000} 
+							onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+						/>
+					</Center>
+				</div>
+			</BrowserRouter>
+		);
+	}
 }
-/* 
-<img usemap="#test_map" src={this.imagePath}/>
-
-          <map name="test_map">
-            <area shape="poly" coords="3671,3587,3670,4476,4202,4476,4203,4498,4460,4498,4461,4227,4405,4225,4405,3824,4461,3822,4461,3587,4051,3587,4050,3755,4044,3587" href="google.com"/>
-          </map>
-*/
-
-
-
-
-
-
-/*
-<Switch>
-  <Route path={this.imagePath} component = {Main} />
-</Switch>
-class Login extends Component {
-  state = {
-    redirectToRefferrer: false
-  }; 
-
-  login = () => {
-    fakeAuth.authenticate(() => {
-      this.setState({ redirectToRefferrer: true});
-    });
-  };
-
-  render () {
-    return (
-      <div className="Login-page">
-        <h1 className="Welcome-page">Welcome to Redraw!</h1> 
-        <h2 className="Description">
-          Making room draw a more enjoyable experience
-        </h2>
-        <Link to="/accounts/login">
-          <button className="Login-button" onClick = {this.login}>
-             Click Here to Login 
-          </button>
-        </Link>
-      </div>
-    );
-  }
-}
-
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true; 
-    setTimeout(cb, 100);
-  }, 
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-}
-*/
 
 export default () => (
-  <App/>
+	<App/>
 );
