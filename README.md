@@ -33,6 +33,10 @@ Download the dependencies from Pipfile
 ```sh
 pipenv install
 ```
+For developing, make sure you have a copy of node_modules. Install npm
+```sh
+npm install
+```
 
 ### Run ReactJS Local
 Run on the terminal (opens up [localhost:3000](http://localhost:3000/))
