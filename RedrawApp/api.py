@@ -15,6 +15,7 @@ def query(request):
 
 	for room in results:
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
+		room['level'] = Floor.objects.get(id=room['floor_id']).level
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required
