@@ -47,14 +47,15 @@ class App extends Component {
         this.setState({
           rooms: data
         });
-				if (Array.isArray(data) && data.length)
-				{
-					this.roomid = data[0].room_id;
-					this.getFloorplan();
-					this.floor_id = data[0].floor_id;
-	        console.log(this.state.rooms);
+        // update the room image pathing, if query
+		if (Array.isArray(data) && data.length) {
+			// for now, default to the first floor
+			this.roomid = data[0].room_id;
+			this.getFloorplan();
+			this.floor_id = data[0].floor_id;
+	        console.log("New Rooms", this.state.rooms);
 	        this.forceUpdate();
-				}
+		}
       })
       .catch(error => console.log(error));
   }
@@ -91,7 +92,8 @@ class App extends Component {
 		event.preventDefault();
 		const data = new FormData(event.target);
 		const searchData = data.get('search');
-		
+	
+		/******************ADD ERROR PROCESSING... Finding Room that doesn't exist*****************/		
 		this.searchLink = searchData;
 		this.getQuery();
 	}
@@ -100,7 +102,7 @@ class App extends Component {
 		// Process the JSON received from Back-End
 		var retQuery = this.state.rooms;
 		var areaArray = [];
-		// IS THIS CALIBRATED CORRECTLY?
+		this.roomIDRendered = [];
 		var ratio = 1000.0/2550.0;
 		// Iterate through all rooms in the json file
 		for (var i = 0; i < retQuery.length; i++) {
@@ -123,8 +125,8 @@ class App extends Component {
 				}
 			}
 		}
-		// Diplays the array of polygns loaded for debugging purposes.
-		console.log(areaArray);
+		// Diplays the array of polygons loaded for debugging purposes.
+		console.log("Polygons", areaArray);
 
 		// Make the MAP to be drawn in
 		var MAP = {
@@ -145,7 +147,7 @@ class App extends Component {
 								placeholder="Search Room..."
 								name="search"/>
 							<button 
-								name="submitButton" 
+								id="submitButton" 
 								type="submit">
 									<FontAwesomeIcon icon = {faSearch}/>
 							</button>
