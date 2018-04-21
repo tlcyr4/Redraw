@@ -12,8 +12,8 @@ class Draw(models.Model):
 
 
 class Building(models.Model):
-    name = models.CharField(max_length=30,primary_key=True)
-    number = models.CharField(max_length=4,unique=True)
+    # name = models.CharField(max_length=30,unique=True)
+    number = models.CharField(max_length=4,primary_key=True)
     coordinates = JSONField()
     draw = models.ManyToManyField(Draw)
     def __str__(self):
@@ -36,7 +36,6 @@ class Room(models.Model):
     num_occupants = models.PositiveSmallIntegerField()
     num_rooms = models.PositiveSmallIntegerField()
     sub_free = models.NullBooleanField(null = True)
-    ada = models.NullBooleanField("Americans with Disabilities Act Compliance",null=True)
 
     # collapsed from past draw model
     draw_rank = ArrayField(models.IntegerField(null=True),size=5)
