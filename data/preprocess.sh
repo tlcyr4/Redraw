@@ -22,7 +22,7 @@ sed 's/Africa/Forbes/g' |
 sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' |
 sed 's/\(B\)\([0-9][0-9]\)/A\2/g' |
 sed 's/Baseme/A /g' |
-awk '{if($4=="bathroom") $4=""; else $3 = "Pub "$3; print $0}' |
+awk '{if($4=="bathroom") $4=""; else $3 = "Pub\t"$3; print $0}' |
 sed 's/Private/Prv/g' | sed 's/Shared/Sha/g' |
 awk '{if($8!="Yes") $8="No "$8;print $0}' |
 awk '{if($9=="Independent") $2="Independent";if($4=="0153")$2="Spelman";$9="";print $0}' |
@@ -88,4 +88,6 @@ for f in $(ls HRD*.tsv); do
     mv tmp AVAIL18.tsv
 done
 
-
+tr -s "\t" <AVAIL18.tsv >tmp
+mv tmp AVAIL18.tsv
+# sed -i 's/\t\t\t/\t/g' AVAIL18.tsv
