@@ -59,8 +59,33 @@ button#submitButton {
   cursor: pointer;
 }
 
+div#image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 button#submitButton:hover {
   background: #ccc;
+}
+
+ul#floorButtons {
+  width: 15%;
+  position: absolute;
+  list-style-type: none;
+  right: 5%;
+  top: 30%;
+}
+
+
+ul#floorButtons input {
+  background-color: #3299FF; /* Green */
+  border: 1px solid white;
+  color: white;
+  padding: 10px 30px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
 }
 
 .App-header {

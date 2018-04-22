@@ -199,28 +199,33 @@ class App extends Component {
 							</button>
 						</form>
 					</div>
-					<Center>
-						<ImageMapper	
-							src={this.imagePath} 
-							map={MAP} 
-							fillColor="rgba(50,153,255,0.5)"
-							strokeColor="rgba(255, 255, 255, 0.9)"
-							width={1000} 
-							onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-						/>
-					</Center>
+
+					<div id = "mainContent">
+						<Center>
+							<ImageMapper	
+								src={this.imagePath} 
+								map={MAP} 
+								fillColor="rgba(50,153,255,0.5)"
+								strokeColor="rgba(255, 255, 255, 0.9)"
+								width={1000} 
+								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+							/>
+						</Center>
+
+						<ul id = "floorButtons">
+							{this.floorList.map(listValue => 
+								<li>
+									<input id={listValue}
+									value={"Floor " + parseInt(listValue, 10)} 
+									type="button"
+									onClick={(event) => this.changeFloor(event)}/>
+								</li>
+							)}
+						</ul>
+					</div>
 
 
-					<ul>
-						{this.floorList.map(listValue => 
-							<li>
-								<input id={listValue}
-								value={"Floor " + parseInt(listValue, 10)} 
-								type="button"
-								onClick={(event) => this.changeFloor(event)}/>
-							</li>
-						)}
-					</ul>
+					
 				</div>
 			</BrowserRouter>
 		);
