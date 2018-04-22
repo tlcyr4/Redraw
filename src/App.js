@@ -20,8 +20,12 @@ class App extends Component {
 			rooms: [], // Contains all rooms returned by getQuery()
 		};
 		this.roomid = 0;		// Room-ID, Changed on Click
-		this.floor_id = 0;	// Floor-ID for the Rooms
+		this.roomidFloorList = []; // Keep track of which roomID the floor is
+
+		this.floor = 0;	// Floor-ID for the Rooms
 		this.floorList = []; // Holds onto a list of all the floors in a building
+		this.floorButtonClicked = 0; // determine whether a specific floor button is clicked
+
 		this.searchLink = ""; // A string to hold the query searched
 		
 		// List of all the rooms that can be displayed, used for ImageMapper
@@ -52,19 +56,27 @@ class App extends Component {
         // update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
 			// for now, default to the first floor
-			this.roomid = data[0].room_id;
+			if (!this.floorButtonClicked) {
+				this.floor = data[0].level;
+				this.roomid = data[0].room_id;
+			}
 			this.getFloorplan();
-			this.floor_id = data[0].floor_id;
+
 	        console.log("New Rooms", this.state.rooms);
 
 	        this.floorList = [];
+	        this.roomidFloorList = [];
 	        var currFloorID = -1;
 	        // handle the number of floors there are
 	        for (var i = 0; i < data.length; i++) {
 	        	var entry = data[i];
-	        	if (currFloorID !== entry.floor_id) {
+	        	if (currFloorID !== entry.level) {
+	        		// get the level
 	        		this.floorList.push(entry.level);
-	        		currFloorID = entry.floor_id;
+	        		// get the room_id for that specific level
+	        		this.roomidFloorList.push(entry.room_id);
+
+	        		currFloorID = entry.level;
 	        	}
 	        }
 	        console.log("All floors", this.floorList);
@@ -101,8 +113,21 @@ class App extends Component {
 	    }
 	}
 
-	clickTest = (event) => {
-		console.log("BEEP BEEP");
+	// Handles the changing of the floors
+	changeFloor = (event, listValue) => {
+		var activeFloor = event.target.id;
+		console.log("Just clicked floor " + event.target.id);
+		var index = -1;
+		// get the index to get the correct room_id index
+		for (var i = 0; i < this.floorList.length; i++) {
+			if (activeFloor === this.floorList[i])
+				index = i;
+		}
+
+		this.roomid = this.roomidFloorList[index];
+		this.floor = activeFloor;
+		this.floorButtonClicked = 1;
+		this.getQuery();
 	}
 
 	// Handles the form submission by making a call to the API
@@ -113,6 +138,7 @@ class App extends Component {
 	
 		/******************ADD ERROR PROCESSING... Finding Room that doesn't exist*****************/		
 		this.searchLink = searchData;
+		this.floorButtonClicked = 0;
 		this.getQuery();
 	}
 
@@ -128,7 +154,7 @@ class App extends Component {
 		for (var i = 0; i < retQuery.length; i++) {
 			var iRoom = retQuery[i];
 			// Hard-Coded to only display those on one floor
-			if (iRoom.floor_id === this.floor_id) {
+			if (iRoom.level === this.floor) {
 				var roomCoords = [];
 				var roomRaw = JSON.parse(iRoom.polygons);
 				
@@ -186,10 +212,14 @@ class App extends Component {
 
 
 					<ul>
-						{this.floorList && this.floorList.map(function(listValue){
-							return <li><button type="button" onClick={(event) => this.clickTest(event)}>
-							{"Floor " + parseInt(listValue)}</button></li>;
-						})}
+						{this.floorList.map(listValue => 
+							<li>
+								<input id={listValue}
+								value={"Floor " + parseInt(listValue, 10)} 
+								type="button"
+								onClick={(event) => this.changeFloor(event)}/>
+							</li>
+						)}
 					</ul>
 				</div>
 			</BrowserRouter>
