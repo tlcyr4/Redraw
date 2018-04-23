@@ -28,12 +28,20 @@ class Floor:
             e.g. image with text filtered out"""
         segments = self.segments
 
+        if self.building == "1903" and int(self.floornum) < 3:
+            lum_thresh = 100
         # thresholding
         thresholded = cv.cvtColor(self.original, cv.COLOR_RGB2GRAY)
         thresholded = self.invert(thresholded)
         throwaway, thresholded = cv.threshold(thresholded, lum_thresh, 255, cv.THRESH_BINARY)
         thresholded = self.invert(thresholded)
         segments["threshold"] = Segment(thresholded)
+
+        if self.building == "1903" and int(self.floornum) < 3:
+            pass
+            print "thin other"
+            thresholded = cv.dilate(self.invert(thresholded), self.kernel, iterations=1)
+            thresholded = self.invert(thresholded)
 
         # segment text
         text = cv.morphologyEx(self.invert(thresholded), cv.MORPH_CLOSE, self.kernel, iterations = 1)
@@ -42,7 +50,12 @@ class Floor:
         no_text = cv.add(thresholded, text)
         segments["no_text"] = Segment(no_text)
 
+        
         # segment rooms
+        if self.floornum == "1" and self.building == "Forbes Main Inn":
+            print "thin"
+            no_text = cv.dilate(self.invert(no_text), self.kernel, iterations=1)
+            no_text = self.invert(no_text)
         rooms = self.invert(cv.morphologyEx(self.invert(no_text), cv.MORPH_CLOSE, self.kernel, iterations = 2))
         segments["rooms"] = Segment(rooms)
         segments["rooms"].cc_threshold(room_lower_thresh, room_upper_thresh)
