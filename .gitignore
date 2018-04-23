@@ -4,7 +4,6 @@ leader.png
 output.png
 rooms.png
 text.png
-<<<<<<< HEAD
 *.log
 *.pot
 *.pyc
@@ -14,6 +13,3 @@ text.png
 results/*.png
 .vscode/*
 node_modules/*
-=======
-.vscode
->>>>>>> draw_data

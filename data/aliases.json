@@ -1,4 +1,9 @@
 {
+    "0147": [
+        "Alexander",
+        "Alexander Street",
+        "Alexander Street, 99"
+    ],
     "0094": [
         "Dodge_Osborn",
         "Dodge-Osborn Hall",
@@ -111,6 +116,10 @@
         "The Emma B Bloomberg 01 Hall", 
         "Emma Bloomberg Hall"
     ], 
+    "0099": [
+        "Wilcox",
+        "Wilcox Hall"
+    ],
     "0696": [
         "Wilf Hall",
         "Wilf", 
@@ -425,7 +434,8 @@
         "2 Dickinson St", 
         "2 Dickinson", 
         "Dickinson Street, 2",
-        "2DICKINSON"
+        "2DICKINSON",
+        "Dickinson"
     ], 
     "0012 ": [
         "Dod Hall", 

@@ -1,5 +1,60 @@
 #!/bin/bash
 
+# auxiliary python scripts
+echo '
+from __future__ import print_function
+import sys
+
+# python implementation of unix join (keep left)
+# assumes sorted order
+
+# usage: python join.py file1.tsv file2.tsv > joined
+f1 = open(sys.argv[1])
+f2 = open(sys.argv[2])
+
+line2 = f2.readline()
+tokens2 = line2.split("\t")
+
+for line1 in f1:
+    tokens1 = line1.strip("\n").split("\t")
+    while tokens2[0] < tokens1[0]:
+        line2 = f2.readline()
+        if line2 == "":
+            break
+        tokens2 = line2.strip("\n").split("\t")
+    while tokens2[0] == tokens1[0]:
+        tokens1 += tokens2[1:]
+        line2 = f2.readline()
+        if line2 == "":
+            break
+        tokens2 = line2.strip("\n").split("\t")
+    output = "\t".join(tokens1).replace("\n","")
+    print(output)
+' > join.py
+
+echo '
+#!/usr/bin/python
+
+# replaces all instances of the aliases in a file with their standardized form
+# read from stdin and write to stdout
+from __future__ import print_function
+import json
+import sys
+import re
+
+# file where aliases are stored
+aliases = json.load(open("aliases.json","r"))
+regexes = {}
+for line in sys.stdin:
+    for entry in aliases:
+        for alias in aliases[entry]:
+            # cache compiled regexes for performance
+            if alias not in regexes:
+                regexes[alias] = re.compile(re.escape(alias), re.IGNORECASE)
+            line = regexes[alias].sub(entry, line)
+    sys.stdout.write(line)' > antialias.py
+
+
 # available rooms
 
 sed 's/\r//g' AVAIL18.txt |
@@ -83,11 +138,151 @@ for f in $(ls HRD*.tsv); do
 done
 
 for f in $(ls HRD*.tsv); do
-    # join AVAIL18.tsv $f -t $'\t' >tmp
+    # join AVAIL18.tsv $f -t $'\t' >tmp # doesn't work
     python join.py AVAIL18.tsv $f >tmp
     mv tmp AVAIL18.tsv
+    rm $f
 done
 
 tr -s "\t" <AVAIL18.tsv >tmp
 mv tmp AVAIL18.tsv
-# sed -i 's/\t\t\t/\t/g' AVAIL18.tsv
+
+
+echo '
+import sys
+import json
+lists = json.load(sys.stdin)
+dicts = {}
+for room in lists:
+    room[3] = str(room[3]).zfill(3)
+    if room[3][0] == "B":
+        room[3] = "A" + room[3][1:]
+    dicts[room[12] + " " + room[3]] = {
+        "draw"  : room[0],
+        "level"   : room[2],
+        "sqft"  : room[4],
+        "occ"   : room[5],
+        "num_rooms":    room[6],
+        "sub_free":     room[8]=="Y",
+        "bathroom":     room[11]
+    }
+json.dump(dicts, sys.stdout, indent=4)
+' > taclean.py
+
+# preprocess tigerapp json
+cat tigerapps.json |
+python antialias.py |
+sed 's/0148 College/Forbes/g' |
+sed 's/ College//g' | python taclean.py |
+sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' > taclean.json
+
+echo '
+import json
+import sys
+taclean = json.load(open("taclean.json", "r"))
+rooms = []
+for line in sys.stdin:
+    tokens = line.strip("\n").split("\t")
+    if tokens[0].split()[0] == "0148":
+        if tokens[0].split()[1] in "125 177 175 178":
+            num_rooms = 2
+        else:
+            num_rooms = 1
+    else:
+        num_rooms = taclean[tokens[0]]["num_rooms"]
+    if tokens[0].split()[0] in "0042 0007 0043 0047 0049 0091 0164" and tokens[4] == "A":
+        tokens[4] = "00"
+    if tokens[0].split()[0] in "0671":
+        tokens[4] = str(int(tokens[4]) - 1)
+    rooms.append({
+        "building": tokens[0].split()[0],
+        "number":   tokens[0].split()[1],
+        "occ":    tokens[1],
+        "draw":     tokens[2],
+        "bathroom": tokens[3],
+        "level":      tokens[4],
+        "sqft":     tokens[5],
+        "sub_free": tokens[6],
+        "draw_rank":tokens[7::2],
+        "size_rank":tokens[8::2],
+        "num_rooms":num_rooms
+    })
+json.dump(rooms, sys.stdout, indent=4)
+' > getnumrooms.py
+cat AVAIL18.tsv | sort | python getnumrooms.py > AVAIL18.json
+
+echo '
+import json
+import sys
+from os import path
+from glob import glob
+out_polygons = {}
+for polyfile in glob("polygons/*.json"):
+    polygons = json.load(open(polyfile, "r"))
+    building = path.basename(polyfile)[:4]
+    for polygon in polygons:
+        id = building + " " + polygon["number"]
+        x0 = polygon["origin"][0]
+        y0 = polygon["origin"][1]
+        points = [[point[0][0] + x0, point[0][1] + y0] for point in polygon["polygon"]]
+        if id not in out_polygons:
+            out_polygons[id] = []
+        out_polygons[id].append(points)
+print len(out_polygons)
+json.dump(out_polygons, open("polygons.json", "w"), indent=4, sort_keys=True)
+' > polygons.py
+python polygons.py
+
+echo '
+import json
+rf = open("AVAIL18.json","r")
+rooms = json.load(rf)
+polygons = json.load(open("polygons.json", "r"))
+misses = 0
+hits = 0
+missbldg = {}
+for room in rooms:
+    if room["building"] + " " + room["number"] in polygons:
+        hits += 1
+        room["polygons"] = polygons[room["building"] + " " + room["number"]]
+    else:
+        room["polygons"] = []
+        misses += 1
+        if room["building"] not in missbldg:
+            missbldg[room["building"]] = 0
+        missbldg[room["building"]] += 1
+rf.close()
+json.dump(rooms, open("AVAIL18.json", "w"), indent=4, sort_keys=True)
+log = open("matching.log","w")
+log.write("Hits: " + str(hits) + "\n")
+log.write("Misses: " +  str(misses) + "\n")
+for k,v in missbldg.items():
+    log.write(str(k) + " " + str(v) + "\n")
+' > addpoly.py
+
+sed -i 's/\([TA]\)\([0-9][0-9]\)/\2/g' AVAIL18.json
+
+python addpoly.py
+
+echo '
+import json
+bf = open("buildings_clean.json", "r")
+buildings = json.load(bf)
+polygons = json.load(open("building_polygons.json", "r"))
+for building in buildings.values():
+    for polygon in polygons:
+        if polygon["properties"]["id"] == building["id"]:
+            building["polygons"] = polygon["geometry"]["coordinates"]
+bf.close()
+json.dump(buildings, open("buildings_clean.json", "w"), indent=4)
+' > buildingpoly.py
+cat buildings.json |
+# sed 's/ Halls?//g' |
+# sed 's/ College//g' |
+# sed 's/Class of //g>' |
+cat > buildings_clean.json
+python buildingpoly.py
+
+rm  polygons.json taclean.json
+
+rm join.py antialias.py getnumrooms.py polygons.py taclean.py buildingpoly.py addpoly.py

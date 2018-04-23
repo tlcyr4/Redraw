@@ -1,8 +1,9 @@
-Butler	Yoseloff	Bogle	1976	1915	1967	Bloomberg	Wilf
-Forbes	Forbes Main	Annex
-Mathey	Blair	Campbell	Edwards	Hamilton	Joline	Little
-Rockefeller	Buyers	Campbell	Witherspoon	Holder
-Upperclass	Alexander	1901 Laughlin	1903	Brown	Cuyler	Dickinson	Dod	Foulke	Henry	Little	Lockhart	Patton	Pyne	Scully	Wilf	Wright
-Whitman	1981	Wendell B	Wendell C	Fisher	Hargadon	Lauritzen	Baker E	Baker S	Tower
-Wilson	1927 Clapp	1937	1938	1939	Dodge Osborn	Feinberg	Gauss	Walker	Wilcox
-Independent	1903	Spelman	Dod	Henry	Lockhart	Patton	Pyne	Scully	Little	Wilf
+Butler	0693	0695	0703	0071	0694	0627	0696
+Forbes	0148	0592
+Mathey	0019	0026	0010	0029	0059	0021
+Rockefeller	0631	0026	0007	0028
+Upperclass	0147	0047	0053	0014	0030	0060	0012	0042	0043	0021	0049	0023	0040	0603	0696	0619
+Whitman	0668	0669	0670	0671	0672	0636	0673		0686		0674
+Wilson	0164	0164	0091	0092	0093	0094	0162	0095	0056	0099
+Independent	0053	0012	0043	0049	0023	0040	0603	0021	0696
+Spelman	0153
