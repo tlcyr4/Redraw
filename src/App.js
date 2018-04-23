@@ -5,10 +5,10 @@ import Center from 'react-center';
 import Wendell from './wendell2.jpg';
 import Logo from './raw.jpg';
 import './App.css';
+import ImageMapper from 'react-image-mapper';
 import {
   BrowserRouter,
 } from 'react-router-dom';
-import FloorPlan from './Components/FloorPlan';
 
 // Manages the main logic of the page
 class App extends Component {
@@ -99,8 +99,6 @@ class App extends Component {
 			.catch(error => console.log(error));
 	}
 
-<<<<<<< HEAD
-=======
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
 	    var query = this.state.rooms;
@@ -131,7 +129,6 @@ class App extends Component {
 		this.getQuery();
 	}
 
->>>>>>> 083ead23f5d2ed72eadf9e573e70560520770297
 	// Handles the form submission by making a call to the API
 	handleSubmit(event) {
 		event.preventDefault();
@@ -145,8 +142,6 @@ class App extends Component {
 	}
 
 	render() {
-<<<<<<< HEAD
-=======
 		// Process the JSON received from Back-End
 		var retQuery = this.state.rooms;
 		var areaArray = [];
@@ -182,7 +177,6 @@ class App extends Component {
 			areas: areaArray,
 		};
 		
->>>>>>> 083ead23f5d2ed72eadf9e573e70560520770297
 		return (
 			<BrowserRouter>
 				<div className = "App">
@@ -202,14 +196,6 @@ class App extends Component {
 							</button>
 						</form>
 					</div>
-<<<<<<< HEAD
-					<Center>
-						<FloorPlan
-						 	rooms={this.state.rooms}
-							jpg={this.imagePath}
-						/>
-					</Center>
-=======
 
 					<div id = "mainContent">
 						<Center>
@@ -235,9 +221,6 @@ class App extends Component {
 						</ul>
 					</div>
 
-
-					
->>>>>>> 083ead23f5d2ed72eadf9e573e70560520770297
 				</div>
 			</BrowserRouter>
 		);
