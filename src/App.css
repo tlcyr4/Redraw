@@ -87,7 +87,7 @@ div#rightContent {
   display: table;
   margin: 0 auto;
   width: 15%;
-  height: 70%;
+  height: 65%;
   position: absolute;
   right: 3%;
   top: 25%;
@@ -135,6 +135,25 @@ div#roomInfo {
   position: absolute;
   bottom: 0%;
   font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+}
+
+div#roomNotClicked {
+  margin-top: 40%;
+}
+
+div#roomClicked {
+  line-height: 0.5px;
+}
+
+div#roomClicked {
+  margin-top: 10%;
+}
+
+p.roomContent {
+  float: left;
+  padding-left: 5px;
+  margin-left: 5%;
+  font-size: 14px;
 }
 
 @keyframes App-logo-spin {

@@ -19,7 +19,7 @@ class App extends Component {
     this.state = {
 			rooms: [], // Contains all rooms returned by getQuery()
 		};
-		this.roomid = 0;		// Room-ID, Changed on Click
+		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
 
 		this.floor = 0;	// Floor-ID for the Rooms
@@ -34,7 +34,9 @@ class App extends Component {
 		// Default image path is set to Wendell, but changes on click
 		this.imagePath = Wendell;
 
-
+		// keep track of all the information of the room!
+		this.roomClicked = -1;
+		this.currRoom = [];
 
 		// Bindings
 		this.getQuery = this.getQuery.bind(this);
@@ -108,7 +110,18 @@ class App extends Component {
 	      var iRoom = query[i];
 	      // print how many sqft the room is on the console
 	      if (iRoom.room_id === this.roomIDRendered[num]) {
-	        console.log("Room " + iRoom.room_id + " is " + iRoom.sqft + " sqft.");
+
+	      	// update the room info
+	      	this.roomClicked = iRoom.room_id;
+	      	this.currRoom.floor = parseInt(iRoom.level, 10);
+	      	this.currRoom.roomNum = iRoom.number;
+	      	this.currRoom.num_rooms = iRoom.num_rooms;
+	      	this.currRoom.num_occupants = iRoom.num_occupants;
+	      	this.currRoom.sqft = iRoom.sqft;
+	      	this.currRoom.drawType = iRoom.draws_in_id.toLowerCase();
+	      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+	      		+ this.currRoom.drawType.slice(1);
+	      	this.forceUpdate();
 	        break;
 	      }
 	    }
@@ -128,6 +141,7 @@ class App extends Component {
 		this.roomid = this.roomidFloorList[index];
 		this.floor = activeFloor;
 		this.floorButtonClicked = 1;
+		this.roomClicked = -1;
 		this.getQuery();
 	}
 
@@ -180,9 +194,27 @@ class App extends Component {
 			areas: areaArray,
 		};
 
-		const info = (
-			<h3>{}</h3>
+		// the bottom right room information
+		var info = (
+			<div id = "roomNotClicked">
+				<h3>Click a Room!</h3>
+			</div>
 		);
+		console.log("Room Clicked", this.roomClicked);
+		if (parseInt(this.roomClicked, 10) >= 0) {
+			console.log("YAY");
+			info = (
+				<div id = "roomClicked">
+					<h3>{this.searchLink}</h3>
+					<h4>{"Floor " + this.currRoom.floor}</h4>
+					<p class="roomContent">{"Room Number: " + this.currRoom.roomNum}</p>
+					<p class="roomContent">{"Room Size: " + this.currRoom.sqft + " sqft"}</p>
+					<p class="roomContent">{"Occupant Size: " + this.currRoom.num_occupants}</p>
+					<p class="roomContent">{"Number of Rooms: " + this.currRoom.num_rooms}</p>
+					<p class="roomContent">{"Draw Type: " + this.currRoom.drawType}</p>
+				</div>
+				);
+		}
 		
 		return (
 			<BrowserRouter>	
