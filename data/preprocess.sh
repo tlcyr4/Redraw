@@ -221,7 +221,7 @@ for polyfile in glob("polygons/*.json"):
     polygons = json.load(open(polyfile, "r"))
     building = path.basename(polyfile)[:4]
     for polygon in polygons:
-        id = building + " " + polygon["number"]
+        id = building + " " + polygon["number"].zfill(3)
         x0 = polygon["origin"][0]
         y0 = polygon["origin"][1]
         points = [[point[0][0] + x0, point[0][1] + y0] for point in polygon["polygon"]]
@@ -235,29 +235,55 @@ python polygons.py
 
 echo '
 import json
+
+log = open("matching.log","w")
 rf = open("AVAIL18.json","r")
 rooms = json.load(rf)
 polygons = json.load(open("polygons.json", "r"))
 misses = 0
 hits = 0
-missbldg = {}
+missfloor = {}
 for room in rooms:
     if room["building"] + " " + room["number"] in polygons:
         hits += 1
         room["polygons"] = polygons[room["building"] + " " + room["number"]]
+        del polygons[room["building"] + " " + room["number"]]
+        polygons[room["building"] + " " + room["number"] +"used"] = True
     else:
+        if room["building"] == "0148" and "1" in room["level"]:
+            log.write(room["number"] + "\n")
         room["polygons"] = []
         misses += 1
-        if room["building"] not in missbldg:
-            missbldg[room["building"]] = 0
-        missbldg[room["building"]] += 1
+        if room["building"] + " " + room["level"] not in missfloor:
+            missfloor[room["building"] + " " + room["level"]] = 0
+        missfloor[room["building"] + " " + room["level"]] += 1
 rf.close()
 json.dump(rooms, open("AVAIL18.json", "w"), indent=4, sort_keys=True)
-log = open("matching.log","w")
 log.write("Hits: " + str(hits) + "\n")
 log.write("Misses: " +  str(misses) + "\n")
-for k,v in missbldg.items():
-    log.write(str(k) + " " + str(v) + "\n")
+missbldg = {}
+for k,v in missfloor.items():
+    bldg,level = map(str,k.split())
+    if bldg not in missbldg:
+        missbldg[bldg] = {}
+    missbldg[bldg][level] = v
+log.write("Misses by floor\n\n")
+[log.write(str(bldg) + "\t" + str(missbldg[bldg]) + "\n") for bldg in missbldg]
+
+log.write("used: " + str(len([polygon for polygon in polygons if "used" in polygon])) + "\n")
+log.write("unused: " + str(len([polygon for polygon in polygons if "used" not in polygon])) + "\n")
+unused = {}
+for k,v in polygons.items():
+    if "used" in k: continue
+    bldg, level = map(str,k.split())
+    level = level[0]
+    if bldg not in unused:
+        unused[bldg] = {}
+    if level not in unused[bldg]:
+        unused[bldg][level] = 0
+    unused[bldg][level] += 1
+log.write("Unused by floor\n\n")
+[log.write(bldg + "\t" + str(unused[bldg]) + "\n") for bldg in unused]
 ' > addpoly.py
 
 sed -i 's/\([TA]\)\([0-9][0-9]\)/\2/g' AVAIL18.json
@@ -283,6 +309,6 @@ cat buildings.json |
 cat > buildings_clean.json
 python buildingpoly.py
 
-rm  polygons.json taclean.json
+rm taclean.json #polygons.json
 
 rm join.py antialias.py getnumrooms.py polygons.py taclean.py buildingpoly.py addpoly.py
