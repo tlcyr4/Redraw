@@ -1,6 +1,15 @@
+* {
+  border: none;
+  padding: none;
+}
+
 .App {
   text-align: center;
 }
+
+/*********************************************************/
+/******************** Heading with name ******************/
+/*********************************************************/
 
 #header {
   display: inline-block;
@@ -31,7 +40,9 @@
   margin: 20px 10px 10px 20px;
 }
 
-/* for the input search bar */
+/*********************************************************/
+/******************** Search bar (temp) ******************/
+/*********************************************************/
 input[type=text] {
     width: 70%;
     box-sizing: border-box;
@@ -50,6 +61,10 @@ input[type=text]:focus {
     width: 90%;
 }
 
+/*********************************************************/
+/********************** Submit button ********************/
+/*********************************************************/
+
 button#submitButton {
   width: 3%;
   padding: 12px 30px 12px 15px;
@@ -59,106 +74,68 @@ button#submitButton {
   cursor: pointer;
 }
 
-div#image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 button#submitButton:hover {
   background: #ccc;
 }
 
-ul#floorButtons {
+/*********************************************************/
+/****************** Change floor buttons *****************/
+/***************** Right side of content *****************/
+/***************** Display panel bottom R ****************/
+/*********************************************************/
+div#rightContent {
+  display: table;
+  margin: 0 auto;
   width: 15%;
+  height: 70%;
   position: absolute;
-  list-style-type: none;
-  right: 5%;
-  top: 30%;
+  right: 3%;
+  top: 25%;
+  text-align: center;
+}
+
+ul#floorButtons {
+  width: 80%;
+  display: inline-block;
+  margin-left: -15%;
+  list-style: none !important;
 }
 
 
 ul#floorButtons input {
-  background-color: #3299FF; /* Green */
+  width: 100%;
+  background-color: #3299FF;
   border: 1px solid white;
   color: white;
   padding: 10px 30px;
   text-decoration: none;
   display: inline-block;
-  font-size: 15px;
+  font-size: 18px;
+  border-radius: 20px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+ul#floorButtons input:hover {
+  background: #3277BB;
 }
 
-.App-title {
-  font-size: 1.5em;
+ul#floorButtons input:focus {
+  outline:0;
 }
 
-ul.header li {
-  display: inline;
-  list-style-type: none;
-  margin: 0;
-}
-ul.header {
-  background-color: #258;
-  padding: 0;
-}
-ul.header li a {
-  color: #FFF;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 20px;
-  display: inline-block;
+ul#floorButtons input.active {
+  background: #3277BB;
 }
 
-.content {
-  background-color: #FFF;
-  padding: 20px;
+div#roomInfo {
+  width: 100%;
+  height: 45%;
+  background-color: #D0DFDF;
+  margin: auto;
+  top-margin: 10px;
+  position: absolute;
+  bottom: 0%;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
 }
-.content h2 {
-  padding: 0;
-  margin: 0;
-}
-
-.active {
-  background-color: #0099FF;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-.Login-page {
-   text-align: center;
-   left: 0;
-   line-height: 30px;
-   margin: auto; 
-   margin-top: -150px;
-   position: absolute;
-   top: 50%;
-   width: 100%;
-}
-
-.Login-button {
-  background-color: white;
-  color: black;
-  border: 2px solid black;
-  font-size: 24px;
-  padding: 15px 60px;
-}
-
-.ImageDiv {
-  text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

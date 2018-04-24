@@ -34,6 +34,8 @@ class App extends Component {
 		// Default image path is set to Wendell, but changes on click
 		this.imagePath = Wendell;
 
+
+
 		// Bindings
 		this.getQuery = this.getQuery.bind(this);
 		this.getFloorplan = this.getFloorplan.bind(this);
@@ -50,7 +52,7 @@ class App extends Component {
       })
       .then(data => {
         this.setState({
-          rooms: data
+          rooms: data,
         });
         // Update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
@@ -130,7 +132,7 @@ class App extends Component {
 	}
 
 	// Handles the form submission by making a call to the API
-	handleSubmit(event) {
+	handleSubmit(event, obj) {
 		event.preventDefault();
 		const data = new FormData(event.target);
 		const searchData = data.get('search');
@@ -140,6 +142,7 @@ class App extends Component {
 		this.floorButtonClicked = 0;
 		this.getQuery();
 	}
+
 
 	render() {
 		// Process the JSON received from Back-End
@@ -176,13 +179,23 @@ class App extends Component {
 			name: 'my-map',
 			areas: areaArray,
 		};
+
+		const info = (
+			<h3>{}</h3>
+		);
 		
 		return (
-			<BrowserRouter>
+			<BrowserRouter>	
 				<div className = "App">
+					
+
 					<div id = "header">
+						
 						<img id ="headerImg" src={Logo} alt="R"/>
 						<p>edraw</p>
+					</div>
+					<div>
+					
 					</div>
 					<div id ="formBlock">
 						<form onSubmit = {this.handleSubmit}>
@@ -196,7 +209,6 @@ class App extends Component {
 							</button>
 						</form>
 					</div>
-
 					<div id = "mainContent">
 						<Center>
 							<ImageMapper	
@@ -208,17 +220,22 @@ class App extends Component {
 								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
 							/>
 						</Center>
+						<div id = "rightContent">
+							<ul id = "floorButtons">
+								{this.floorList.map(listValue => 
+									<li>
+										<input id={listValue}
+										value={"Floor " + parseInt(listValue, 10)} 
+										type="button"
+										onClick={(event) => this.changeFloor(event, this)}/>
+									</li>
+								)}
+							</ul>
 
-						<ul id = "floorButtons">
-							{this.floorList.map(listValue => 
-								<li>
-									<input id={listValue}
-									value={"Floor " + parseInt(listValue, 10)} 
-									type="button"
-									onClick={(event) => this.changeFloor(event)}/>
-								</li>
-							)}
-						</ul>
+							<div id = "roomInfo">
+								{info}
+							</div>
+						</div>
 					</div>
 
 				</div>
