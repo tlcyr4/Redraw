@@ -309,6 +309,6 @@ cat buildings.json |
 cat > buildings_clean.json
 python buildingpoly.py
 
-rm taclean.json #polygons.json
+rm taclean.json polygons.json
 
 rm join.py antialias.py getnumrooms.py polygons.py taclean.py buildingpoly.py addpoly.py

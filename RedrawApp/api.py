@@ -7,7 +7,8 @@ import json
 def query(request):
 	queries = request.GET.dict()
 	if 'building' in queries:
-		queries['floor__building'] = queries.pop('building')
+		print("foo")
+		queries['floor__building__name'] = queries.pop('building').replace("%20"," ")
 	if 'level' in queries:
 		queries['floor__level'] = queries.pop('level')
 	queried = Room.objects.filter(**queries)
