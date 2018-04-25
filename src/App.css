@@ -1,6 +1,7 @@
 * {
   border: none;
   padding: none;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
 }
 
 .App {
@@ -20,7 +21,6 @@
 }
 
 #header p {
-  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
   font-weight: bold;
   letter-spacing: 1.5px;
   padding-left: 5px;
@@ -92,17 +92,32 @@ button#submitButton:active {
 /***************** Right side of content *****************/
 /***************** Display panel bottom R ****************/
 /*********************************************************/
+
 div#rightContent {
   display: table;
   margin: 0 auto;
   width: 15%;
-  height: 65%;
+  height: 75%;
   position: absolute;
   right: 3%;
-  top: 25%;
+  top: 20%;
   text-align: center;
 }
 
+/* Label on the top for the floor identification */
+div#floorLabel {
+  position: relative;
+  color: #3299FF;
+  line-height: 5px;
+}
+
+.centerLabel {
+  position: absolute;
+  bottom: 10%;
+  right: 20%;
+}
+
+/* Style the list of buttons for changing floors */
 ul#floorButtons {
   width: 80%;
   display: inline-block;
@@ -135,19 +150,19 @@ ul#floorButtons input:active {
   background: #ffa500;
 }
 
+/* Display information about the room selected */
 div#roomInfo {
   width: 100%;
-  height: 45%;
+  height: 35%;
   background-color: #D0DFDF;
   margin: auto;
-  top-margin: 10px;
+  top-margin: 20px;
   position: absolute;
   bottom: 0%;
-  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
 }
 
 div#roomNotClicked {
-  margin-top: 40%;
+  margin-top: 30%;
 }
 
 div#roomClicked {
@@ -163,9 +178,4 @@ p.roomContent {
   padding-left: 5px;
   margin-left: 5%;
   font-size: 14px;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

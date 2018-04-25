@@ -22,6 +22,7 @@ class App extends Component {
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
 
+		this.floorNameLabel = (<p></p>);
 		this.floor = 0;	// Floor-ID for the Rooms
 		this.floorList = []; // Holds onto a list of all the floors in a building
 		this.floorButtonClicked = 0; // determine whether a specific floor button is clicked
@@ -58,9 +59,14 @@ class App extends Component {
         });
         // Update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
+			this.roomClicked = -1;
 			// for now, default to the first floor
 			if (!this.floorButtonClicked) {
-				this.floor = data[0].level;
+				var alphabet = parseInt(data[0].level, 10);
+				if (isNaN(alphabet))
+					this.floor = data[0].level;
+				else
+					this.floor = alphabet;
 				this.roomid = data[0].room_id;
 			}
 			this.getFloorplan();
@@ -86,6 +92,12 @@ class App extends Component {
 	        		currFloorID = entry.level;
 	        	}
 	        }
+	        this.floorNameLabel = (
+			<div id="floorLabel">
+				<h2 id="floorBuildingName" class = ".centerLabel">{this.searchLink}</h2>
+				<h3 id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</h3>
+			</div>
+			);
 	        console.log("All floors", this.floorList);
 	        this.forceUpdate();
 		}
@@ -255,17 +267,20 @@ class App extends Component {
 						</form>
 					</div>
 					<div id = "mainContent">
-						<Center>
-							<ImageMapper	
-								src={this.imagePath} 
-								map={MAP} 
-								fillColor="rgba(255, 165, 0, 0.7)"
-								strokeColor="rgba(255, 255, 255, 0.9)"
-								width={imageWidthScaled} 
-								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-							/>
-						</Center>
+						<div id="centerContent">
+							<Center>
+								<ImageMapper	
+									src={this.imagePath} 
+									map={MAP} 
+									fillColor="rgba(255, 165, 0, 0.7)"
+									strokeColor="rgba(255, 255, 255, 0.9)"
+									width={imageWidthScaled} 
+									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+								/>
+							</Center>
+						</div>
 						<div id = "rightContent">
+							{this.floorNameLabel}
 							<ul id = "floorButtons">
 								{this.floorList.map(listValue => 
 									<li>
