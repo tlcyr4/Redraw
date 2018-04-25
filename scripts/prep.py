@@ -46,6 +46,7 @@ for fn in inFiles:
             numBorders = altBorders[nb]
     stats[:numBorders+1,cv.CC_STAT_AREA] = 0
     ccs = {
+        "0014-01":[1,2],
         "0673-02":[1,2],
         "0636-00":[1,3],
         "0686-04":[2,3],

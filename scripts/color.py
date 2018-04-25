@@ -9,9 +9,12 @@ for fn in inFiles:
     print fn
     outFilename = path.join(".", "colored", path.basename(fn))
     # outFilename = outFilename[:-3] + "jpg"
-    COLOR = (15*16+15,7*16+11,0)
+    WHITE = (255,255,255)
+    REDRAW_COLOR = (15*16+15,7*16+11,0)
+    BLACK = (0,0,0)
     img = imread(fn, IMREAD_GRAYSCALE)
     colored = cvtColor(img, COLOR_GRAY2RGB)
-    colored[img > 0] = COLOR
+    colored[img > 0] = WHITE
+    colored[img == 0] = REDRAW_COLOR
 
     imwrite(outFilename, colored)
