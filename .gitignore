@@ -13,3 +13,17 @@ text.png
 results/*.png
 .vscode/*
 node_modules/*
+debug*
+output.png
+rooms.png
+text.png
+defects.png
+no_text.png
+leader.png
+results/*.png
+*.pyc
+.vscode/
+Floorplans/
+colored/
+preprocessed/
+shrunk/
