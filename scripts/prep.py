@@ -4,22 +4,17 @@ import sys
 from os import path
 import numpy as np
 
+from Segment import Segment
+from shortcuts import *
+
 inFiles = glob(sys.argv[1])
 for fn in inFiles:
     print fn
     outFilename = path.join(".", "preprocessed", path.basename(fn))
     img = cv.imread(fn, cv.IMREAD_GRAYSCALE)
-    grays = ["0696-00","0696-01","0696-02","0694-00"]
-    isgray = False
-    for r in grays:
-        if r in fn:
-            isgray = True
+    original = np.copy(img)
     img = (255-img)
-    if isgray:
-        pass
-        # img = cv.threshold(img, 150, 255, cv.THRESH_BINARY)[1]
-    else:
-        img = cv.threshold(img, 200, 255, cv.THRESH_BINARY)[1]
+    img = cv.threshold(img, 200, 255, cv.THRESH_BINARY)[1]
         
 
     if len(img) > len(img[0]): 
@@ -62,6 +57,7 @@ for fn in inFiles:
         # "0696-02":range(1,10),
         "0153-01":[1,2,3,4,5,7,8],
         "0153-02":range(1,8),
+        "0153-03":[1,2],
         "0043-05":[2],
         "0042-04":[2]
     }
@@ -70,9 +66,23 @@ for fn in inFiles:
         if cc in fn:
             cclist = ccs[cc]
     areas = sorted(stats[:, cv.CC_STAT_AREA])[::-1]
+    
+    
+
     img[:,:] = 0
     for i in cclist:
         img[stats[labelled, cv.CC_STAT_AREA] == areas[i-1]] = 255
+    segment = Segment(img)
+    hulls = [segment.convex_hull(cc) for cc in cclist]
+    origins = (Point(segment.bbox(cc)[0::2]) for cc in cclist)
+
+    # bring back things inside convex hull
+
+    mask = cv.cvtColor(np.zeros(img.shape, dtype="uint8"), cv.COLOR_GRAY2RGB)
+    [cv.drawContours(mask, hull, 0, WHITE, thickness = -1, offset=origins.next()) for hull in hulls]
+    mask = cv.cvtColor(mask, cv.COLOR_RGB2GRAY)
+            
+    img = cv.bitwise_and((255-original), mask)
 
     
 
