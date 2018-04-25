@@ -1,6 +1,15 @@
+* {
+  border: none;
+  padding: none;
+}
+
 .App {
   text-align: center;
 }
+
+/*********************************************************/
+/******************** Heading with name ******************/
+/*********************************************************/
 
 #header {
   display: inline-block;
@@ -31,16 +40,18 @@
   margin: 20px 10px 10px 20px;
 }
 
-/* for the input search bar */
+/*********************************************************/
+/******************** Search bar (temp) ******************/
+/*********************************************************/
 input[type=text] {
     width: 70%;
     box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
     background-color: white;
     background-repeat: no-repeat;
     padding: 12px 15px 12px 15px;
+    font-size: 16px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
@@ -49,6 +60,10 @@ input[type=text] {
 input[type=text]:focus {
     width: 90%;
 }
+
+/*********************************************************/
+/********************** Submit button ********************/
+/*********************************************************/
 
 button#submitButton {
   width: 3%;
@@ -63,77 +78,83 @@ button#submitButton:hover {
   background: #ccc;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-ul.header li {
-  display: inline;
-  list-style-type: none;
-  margin: 0;
-}
-ul.header {
-  background-color: #258;
-  padding: 0;
-}
-ul.header li a {
-  color: #FFF;
-  font-weight: bold;
-  text-decoration: none;
-  padding: 20px;
-  display: inline-block;
-}
-
-.content {
-  background-color: #FFF;
-  padding: 20px;
-}
-.content h2 {
-  padding: 0;
-  margin: 0;
-}
-
-.active {
-  background-color: #0099FF;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-.Login-page {
-   text-align: center;
-   left: 0;
-   line-height: 30px;
-   margin: auto; 
-   margin-top: -150px;
-   position: absolute;
-   top: 50%;
-   width: 100%;
-}
-
-.Login-button {
-  background-color: white;
-  color: black;
-  border: 2px solid black;
-  font-size: 24px;
-  padding: 15px 60px;
-}
-
-.ImageDiv {
+/*********************************************************/
+/****************** Change floor buttons *****************/
+/***************** Right side of content *****************/
+/***************** Display panel bottom R ****************/
+/*********************************************************/
+div#rightContent {
+  display: table;
+  margin: 0 auto;
+  width: 15%;
+  height: 65%;
+  position: absolute;
+  right: 3%;
+  top: 25%;
   text-align: center;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 
+ul#floorButtons {
+  width: 80%;
+  display: inline-block;
+  margin-left: -15%;
+  list-style: none !important;
+}
+
+
+ul#floorButtons input {
+  width: 100%;
+  background-color: #3299FF;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 30px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  border-radius: 20px;
+}
+
+ul#floorButtons input:hover {
+  background: #3277BB;
+}
+
+ul#floorButtons input:focus {
+  outline:0;
+}
+
+ul#floorButtons input.active {
+  background: #3277BB;
+}
+
+div#roomInfo {
+  width: 100%;
+  height: 45%;
+  background-color: #D0DFDF;
+  margin: auto;
+  top-margin: 10px;
+  position: absolute;
+  bottom: 0%;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+}
+
+div#roomNotClicked {
+  margin-top: 40%;
+}
+
+div#roomClicked {
+  line-height: 0.5px;
+}
+
+div#roomClicked {
+  margin-top: 10%;
+}
+
+p.roomContent {
+  float: left;
+  padding-left: 5px;
+  margin-left: 5%;
+  font-size: 14px;
+}
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

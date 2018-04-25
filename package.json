@@ -6,10 +6,12 @@
     "@fortawesome/fontawesome": "^1.1.5",
     "@fortawesome/fontawesome-free-solid": "^5.0.10",
     "@fortawesome/react-fontawesome": "0.0.18",
+    "@material-ui/icons": "^1.0.0-beta.43",
     "ajv": "^6.4.0",
     "ajv-keywords": "^3.1.0",
     "font-awesome": "^4.7.0",
     "image-map": "^1.0.8",
+    "material-ui": "^1.0.0-beta.43",
     "react": "^16.3.0",
     "react-center": "^1.1.1",
     "react-dom": "^16.3.0",
@@ -17,7 +19,10 @@
     "react-image-mapper": "0.0.7",
     "react-pdf": "^3.0.4",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "react-side-bar": "^0.3.5",
+    "react-sidebar": "^2.3.2",
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
