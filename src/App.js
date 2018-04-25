@@ -259,7 +259,7 @@ class App extends Component {
 							<ImageMapper	
 								src={this.imagePath} 
 								map={MAP} 
-								fillColor="rgba(50,153,255,0.5)"
+								fillColor="rgba(255, 165, 0, 0.7)"
 								strokeColor="rgba(255, 255, 255, 0.9)"
 								width={imageWidthScaled} 
 								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
