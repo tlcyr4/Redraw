@@ -1,0 +1,5 @@
+EFR:	1915	Hamilton	Joline	1901	1903	Cuyler	Foulke	Henry	Lockhart	Pyne	1927	1937	1938	Dodge Osborn	Walker
+TWO_DIGIT:	Campbell	Blair	Little	Buyers	Holder	Dickinson	Patton	Spelman	Wright
+CLOSE_DOOR:	Campbell
+CLUTTERED:	Wendell B	Wendell C
+UNMARKED:	Blair	Joline	Campbell	Alexander	Cuyler	Foulke	Henry	Lockhart	Patton	Scully	Spelman	Wright	1938	Feinberg

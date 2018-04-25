@@ -1,5 +1,5 @@
 from django.contrib import admin
-from RedrawApp.models import Room, Draw, Building, Group, User, Floor
+from RedrawApp.models import Room, Draw, Building, Group, Profile, Floor
 # Register your models here.
 
 
@@ -15,7 +15,7 @@ class RoomAdmin(admin.ModelAdmin):
 class FloorAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(User)
+@admin.register(Profile)
 class UserAdmin(admin.ModelAdmin):
     pass
 

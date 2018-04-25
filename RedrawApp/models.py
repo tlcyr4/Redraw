@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here. 
 
 class Draw(models.Model):
-    name = models.CharField(max_length=30,primary_key=True)
+    name = models.CharField(max_length=30,unique=True)
     res_college = models.BooleanField()
     upperclass = models.BooleanField()
     def __str__(self):
@@ -12,12 +15,12 @@ class Draw(models.Model):
 
 
 class Building(models.Model):
-    name = models.CharField(max_length=30,primary_key=True)
+    name = models.CharField(max_length=30,unique=True)
     number = models.CharField(max_length=4,unique=True)
-    coordinates = JSONField()
+    coordinates = JSONField(null = True)
     draw = models.ManyToManyField(Draw)
     def __str__(self):
-        return self.name
+        return self.name + " " + self.number
 
 class Floor(models.Model):
     building = models.ForeignKey(Building,on_delete=models.CASCADE)
@@ -34,9 +37,8 @@ class Room(models.Model):
     number = models.CharField(max_length=6)
     sqft = models.PositiveSmallIntegerField()
     num_occupants = models.PositiveSmallIntegerField()
-    num_rooms = models.PositiveSmallIntegerField()
+    num_rooms = models.PositiveSmallIntegerField(null=True)
     sub_free = models.NullBooleanField(null = True)
-    ada = models.NullBooleanField("Americans with Disabilities Act Compliance",null=True)
 
     # collapsed from past draw model
     draw_rank = ArrayField(models.IntegerField(null=True),size=5)
@@ -48,17 +50,26 @@ class Room(models.Model):
     def __str__(self):
         return self.floor.building.name + "\t" + self.number
 
-class User(models.Model):
-    netid = models.CharField(max_length=30,primary_key=True)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # should be many to many
     # keep equal to group_id
-    groups = ArrayField(models.IntegerField(null=True),size=5)
+    groups = ArrayField(models.IntegerField(null=True),size=5,null=True)
     # should be many to many
     # should always be equal to room_id
-    favorites = ArrayField(models.IntegerField(null=True),size=20)
+    favorites = ArrayField(models.IntegerField(null=True),size=20,null=True)
 
     def __str__(self):
         return self.netid
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
     
 class Group(models.Model):
     drawing_in = models.ForeignKey(Draw,null=True,on_delete=models.SET_NULL)
