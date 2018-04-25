@@ -8,3 +8,7 @@ leader.png
 results/*.png
 *.pyc
 .vscode/
+Floorplans/
+colored/
+preprocessed/
+shrunk/
