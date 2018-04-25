@@ -74,8 +74,12 @@ class App extends Component {
 	        for (var i = 0; i < data.length; i++) {
 	        	var entry = data[i];
 	        	if (currFloorID !== entry.level) {
-	        		// get the level
-	        		this.floorList.push(entry.level);
+	        		var alphabet = parseInt(entry.level, 10);
+	        		if (isNaN(alphabet))
+	        			this.floorList.push(entry.level);
+	        		else
+	        			this.floorList.push(alphabet);
+
 	        		// get the room_id for that specific level
 	        		this.roomidFloorList.push(entry.room_id);
 
@@ -109,11 +113,15 @@ class App extends Component {
 	    for (var i = 0; i < query.length; i++) {
 	      var iRoom = query[i];
 	      // print how many sqft the room is on the console
-	      if (iRoom.room_id === this.roomIDRendered[num]) {
+	      if (iRoom.room_id == this.roomIDRendered[num]) {
 
 	      	// update the room info
 	      	this.roomClicked = iRoom.room_id;
-	      	this.currRoom.floor = parseInt(iRoom.level, 10);
+	      	var checkAlpha = parseInt(iRoom.level, 10);
+	      	if (isNaN(checkAlpha))
+	      		this.currRoom.floor = iRoom.level;
+	      	else
+	      		this.currRoom.floor = checkAlpha;
 	      	this.currRoom.roomNum = iRoom.number;
 	      	this.currRoom.num_rooms = iRoom.num_rooms;
 	      	this.currRoom.num_occupants = iRoom.num_occupants;
@@ -134,7 +142,7 @@ class App extends Component {
 		var index = -1;
 		// get the index to get the correct room_id index
 		for (var i = 0; i < this.floorList.length; i++) {
-			if (activeFloor === this.floorList[i])
+			if (activeFloor == this.floorList[i])
 				index = i;
 		}
 
@@ -163,12 +171,17 @@ class App extends Component {
 		var retQuery = this.state.rooms;
 		var areaArray = [];
 		this.roomIDRendered = [];
-		var ratio = 1000.0/2550.0;
+		const imageWidthScaled = window.innerWidth*0.6;
+		var ratio = imageWidthScaled/2550.0;
 		// Iterate through all rooms in the json file
 		for (var i = 0; i < retQuery.length; i++) {
 			var iRoom = retQuery[i];
 			// Hard-Coded to only display those on one floor
-			if (iRoom.level === this.floor) {
+			var temp = parseInt(iRoom.level, 10);
+			if (isNaN(temp))
+				temp = iRoom.level;
+
+			if (temp == this.floor) {
 				var roomCoords = [];
 				var roomRaw = JSON.parse(iRoom.polygons);
 				
@@ -248,7 +261,7 @@ class App extends Component {
 								map={MAP} 
 								fillColor="rgba(50,153,255,0.5)"
 								strokeColor="rgba(255, 255, 255, 0.9)"
-								width={1000} 
+								width={imageWidthScaled} 
 								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
 							/>
 						</Center>
@@ -257,7 +270,7 @@ class App extends Component {
 								{this.floorList.map(listValue => 
 									<li>
 										<input id={listValue}
-										value={"Floor " + parseInt(listValue, 10)} 
+										value={"Floor " + listValue} 
 										type="button"
 										onClick={(event) => this.changeFloor(event, this)}/>
 									</li>
