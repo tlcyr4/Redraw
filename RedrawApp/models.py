@@ -54,10 +54,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # should be many to many
     # keep equal to group_id
-    groups = ArrayField(models.IntegerField(null=True),size=5)
+    groups = ArrayField(models.IntegerField(null=True),size=5,null=True)
     # should be many to many
     # should always be equal to room_id
-    favorites = ArrayField(models.IntegerField(null=True),size=20)
+    favorites = ArrayField(models.IntegerField(null=True),size=20,null=True)
 
     def __str__(self):
         return self.netid

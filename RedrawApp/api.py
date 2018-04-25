@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
-from .models import Building, Room, Floor
+from .models import Building, Room, Floor, Draw
 import json
 
 @login_required
@@ -17,6 +17,7 @@ def query(request):
 	for room in results:
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 		room['level'] = Floor.objects.get(id=room['floor_id']).level
+		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required

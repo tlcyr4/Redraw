@@ -118,7 +118,7 @@ class App extends Component {
 	      	this.currRoom.num_rooms = iRoom.num_rooms;
 	      	this.currRoom.num_occupants = iRoom.num_occupants;
 	      	this.currRoom.sqft = iRoom.sqft;
-	      	this.currRoom.drawType = iRoom.draws_in_id.toLowerCase();
+	      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
 	      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
 	      		+ this.currRoom.drawType.slice(1);
 	      	this.forceUpdate();
