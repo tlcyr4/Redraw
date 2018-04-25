@@ -80,11 +80,11 @@ class App extends Component {
 	        for (var i = 0; i < data.length; i++) {
 	        	var entry = data[i];
 	        	if (currFloorID !== entry.level) {
-	        		var alphabet = parseInt(entry.level, 10);
-	        		if (isNaN(alphabet))
+	        		var alphabet2 = parseInt(entry.level, 10);
+	        		if (isNaN(alphabet2))
 	        			this.floorList.push(entry.level);
 	        		else
-	        			this.floorList.push(alphabet);
+	        			this.floorList.push(alphabet2);
 
 	        		// get the room_id for that specific level
 	        		this.roomidFloorList.push(entry.room_id);
@@ -258,7 +258,8 @@ class App extends Component {
 						<form onSubmit = {this.handleSubmit}>
 							<input type="text"
 								placeholder="Search Room..."
-								name="search"/>
+								name="search"
+								autocomplete = "off"/>
 							<button 
 								id="submitButton" 
 								type="submit">
