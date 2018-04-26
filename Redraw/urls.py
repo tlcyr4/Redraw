@@ -27,6 +27,7 @@ urlpatterns = [
     re_path('^accounts/callback$', django_cas_ng.views.callback, name='cas_ng_callback'),
     re_path('^api/search/', api.query, name = "query"),
     re_path('^api/floorplan/', api.get_floorplan, name='floorplan'),
+    re_path('^api/favorites/', api.favorites, name="favorites"),
     re_path('.*', login_required(TemplateView.as_view(template_name='index.html'))),
 ]
 
