@@ -58,6 +58,7 @@ for fn in inFiles:
         "0153-01":[1,2,3,4,5,7,8],
         "0153-02":range(1,8),
         "0153-03":[1,2],
+        # "0153-04":[1,2],
         "0043-05":[2],
         "0042-04":[2]
     }
@@ -73,8 +74,8 @@ for fn in inFiles:
     for i in cclist:
         img[stats[labelled, cv.CC_STAT_AREA] == areas[i-1]] = 255
     segment = Segment(img)
-    hulls = [segment.convex_hull(cc) for cc in cclist]
-    origins = (Point(segment.bbox(cc)[0::2]) for cc in cclist)
+    hulls = [segment.convex_hull(cc) for cc in range(1,1+len(cclist))]
+    origins = (Point(segment.bbox(cc)[0::2]) for cc in range(1,1+len(cclist)))
 
     # bring back things inside convex hull
 
