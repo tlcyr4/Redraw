@@ -132,36 +132,38 @@ class App extends Component {
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
 
-		// add special =====================
-		// case for when on home map
-		// =================================
-	    var query = this.state.rooms;
-	    for (var i = 0; i < query.length; i++) {
-	      var iRoom = query[i];
-	      // print how many sqft the room is on the console
-	      if (iRoom.room_id == this.roomIDRendered[num]) {
+		if (this.imagePath === HomeMap) {
+			//this.searchLink = 
+		}
+		else {
+		    var query = this.state.rooms;
+		    for (var i = 0; i < query.length; i++) {
+		      var iRoom = query[i];
+		      // print how many sqft the room is on the console
+		      if (iRoom.room_id == this.roomIDRendered[num]) {
 
-	      	// update the room info
-	      	this.roomClicked = iRoom.room_id;
-	      	var checkAlpha = parseInt(iRoom.level, 10);
-	      	if (isNaN(checkAlpha))
-	      		this.currRoom.floor = iRoom.level;
-	      	else
-	      		this.currRoom.floor = checkAlpha;
-	      	this.currRoom.roomNum = iRoom.number;
-	      	// make sure that the entry is not undefined
-	      	if (iRoom.num_rooms === null)
-	      		this.currRoom.num_rooms = iRoom.num_occupants;
-	      	else	   
-	      		this.currRoom.num_rooms = iRoom.num_rooms;
-	      	this.currRoom.num_occupants = iRoom.num_occupants;
-	      	this.currRoom.sqft = iRoom.sqft;
-	      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
-	      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
-	      		+ this.currRoom.drawType.slice(1);
-	      	this.forceUpdate();
-	        break;
-	      }
+		      	// update the room info
+		      	this.roomClicked = iRoom.room_id;
+		      	var checkAlpha = parseInt(iRoom.level, 10);
+		      	if (isNaN(checkAlpha))
+		      		this.currRoom.floor = iRoom.level;
+		      	else
+		      		this.currRoom.floor = checkAlpha;
+		      	this.currRoom.roomNum = iRoom.number;
+		      	// make sure that the entry is not undefined
+		      	if (iRoom.num_rooms === null)
+		      		this.currRoom.num_rooms = iRoom.num_occupants;
+		      	else	   
+		      		this.currRoom.num_rooms = iRoom.num_rooms;
+		      	this.currRoom.num_occupants = iRoom.num_occupants;
+		      	this.currRoom.sqft = iRoom.sqft;
+		      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+		      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+		      		+ this.currRoom.drawType.slice(1);
+		      	this.forceUpdate();
+		        break;
+		      }
+		    }
 	    }
 	}
 
