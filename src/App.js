@@ -6,7 +6,8 @@ import HomeMap from './homeMap.png';
 import Logo from './raw.jpg';
 import './App.css';
 import ImageMapper from 'react-image-mapper';
-import GPSPixelCoordData from './building_polygons.json';
+import BuildingCoordData from './building_polygons.json';
+import BuildingQueryName from './buildings.json';
 import {
   BrowserRouter,
 } from 'react-router-dom';
@@ -126,14 +127,13 @@ class App extends Component {
 			.catch(error => console.log(error));
 	}
 
-	// Scale GPS --> pixel coordinates
-
-
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
 
 		if (this.imagePath === HomeMap) {
-			//this.searchLink = 
+			var buildingQ = this.buildingIDRendered[num].id;
+			this.searchLink = BuildingQueryName[buildingQ].name;
+			this.getQuery();
 		}
 		else {
 		    var query = this.state.rooms;
@@ -201,10 +201,11 @@ class App extends Component {
 		this.getQuery();
 	}
 
+	// handle the processing of the start screen
 	processBuildingJSON() {
 		console.log("HI");
-		for (var i = 0; i < GPSPixelCoordData.length; i++) {
-			var oneBuild = GPSPixelCoordData[i];
+		for (var i = 0; i < BuildingCoordData.length; i++) {
+			var oneBuild = BuildingCoordData[i];
 			var oneBuildPoly = oneBuild.geometry.coordinates;
 			var buildingCoords = [];
 
