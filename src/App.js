@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
-import Wendell from './wendell2.jpg';
+import HomeMap from './homeMap.png';
 import Logo from './raw.jpg';
 import './App.css';
 import ImageMapper from 'react-image-mapper';
+import BuildingCoordData from './building_polygons.json';
+import BuildingQueryName from './buildings.json';
 import {
   BrowserRouter,
 } from 'react-router-dom';
@@ -31,9 +33,14 @@ class App extends Component {
 		
 		// List of all the rooms that can be displayed, used for ImageMapper
 		this.roomIDRendered = [];
+
+		// List of all the buildings that are clickable, used for ImageMapper
+		this.buildingIDRendered = [];
+		this.buildingPolygons = [];
+		this.start = 0; //check startup
 		
 		// Default image path is set to Wendell, but changes on click
-		this.imagePath = Wendell;
+		this.imagePath = HomeMap;
 
 		// keep track of all the information of the room!
 		this.roomClicked = -1;
@@ -43,6 +50,7 @@ class App extends Component {
 		this.getQuery = this.getQuery.bind(this);
 		this.getFloorplan = this.getFloorplan.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.processBuildingJSON = this.processBuildingJSON.bind(this);
 	}
 
 	// Makes an API call to return all rooms associated with the building
@@ -80,11 +88,11 @@ class App extends Component {
 	        for (var i = 0; i < data.length; i++) {
 	        	var entry = data[i];
 	        	if (currFloorID !== entry.level) {
-	        		var alphabet = parseInt(entry.level, 10);
-	        		if (isNaN(alphabet))
+	        		var alphabet2 = parseInt(entry.level, 10);
+	        		if (isNaN(alphabet2))
 	        			this.floorList.push(entry.level);
 	        		else
-	        			this.floorList.push(alphabet);
+	        			this.floorList.push(alphabet2);
 
 	        		// get the room_id for that specific level
 	        		this.roomidFloorList.push(entry.room_id);
@@ -121,30 +129,46 @@ class App extends Component {
 
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
-	    var query = this.state.rooms;
-	    for (var i = 0; i < query.length; i++) {
-	      var iRoom = query[i];
-	      // print how many sqft the room is on the console
-	      if (iRoom.room_id == this.roomIDRendered[num]) {
 
-	      	// update the room info
-	      	this.roomClicked = iRoom.room_id;
-	      	var checkAlpha = parseInt(iRoom.level, 10);
-	      	if (isNaN(checkAlpha))
-	      		this.currRoom.floor = iRoom.level;
-	      	else
-	      		this.currRoom.floor = checkAlpha;
-	      	this.currRoom.roomNum = iRoom.number;
-	      	this.currRoom.num_rooms = iRoom.num_rooms;
-	      	this.currRoom.num_occupants = iRoom.num_occupants;
-	      	this.currRoom.sqft = iRoom.sqft;
-	      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
-	      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
-	      		+ this.currRoom.drawType.slice(1);
-	      	this.forceUpdate();
-	        break;
-	      }
+		if (this.imagePath === HomeMap) {
+			var buildingQ = this.buildingIDRendered[num].id;
+			this.searchLink = BuildingQueryName[buildingQ].name;
+			this.getQuery();
+		}
+		else {
+		    var query = this.state.rooms;
+		    for (var i = 0; i < query.length; i++) {
+		      var iRoom = query[i];
+		      // print how many sqft the room is on the console
+		      if (iRoom.room_id == this.roomIDRendered[num]) {
+
+		      	// update the room info
+		      	this.roomClicked = iRoom.room_id;
+		      	var checkAlpha = parseInt(iRoom.level, 10);
+		      	if (isNaN(checkAlpha))
+		      		this.currRoom.floor = iRoom.level;
+		      	else
+		      		this.currRoom.floor = checkAlpha;
+		      	this.currRoom.roomNum = iRoom.number;
+		      	// make sure that the entry is not undefined
+		      	if (iRoom.num_rooms === null)
+		      		this.currRoom.num_rooms = iRoom.num_occupants;
+		      	else	   
+		      		this.currRoom.num_rooms = iRoom.num_rooms;
+		      	this.currRoom.num_occupants = iRoom.num_occupants;
+		      	this.currRoom.sqft = iRoom.sqft;
+		      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+		      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+		      		+ this.currRoom.drawType.slice(1);
+		      	this.forceUpdate();
+		        break;
+		      }
+		    }
 	    }
+	}
+
+	handleHover = (obj, num, event) => {
+		//display the information of the room OR building on hover.
 	}
 
 	// Handles the changing of the floors
@@ -177,8 +201,35 @@ class App extends Component {
 		this.getQuery();
 	}
 
+	// handle the processing of the start screen
+	processBuildingJSON() {
+		console.log("HI");
+		for (var i = 0; i < BuildingCoordData.length; i++) {
+			var oneBuild = BuildingCoordData[i];
+			var oneBuildPoly = oneBuild.geometry.coordinates;
+			var buildingCoords = [];
+
+			for (var j = 0; j < oneBuildPoly.length; j++) {
+				var gpsCoor = oneBuildPoly[j];
+				var buildX = parseInt(gpsCoor[0],10) * window.innerWidth*0.6/1166.0;
+				var buildY = parseInt(gpsCoor[1],10) * window.innerWidth*0.6/1166.0;
+				buildingCoords.push(buildX);
+				buildingCoords.push(buildY);
+			}
+			this.buildingPolygons.push({shape: 'poly', coords: buildingCoords})
+			// hold onto the order in which the buildings are added
+			this.buildingIDRendered.push(oneBuild.properties);
+		}
+		this.start = 1;
+	}
+
 
 	render() {
+		// run only once
+		if (this.start === 0) {
+			this.processBuildingJSON();
+		}
+
 		// Process the JSON received from Back-End
 		var retQuery = this.state.rooms;
 		var areaArray = [];
@@ -213,18 +264,42 @@ class App extends Component {
 		// Diplays the array of polygons loaded for debugging purposes.
 		console.log("Polygons", areaArray);
 
-		// Make the MAP to be drawn in
+		// Make the MAP to be drawn in for floor plans
 		var MAP = {
 			name: 'my-map',
 			areas: areaArray,
 		};
+		// fill color for floors
+		var fillColor = "rgba(255, 165, 0, 0.7)";
+		// border color for floors
+		var borderColor = "rgba(255, 255, 255, 0)";
+		
+		// the case when we are in the map screen, overwrite styles
+		if (this.imagePath === HomeMap) {
+			MAP = {
+				name: 'my-map',
+				areas: this.buildingPolygons,
+			};
+			fillColor = "rgba(255, 0, 255, 0.85)";
+			borderColor = "rgba(200,200,250, 1)";
+		}
 
 		// the bottom right room information
-		var info = (
-			<div id = "roomNotClicked">
-				<h3>Click a Room!</h3>
-			</div>
-		);
+		var info;
+		if (this.imagePath === HomeMap) {
+			info = (
+				<div id = "roomNotClicked">
+					<h3>Click a Building!</h3>
+				</div>
+			);
+		}
+		else {
+			info = (
+				<div id = "roomNotClicked">
+					<h3>Click a Room!</h3>
+				</div>
+			);
+		}
 		console.log("Room Clicked", this.roomClicked);
 		if (parseInt(this.roomClicked, 10) >= 0) {
 			console.log("YAY");
@@ -258,7 +333,8 @@ class App extends Component {
 						<form onSubmit = {this.handleSubmit}>
 							<input type="text"
 								placeholder="Search Room..."
-								name="search"/>
+								name="search"
+								autoComplete = "off"/>
 							<button 
 								id="submitButton" 
 								type="submit">
@@ -272,10 +348,12 @@ class App extends Component {
 								<ImageMapper	
 									src={this.imagePath} 
 									map={MAP} 
-									fillColor="rgba(255, 165, 0, 0.7)"
-									strokeColor="rgba(255, 255, 255, 0.9)"
-									width={imageWidthScaled} 
+									fillColor={fillColor}
+									strokeColor={borderColor}
+									width={imageWidthScaled}
 									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+									onMouseEnter={(obj, num, event) => this.handleHover(obj, num, event)}
+									lineWidth="3"
 								/>
 							</Center>
 						</div>

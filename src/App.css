@@ -159,6 +159,7 @@ div#roomInfo {
   top-margin: 20px;
   position: absolute;
   bottom: 0%;
+  overflow: auto;
 }
 
 div#roomNotClicked {
