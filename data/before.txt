@@ -1,0 +1,1831 @@
+3 Butler Private bathroom 0627 112 1 495 
+4 Butler Private bathroom 0627 121 1 758 
+1 Butler Private bathroom 0627 124 1 170 
+4 Butler Private bathroom 0627 132 1 632 
+4 Butler Private bathroom 0627 140 1 680 
+2 Butler Private bathroom 0627 175 1 244 
+4 Butler Private bathroom 0627 177 1 708 
+4 Butler Private bathroom 0627 181 1 702 
+4 Butler Private bathroom 0627 182 1 585 
+4 Butler Private bathroom 0627 191 1 669 
+1 Butler Private bathroom 0627 192 1 165 
+4 Butler Private bathroom 0627 193 1 710 
+1 Butler 0627 225 2 132 
+1 Butler 0627 226 2 145 
+1 Butler 0627 227 2 132 
+1 Butler 0627 229 2 131 
+1 Butler Shared bathroom 0627 259 2 143 Yes 
+1 Butler 0627 269 2 156 Yes 
+1 Butler 0627 270 2 134 Yes 
+1 Butler 0627 271 2 133 Yes 
+1 Butler Shared bathroom 0627 273 2 148 Yes 
+1 Butler 0627 274 2 132 Yes 
+1 Butler Shared bathroom 0627 275 2 155 Yes 
+1 Butler 0627 276 2 134 Yes 
+1 Butler Shared bathroom 0627 277 2 154 Yes 
+1 Butler 0627 278 2 136 Yes 
+1 Butler Shared bathroom 0627 279 2 139 Yes 
+4 Butler Private bathroom 0627 281 2 710 Yes 
+1 Butler Shared bathroom 0627 301 3 148 
+1 Butler Shared bathroom 0627 302 3 145 
+1 Butler Shared bathroom 0627 303 3 132 
+1 Butler Shared bathroom 0627 304 3 139 
+1 Butler Shared bathroom 0627 305 3 143
+1 Butler Shared bathroom 0627 306 3 139 
+1 Butler Shared bathroom 0627 307 3 142 
+1 Butler Shared bathroom 0627 308 3 140 
+1 Butler Shared bathroom 0627 309 3 144 
+1 Butler 0627 310 3 152 
+1 Butler Shared bathroom 0627 311 3 147 
+1 Butler 0627 314 3 156 
+1 Butler 0627 316 3 140 
+1 Butler 0627 318 3 135 
+1 Butler 0627 320 3 133 
+1 Butler 0627 322 3 133 
+1 Butler 0627 323 3 133 
+1 Butler 0627 324 3 136 
+1 Butler 0627 325 3 132 
+1 Butler 0627 326 3 150 
+1 Butler 0627 327 3 132 
+1 Butler 0627 329 3 133 
+1 Butler 0627 334 3 166 
+1 Butler 0627 336 3 146 
+1 Butler 0627 340 3 148 
+1 Butler 0627 341 3 139 
+1 Butler 0627 342 3 145 
+1 Butler 0627 343 3 139 
+1 Butler 0627 344 3 145 
+1 Butler 0627 345 3 139 
+1 Butler 0627 346 3 148 
+1 Butler 0627 348 3 154 
+1 Butler 0627 349 3 169 
+1 Butler 0627 350 3 146 
+1 Butler 0627 357 3 156 
+1 Butler Shared bathroom 0627 359 3 143 
+1 Butler Private bathroom 0627 361 3 141 
+1 Butler 0627 367 3 135 
+1 Butler 0627 369 3 154
+1 Butler 0627 371 3 136 
+3 Butler 0627 373 3 531 
+1 Butler 0627 374 3 132 
+1 Butler 0627 376 3 135 
+1 Butler 0627 378 3 136 
+1 Butler Private bathroom 0627 379 3 142 
+4 Butler Private bathroom 0627 381 3 710 
+1 Butler 0627 401 4 162 
+1 Butler 0627 402 4 153 
+1 Butler 0627 403 4 149 
+1 Butler 0627 408 4 145 
+1 Butler 0627 409 4 151 
+1 Butler 0627 410 4 134 
+1 Butler 0071 411 1 161 
+1 Butler 0627 411 4 154 
+1 Butler 0071 412 1 160 
+1 Butler 0071 413 1 144 
+1 Butler 0071 414 1 146 
+1 Butler 0071 415 1 153 
+1 Butler 0071 421 2 160 
+1 Butler 0071 422 2 159 
+1 Butler 0071 423 2 144 
+1 Butler 0071 424 2 148 
+1 Butler 0071 425 2 153 
+1 Butler 0627 425 4 137 
+1 Butler 0627 427 4 137 
+1 Butler 0627 429 4 134 
+1 Butler 0627 430 4 187 
+1 Butler 0627 436 4 153 
+1 Butler 0627 439 4 134 
+1 Butler 0627 441 4 138 
+1 Butler 0627 445 4 139 
+1 Butler 0627 447 4 173 
+1 Butler 0627 449 4 147
+1 Butler 0627 451 4 175 
+1 Butler 0627 454 4 129 
+1 Butler 0627 456 4 153 
+1 Butler 0627 457 4 149 
+1 Butler 0627 458 4 134 
+1 Butler 0627 459 4 146 
+1 Butler 0627 461 4 147 
+1 Butler 0627 463 4 147 
+1 Butler 0627 467 4 134 
+1 Butler 0627 469 4 142 
+3 Butler 0627 473 4 482 
+1 Butler 0627 474 4 205 
+1 Butler 0627 476 4 113 
+1 Butler 0627 478 4 113 
+1 Butler 0627 479 4 166 
+4 Butler Private bathroom 0627 481 4 638 
+1 Butler 0071 511 1 154 
+1 Butler 0071 512 1 145 
+1 Butler 0071 513 1 147 
+1 Butler 0071 514 1 154 
+1 Butler 0071 521 2 153 
+1 Butler 0071 522 2 145 
+1 Butler 0071 523 2 147 
+1 Butler 0071 524 2 154 
+1 Butler 0071 611 1 153 
+1 Butler 0071 612 1 142 
+1 Butler 0071 613 1 142 
+1 Butler 0071 614 1 156 
+1 Butler 0071 621 2 153 
+1 Butler 0071 622 2 144 
+1 Butler 0071 623 2 142 
+1 Butler 0071 624 2 159 
+1 Butler 0071 625 2 161 
+1 Butler Shared bathroom 0693 105 1 138 Yes
+1 Butler Shared bathroom 0693 107 1 139 Yes 
+4 Butler Private bathroom 0693 113 1 653 Yes 
+4 Butler Private bathroom 0693 115 1 522 Yes 
+4 Butler Private bathroom 0693 202 2 580 
+4 Butler Private bathroom 0693 203 2 580 
+1 Butler Shared bathroom 0693 205 2 138 
+1 Butler Shared bathroom 0693 207 2 139 
+4 Butler Private bathroom 0693 208 2 580 
+4 Butler Private bathroom 0693 213 2 580 
+4 Butler Private bathroom 0694 202 2 542 
+4 Butler Private bathroom 0694 204 2 574 
+1 Butler Shared bathroom 0694 209 2 148 
+4 Butler Private bathroom 0694 211 2 522 
+4 Butler Private bathroom 0694 212 2 522 
+4 Butler Private bathroom 0694 213 2 522 
+4 Butler Private bathroom 0694 214 2 580 
+4 Butler Private bathroom 0694 304 3 574 
+1 Butler Shared bathroom 0694 305 3 152 
+1 Butler Shared bathroom 0694 309 3 148 
+4 Butler Private bathroom 0694 313 3 580 
+4 Butler Private bathroom 0695 102 1 522 
+1 Butler Shared bathroom 0695 103 1 139 
+4 Butler Private bathroom 0695 104 1 516 
+1 Butler Shared bathroom 0695 105 1 153 
+4 Butler Private bathroom 0695 202 2 580 
+1 Butler Shared bathroom 0695 203 2 139 
+4 Butler Private bathroom 0695 204 2 522 
+1 Butler Shared bathroom 0695 205 2 153 
+4 Butler Private bathroom 0703 106 1 538 
+4 Butler Private bathroom 0703 112 1 571 
+1 Butler Private bathroom 0703 114 1 202 
+1 Butler Private bathroom 0703 204 2 219 
+4 Butler Private bathroom 0703 210 2 580 
+4 Butler 0703 212 2 571
+1 Butler Private bathroom 0703 304 3 219 Yes 
+4 Butler Private bathroom 0703 306 3 564 Yes 
+4 Butler Private bathroom 0703 312 3 571 Yes 
+1 Butler Shared bathroom 0703 314 3 139 Yes 
+1 Butler Shared bathroom 0703 316 3 140 Yes 
+1 Butler Shared bathroom 0696 102 1 132 
+1 Butler Private bathroom 0696 103 1 211 
+1 Butler Shared bathroom 0696 104 1 142 
+1 Butler Shared bathroom 0696 105 1 142 
+1 Butler Shared bathroom 0696 106 1 139 
+1 Butler Shared bathroom 0696 107 1 138 
+1 Butler Shared bathroom 0696 108 1 135 
+1 Butler Shared bathroom 0696 201 2 137 
+4 Butler Private bathroom 0696 202 2 580 
+1 Butler Shared bathroom 0696 203 2 128 
+4 Butler Private bathroom 0696 205 2 580 
+1 Butler Shared bathroom 0696 301 3 137 
+4 Butler Private bathroom 0696 302 3 580 
+1 Butler Shared bathroom 0696 303 3 128 
+4 Butler Private bathroom 0696 305 3 580 
+1 Butler Shared bathroom 0696 308 3 140 
+2 Forbes Shared bathroom 0148 107 1 183 
+2 Forbes Shared bathroom 0148 108 1 183 
+2 Forbes Shared bathroom 0148 109 1 183 
+2 Forbes Shared bathroom 0148 110 1 192 
+2 Forbes Private bathroom 0148 111 1 183 
+2 Forbes Private bathroom 0148 151 1 284 
+2 Forbes Private bathroom 0148 152 1 291 
+2 Forbes Private bathroom 0148 153 1 280 
+2 Forbes Private bathroom 0148 154 1 311 
+2 Forbes Private bathroom 0148 155 1 349 
+4 Forbes Private bathroom 0148 156 1 594 
+2 Forbes Private bathroom 0148 206 2 183 Yes 
+2 Forbes Shared bathroom 0148 207 2 192 Yes
+2 Forbes Shared bathroom 0148 208 2 183 Yes 
+2 Forbes Shared bathroom 0148 209 2 183 Yes 
+2 Forbes Shared bathroom 0148 210 2 192 Yes 
+2 Forbes Private bathroom 0148 211 2 183 Yes 
+2 Forbes Private bathroom 0148 213 2 193 Yes 
+2 Forbes Private bathroom 0148 215 2 201 Yes 
+2 Forbes Private bathroom 0148 217 2 244 
+2 Forbes Private bathroom 0148 218 2 275 
+2 Forbes Private bathroom 0148 219 2 246 
+2 Forbes Shared bathroom 0148 220 2 248 
+2 Forbes Shared bathroom 0148 221 2 248 
+1 Forbes Shared bathroom 0148 224 2 142 
+2 Forbes Private bathroom 0148 234 2 238 
+2 Forbes Private bathroom 0148 235 2 291 
+2 Forbes Private bathroom 0148 237 2 234 
+2 Forbes Private bathroom 0148 239 2 218 
+2 Forbes Private bathroom 0148 251 2 293 Yes 
+2 Forbes Private bathroom 0148 252 2 298 Yes 
+2 Forbes Private bathroom 0148 253 2 287 Yes 
+2 Forbes Private bathroom 0148 254 2 306 Yes 
+2 Forbes Private bathroom 0148 255 2 346 Yes 
+2 Forbes Private bathroom 0148 261 2 293 Yes 
+2 Forbes Private bathroom 0148 262 2 293 Yes 
+2 Forbes Private bathroom 0148 263 2 293 Yes 
+2 Forbes Private bathroom 0148 264 2 296 Yes 
+2 Forbes Private bathroom 0148 266 2 295 Yes 
+2 Forbes Private bathroom 0148 267 2 296 Yes 
+1 Forbes Shared bathroom 0148 301 3 147 
+1 Forbes Shared bathroom 0148 302 3 115 
+3 Forbes Shared bathroom 0148 303 3 311 
+1 Forbes Shared bathroom 0148 304 3 130 
+1 Forbes Shared bathroom 0148 306 3 136 
+1 Forbes Shared bathroom 0148 307 3 120 
+1 Forbes Private bathroom 0148 308 3 130
+1 Forbes Shared bathroom 0148 317 3 125 
+1 Forbes Shared bathroom 0148 319 3 125 
+2 Forbes Private bathroom 0148 321 3 248 
+1 Forbes Shared bathroom 0148 322 3 131 
+1 Forbes Shared bathroom 0148 323 3 127 
+2 Forbes Private bathroom 0148 324 3 294 
+1 Forbes Shared bathroom 0148 327 3 145 
+2 Forbes Shared bathroom 0148 331 3 286 
+3 Forbes Private bathroom 0592 125 1 372 
+1 Forbes Private bathroom 0592 126 1 172 
+2 Forbes Shared bathroom 0592 131 1 208 
+2 Forbes Shared bathroom 0592 132 1 185 
+1 Forbes Shared bathroom 0592 133 1 115 
+1 Forbes Shared bathroom 0592 134 1 108 
+1 Forbes Shared bathroom 0592 135 1 115 
+1 Forbes Shared bathroom 0592 136 1 105 
+2 Forbes Shared bathroom 0592 137 1 185 
+2 Forbes Shared bathroom 0592 138 1 186 
+1 Forbes 0592 142 1 168 
+1 Forbes 0592 145 1 144 
+1 Forbes 0592 147 1 172 
+1 Forbes 0592 148 1 167 
+1 Forbes 0592 149 1 158 
+1 Forbes 0592 150 1 166 
+1 Forbes 0592 152 1 167 
+1 Forbes 0592 154 1 170 
+1 Forbes 0592 155 1 178 
+1 Forbes 0592 156 1 171 
+1 Forbes Shared bathroom 0592 174 1 107 
+3 Forbes Private bathroom 0592 178 1 363 
+2 Forbes 0592 227 2 291 
+2 Forbes 0592 228 2 185 
+2 Forbes 0592 231 2 282 
+2 Forbes 0592 232 2 185
+2 Forbes 0592 234 2 180 
+2 Forbes 0592 236 2 180 
+2 Forbes 0592 238 2 185 
+1 Forbes 0592 242 2 167 
+1 Forbes 0592 244 2 168 
+1 Forbes 0592 245 2 166 
+1 Forbes 0592 246 2 168 
+1 Forbes 0592 247 2 170 
+1 Forbes 0592 248 2 170 
+1 Forbes 0592 249 2 161 
+1 Forbes 0592 250 2 168 
+1 Forbes 0592 252 2 167 
+1 Forbes 0592 254 2 167 
+1 Forbes 0592 255 2 179 Yes 
+1 Forbes 0592 256 2 169 Yes 
+1 Forbes 0592 257 2 172 Yes 
+1 Forbes 0592 258 2 180 Yes 
+1 Forbes 0592 259 2 172 Yes 
+1 Forbes 0592 260 2 162 Yes 
+1 Forbes 0592 261 2 167 Yes 
+1 Forbes 0592 263 2 166 Yes 
+2 Forbes 0592 265 2 343 Yes 
+1 Forbes 0592 266 2 160 Yes 
+1 Forbes 0592 268 2 175 Yes 
+1 Forbes 0592 270 2 173 Yes 
+3 Forbes 0592 323 3 392 
+2 Forbes 0592 327 3 288 
+2 Forbes 0592 328 3 185 
+2 Forbes 0592 331 3 279 
+2 Forbes 0592 332 3 184 
+2 Forbes 0592 334 3 180 
+2 Forbes 0592 336 3 180 
+3 Forbes 0592 337 3 291 
+2 Forbes 0592 338 3 184
+2 Forbes 0592 374 3 180 
+2 Forbes 0592 376 3 180 
+2 Forbes 0592 377 3 279 
+2 Forbes 0592 378 3 184 
+2 Forbes 0592 426 4 180 
+2 Forbes 0592 427 4 284 
+2 Forbes 0592 428 4 181 
+2 Forbes 0592 431 4 270 
+2 Forbes 0592 432 4 181 
+2 Forbes 0592 434 4 180 
+2 Forbes 0592 436 4 180 
+2 Forbes 0592 438 4 181 
+3 Mathey 0021 11 1 466 Yes 
+3 Mathey 0021 12 1 422 Yes 
+4 Mathey 0021 13 1 561 Yes 
+4 Mathey 0021 31 1 527 Yes 
+4 Mathey 0021 33 1 514 Yes 
+2 Mathey 0021 35 2 231 Yes 
+1 Mathey 0019 45 1 101 Yes 
+2 Mathey 0021 45 2 222 Yes 
+1 Mathey 0021 47 2 210 Yes 
+1 Mathey 0021 48 2 130 Yes 
+4 Mathey 0019 51 1 517 Yes 
+4 Mathey 0021 51 1 529 
+1 Mathey 0026 52 2 126 
+4 Mathey 0019 53 1 503 Yes 
+4 Mathey 0021 53 1 528 
+1 Mathey 0021 55 2 212 
+2 Mathey 0021 57 2 443 
+2 Mathey 0019 61 1 277 Yes 
+2 Mathey 0026 61 1 274 
+2 Mathey 0026 62 2 272 
+1 Mathey 0021 62 1 238 
+2 Mathey 0026 63 1 270
+4 Mathey 0021 63 2 644 
+2 Mathey 0019 64 2 213 Yes 
+4 Mathey 0019 65 1 499 Yes 
+5 Mathey 0021 71 1 889 
+4 Mathey 0021 73 1 573 
+4 Mathey 0021 74 2 573 
+4 Mathey 0021 77 2 683 
+4 Mathey 0019 81 1 501 
+4 Mathey 0021 81 1 506 
+4 Mathey 0019 82 2 523 
+4 Mathey 0019 83 1 504 
+2 Mathey 0021 83 1 419 
+2 Mathey 0019 84 2 213 
+2 Mathey 0021 85 2 418 
+4 Mathey 0019 91 1 504 
+2 Mathey 0019 92 2 213 
+2 Mathey 0019 93 1 271 
+4 Mathey 0019 95 1 540 
+4 Mathey 0019 96 2 603 
+4 Mathey 0019 97 1 592 
+4 Mathey 0019 98 2 573 
+1 Mathey 0010 101 1 131 
+4 Mathey 0019 102 2 541 
+1 Mathey 0010 102 1 101 
+1 Mathey 0010 103 1 129 
+1 Mathey 0010 105 1 151 
+1 Mathey 0010 106 1 154 
+1 Mathey 0010 107 1 157 
+1 Mathey 0010 108 1 153 
+1 Mathey 0010 109 1 152 
+1 Mathey 0010 113 1 156 
+1 Mathey 0029 113 1 176 
+1 Mathey 0019 114 2 184 
+1 Mathey 0010 115 1 99
+1 Mathey 0010 116 1 122 
+2 Mathey 0010 117 1 270 
+4 Mathey 0029 124 2 628 
+2 Mathey 0059 212 1 386 
+2 Mathey 0059 213 1 366 
+2 Mathey 0059 214 1 332 
+1 Mathey 0029 221 2 145 
+3 Mathey 0059 223 2 390 
+2 Mathey 0059 225 2 394 
+2 Mathey 0059 231 3 290 
+1 Mathey 0059 234 3 167 
+1 Mathey 0059 235 3 238 
+4 Mathey 0019 301 3 575 
+4 Mathey 0021 301 3 562 Yes 
+4 Mathey 0019 302 3 598 
+1 Mathey 0021 302 3 162 Yes 
+1 Mathey 0021 303 3 193 Yes 
+4 Mathey 0019 305 3 605 
+1 Mathey 0021 305 3 123 Yes 
+1 Mathey 0021 307 3 116 Yes 
+1 Mathey 0021 309 3 119 Yes 
+3 Mathey 0059 311 1 424 
+1 Mathey 0021 311 3 131 Yes 
+1 Mathey 0059 312 1 156 
+3 Mathey 0059 313 1 409 
+1 Mathey 0021 313 3 110 Yes 
+1 Mathey 0021 318 3 159 Yes 
+4 Mathey 0059 321 2 508 
+1 Mathey 0021 321 3 111 Yes 
+1 Mathey 0029 322 2 129 
+3 Mathey 0059 323 2 421 
+1 Mathey 0021 323 3 127 Yes 
+5 Mathey 0029 324 2 957 
+1 Mathey 0029 325 2 127
+1 Mathey 0021 325 3 118 Yes 
+1 Mathey 0021 327 3 118 Yes 
+4 Mathey 0021 329 3 742 Yes 
+1 Mathey 0059 331 3 155 
+1 Mathey 0059 332 3 200 
+1 Mathey 0059 333 3 188 
+1 Mathey 0059 334 3 144 
+4 Mathey 0021 381 3 710 
+1 Mathey 0021 385 3 207 
+1 Mathey 0021 387 3 137 
+1 Mathey 0021 389 3 140 
+1 Mathey 0021 391 3 140 
+1 Mathey 0021 393 3 141 
+1 Mathey 0021 395 3 230 
+4 Mathey 0021 401 4 550 Yes 
+1 Mathey 0059 412 1 212 
+1 Mathey 0059 422 2 205 
+3 Mathey 0059 432 3 331 
+1 Mathey 0059 433 3 195 
+1 Mathey 0010 501 5 161 
+1 Mathey 0010 502 5 170 
+1 Mathey 0010 503 5 165 
+1 Mathey 0010 504 5 180 
+1 Mathey 0010 505 5 157 
+1 Mathey 0010 506 5 164 
+1 Mathey 0010 507 5 164 
+1 Mathey 0010 508 5 163 
+1 Mathey 0010 509 5 160 
+1 Mathey 0010 510 5 162 
+1 Mathey 0010 511 5 163 
+1 Mathey 0010 512 5 174 
+1 Mathey 0010 513 5 173 
+1 Mathey 0010 514 5 158 
+2 Mathey 0010 515 5 299
+1 Mathey 0026 005B 3 140 
+1 Mathey 0026 006A 3 146 
+1 Mathey 0026 052A 2 117 
+1 Mathey 0026 052B 2 118 
+1 Mathey 0019 A02 2 160 Yes 
+1 Mathey 0019 041 Baseme122 Yes 
+2 Mathey 0019 042 Baseme214 Yes 
+1 Mathey 0019 051 Baseme138 Yes 
+1 Mathey 0019 052 Baseme156 Yes 
+1 Mathey 0019 053 Baseme147 Yes 
+2 Mathey 0019 061 Baseme248 Yes 
+2 Mathey 0019 062 Baseme225 Yes 
+1 Mathey 0019 071 Baseme150 Yes 
+1 Mathey 0019 072 Baseme145 Yes 
+1 Mathey 0019 073 Baseme149 Yes 
+1 Mathey 0019 081 Baseme143 
+1 Mathey 0019 082 Baseme146 
+1 Mathey 0019 083 Baseme149 
+1 Mathey 0019 091 Baseme132 
+4 Mathey 0019 092 Baseme644 
+1 Rockefeller 0007 6 Baseme169 
+2 Rockefeller 0028 11 1 305 
+1 Rockefeller 0028 12 2 200 
+1 Rockefeller 0007 12 Baseme109 
+2 Rockefeller 0026 13 1 333 
+2 Rockefeller 0026 14 2 328 
+1 Rockefeller 0007 14 Baseme121 
+4 Rockefeller 0026 15 1 452 
+2 Rockefeller 0631 16 2 265 Yes 
+4 Rockefeller 0631 17 1 545 Yes 
+1 Rockefeller 0631 18 2 108 Yes 
+2 Rockefeller 0026 22 2 317 
+1 Rockefeller 0028 22 2 110 
+4 Rockefeller 0631 24 2 553 Yes
+2 Rockefeller 0026 24 2 262 
+1 Rockefeller 0028 24 3 110 
+1 Rockefeller 0028 25 4 125 
+4 Rockefeller 0026 26 2 486 
+2 Rockefeller 0028 26 4 235 
+4 Rockefeller 0028 27 5 620 
+4 Rockefeller 0026 28 2 455 
+5 Rockefeller 0631 32 2 728 Yes 
+4 Rockefeller 0631 33 1 583 Yes 
+1 Rockefeller 0631 34 2 131 Yes 
+4 Rockefeller 0028 37 3 458 
+4 Rockefeller 0028 41 1 470 
+4 Rockefeller 0028 42 1 448 
+4 Rockefeller 0028 46 3 549 
+2 Rockefeller 0028 55 2 186 
+1 Rockefeller 0028 56 3 122 
+1 Rockefeller 0028 57 3 160 
+4 Rockefeller 0028 61 1 508 
+4 Rockefeller 0028 62 1 444 
+4 Rockefeller 0028 63 1 530 
+4 Rockefeller 0028 66 2 523 
+4 Rockefeller 0028 67 3 761 
+1 Rockefeller 0028 68 3 179 
+4 Rockefeller 0028 73 1 467 
+2 Rockefeller 0028 74 2 326 
+1 Rockefeller 0028 75 2 135 
+1 Rockefeller 0028 76 2 169 
+2 Rockefeller 0028 78 3 250 
+1 Rockefeller 0028 79 3 176 
+4 Rockefeller 0028 81 1 483 
+1 Rockefeller 0028 85 3 158 
+1 Rockefeller 0028 88 3 215 
+4 Rockefeller 0028 92 1 440 
+2 Rockefeller 0028 93 2 197
+2 Rockefeller 0028 94 2 201 
+1 Rockefeller 0028 95 3 112 
+2 Rockefeller 0028 96 3 246 
+1 Rockefeller 0028 97 3 118 
+4 Rockefeller 0028 107 3 748 
+4 Rockefeller 0028 111 1 437 
+1 Rockefeller 0028 115 3 128 
+1 Rockefeller 0028 116 3 176 
+4 Rockefeller 0007 117 1 610 
+1 Rockefeller 0007 121 1 115 
+4 Rockefeller 0028 123 2 402 
+2 Rockefeller 0028 124 2 200 
+2 Rockefeller 0028 135 2 182 
+1 Rockefeller 0028 142 2 166 
+4 Rockefeller 0028 143 3 462 
+4 Rockefeller 0007 201 2 510 
+4 Rockefeller 0007 203 2 619 
+2 Rockefeller 0007 204 2 180 
+2 Rockefeller 0007 205 2 212 
+1 Rockefeller 0007 206 2 109 
+1 Rockefeller 0007 208 2 108 
+2 Rockefeller 0007 209 2 208 
+1 Rockefeller 0007 210 2 107 
+2 Rockefeller 0007 211 2 209 
+1 Rockefeller 0007 214 2 104 
+2 Rockefeller 0007 215 2 212 
+1 Rockefeller 0007 216 2 109 
+4 Rockefeller 0007 217 2 618 
+1 Rockefeller 0007 221 2 109 
+2 Rockefeller 0007 222 2 280 
+4 Rockefeller 0007 303 3 650 
+1 Rockefeller 0007 306 3 113 
+1 Rockefeller 0007 310 3 112 
+1 Rockefeller 0007 312 3 116
+1 Rockefeller 0007 316 3 113 
+4 Rockefeller 0007 317 3 654 
+1 Rockefeller 0007 321 3 115 
+4 Rockefeller 0007 403 4 650 
+1 Rockefeller 0007 410 4 114 
+1 Rockefeller 0007 412 4 118 
+1 Rockefeller 0007 414 4 110 
+1 Rockefeller 0007 416 4 120 
+4 Rockefeller 0007 417 4 659 
+1 Rockefeller 0007 421 4 122 
+4 Rockefeller 0007 501 5 532 
+4 Rockefeller 0007 503 5 657 
+2 Rockefeller 0007 504 5 197 
+2 Rockefeller 0007 505 5 233 
+1 Rockefeller 0007 506 5 117 
+2 Rockefeller 0007 509 5 224 
+1 Rockefeller 0007 510 5 116 
+2 Rockefeller 0007 515 5 227 
+1 Rockefeller 0007 516 5 122 
+4 Rockefeller 0007 517 5 665 
+1 Rockefeller 0026 003A 3 162 
+1 Rockefeller 0026 003B 3 141 
+1 Rockefeller 0026 003C 3 171 
+2 Rockefeller 0026 004A 3 192 
+1 Rockefeller 0026 004B 3 168 
+1 Rockefeller 0631 013 Baseme154 Yes 
+1 Rockefeller 0631 021 Baseme124 Yes 
+1 Rockefeller 0631 022 Baseme128 Yes 
+1 Rockefeller 0631 023 Baseme125 Yes 
+2 Rockefeller 0631 031 Baseme210 Yes 
+4 Rockefeller 0631 T02 2 563 Yes 
+3 Upperclass 0619 10 2 448 
+4 Upperclass Private bathroom 0153 11 1 930 
+3 Upperclass 0619 11 2 448
+4 Upperclass Private bathroom 0153 12 1 930 
+4 Upperclass Private bathroom 0153 13 2 930 
+4 Upperclass Private bathroom 0153 14 2 930 
+4 Upperclass Private bathroom 0153 15 3 930 
+4 Upperclass Private bathroom 0153 16 3 930 
+4 Upperclass Private bathroom 0153 17 4 930 
+4 Upperclass Private bathroom 0153 18 4 930 
+3 Upperclass 0619 20 2 435 
+4 Upperclass Private bathroom 0153 21 1 930 
+2 Upperclass 0619 21 2 238 
+4 Upperclass Private bathroom 0153 22 1 930 
+4 Upperclass Private bathroom 0153 23 2 930 
+4 Upperclass Private bathroom 0153 24 2 930 
+4 Upperclass Private bathroom 0153 25 3 930 
+4 Upperclass Private bathroom 0153 26 3 930 
+3 Upperclass 0023 30 1 428 
+3 Upperclass 0619 31 1 425 
+4 Upperclass Private bathroom 0153 32 1 930 
+3 Upperclass 0619 32 2 459 
+4 Upperclass Private bathroom 0153 34 2 930 
+4 Upperclass Private bathroom 0153 35 3 930 
+4 Upperclass Private bathroom 0153 36 3 930 
+4 Upperclass Private bathroom 0153 37 4 930 
+4 Upperclass Private bathroom 0153 38 4 930 
+6 Upperclass 0023 40 1 835 
+6 Upperclass 0023 41 2 859 
+4 Upperclass Private bathroom 0153 41 1 930 
+4 Upperclass Private bathroom 0153 45 3 930 
+4 Upperclass Private bathroom 0153 46 3 930 
+4 Upperclass Private bathroom 0153 47 4 930 
+4 Upperclass Private bathroom 0153 48 4 930 
+4 Upperclass Private bathroom 0153 51 1 930 
+4 Upperclass Private bathroom 0153 52 1 930 
+4 Upperclass Private bathroom 0153 53 2 930
+4 Upperclass Private bathroom 0153 54 2 930 
+4 Upperclass Private bathroom 0153 55 3 930 
+4 Upperclass Private bathroom 0153 56 3 930 
+4 Upperclass 0023 60 Baseme574 
+3 Upperclass 0023 61 1 437 
+4 Upperclass Private bathroom 0153 61 1 930 
+3 Upperclass 0023 62 2 449 
+3 Upperclass 0023 63 2 430 
+4 Upperclass Private bathroom 0153 63 2 930 
+4 Upperclass Private bathroom 0153 64 2 930 
+4 Upperclass Private bathroom 0153 65 3 930 
+4 Upperclass Private bathroom 0153 66 3 930 
+4 Upperclass Private bathroom 0153 67 4 930 
+4 Upperclass Private bathroom 0153 68 4 930 
+1 Upperclass 0023 70 Baseme190 Independent 
+1 Upperclass 0023 71 Baseme165 Independent 
+4 Upperclass Private bathroom 0153 71 1 930 
+3 Upperclass 0023 72 1 455 
+3 Upperclass 0023 73 1 443 
+4 Upperclass Private bathroom 0153 73 2 930 
+1 Upperclass 0023 74 2 192 
+4 Upperclass Private bathroom 0153 74 2 930 
+2 Upperclass 0023 75 2 313 
+4 Upperclass Private bathroom 0153 75 3 930 
+3 Upperclass 0023 76 2 457 
+4 Upperclass Private bathroom 0153 76 3 930 
+4 Upperclass Private bathroom 0153 77 4 930 
+4 Upperclass Private bathroom 0153 78 4 930 
+3 Upperclass 0023 80 Baseme456 Independent 
+3 Upperclass 0023 81 Baseme435 Independent 
+4 Upperclass Private bathroom 0153 81 1 930 
+4 Upperclass 0023 82 1 669 Independent 
+4 Upperclass Private bathroom 0153 82 1 930 
+1 Upperclass 0023 83 1 192 Independent
+4 Upperclass Private bathroom 0153 83 2 930 
+1 Upperclass 0023 84 1 139 Independent 
+4 Upperclass Private bathroom 0153 84 2 930 
+1 Upperclass 0023 85 1 136 Independent 
+4 Upperclass Private bathroom 0153 85 3 930 
+1 Upperclass 0023 86 1 155 Independent 
+4 Upperclass Private bathroom 0153 86 3 930 
+3 Upperclass 0023 87 2 472 
+2 Upperclass 0023 88 2 242 
+1 Upperclass 0023 89 2 192 
+3 Upperclass 0023 90 Baseme431 Independent 
+4 Upperclass 0021 91 1 509 
+4 Upperclass 0021 93 1 508 
+1 Upperclass 0021 95 2 203 
+4 Upperclass 0021 97 2 519 
+3 Upperclass 0047 101 Baseme444 
+1 Upperclass 0012 101 1 125 Independent 
+2 Upperclass Private bathroom 0042 101 Baseme434 
+1 Upperclass 0043 101 Baseme165 Independent 
+4 Upperclass 0021 101 1 512 
+1 Upperclass 0049 101 Baseme234 
+2 Upperclass Private bathroom 0603 101 1 288 
+2 Upperclass 0047 102 Baseme335 
+1 Upperclass 0012 102 1 120 Independent 
+1 Upperclass 0042 102 Baseme204 
+1 Upperclass 0043 102 Baseme197 Independent 
+1 Upperclass 0049 102 Baseme111 
+4 Upperclass Private bathroom 0603 102 1 755 
+1 Upperclass 0047 103 Baseme155 
+2 Upperclass 0012 103 1 260 Independent 
+1 Upperclass 0043 103 Baseme202 Independent 
+4 Upperclass 0021 103 1 512 
+2 Upperclass 0049 103 Baseme380 
+3 Upperclass 0047 104 Baseme404
+1 Upperclass 0012 104 1 125 Independent 
+2 Upperclass Private bathroom 0043 104 Baseme595 
+1 Upperclass 0049 104 Baseme166 
+1 Upperclass Shared bathroom 0603 104 1 148 
+1 Upperclass 0047 105 Baseme142 
+1 Upperclass 0012 105 1 125 Independent 
+4 Upperclass 0021 105 2 508 
+1 Upperclass 0012 106 1 120 Independent 
+1 Upperclass Shared bathroom 0603 106 1 147 
+1 Upperclass 0012 107 1 120 Independent 
+4 Upperclass Private bathroom 0603 107 1 510 
+1 Upperclass Shared bathroom 0603 108 1 148 
+1 Upperclass Shared bathroom 0603 110 1 147 
+1 Upperclass 0047 111 1 122 
+1 Upperclass 0053 111 1 170 Independent 
+3 Upperclass 0014 111 1 497 
+4 Upperclass 0030 111 1 530 
+1 Upperclass 0012 111 1 125 Independent 
+3 Upperclass 0042 111 1 401 
+3 Upperclass 0043 111 1 388 Independent 
+4 Upperclass 0021 111 1 744 
+1 Upperclass 0049 111 1 238 
+2 Upperclass 0047 112 1 402 
+1 Upperclass 0053 112 1 204 Independent 
+4 Upperclass 0014 112 1 505 
+3 Upperclass 0030 112 1 447 
+1 Upperclass 0012 112 1 120 Independent 
+1 Upperclass 0042 112 1 148 
+3 Upperclass 0043 112 1 395 Independent 
+1 Upperclass 0049 112 1 112 
+1 Upperclass 0040 112 1 160 Independent 
+1 Upperclass 0047 113 1 194 
+1 Upperclass 0053 113 1 180 Independent 
+1 Upperclass 0014 113 1 125
+2 Upperclass 0012 113 1 260 Independent 
+1 Upperclass 0042 113 1 173 
+4 Upperclass 0043 113 1 519 Independent 
+3 Upperclass 0049 113 1 377 
+1 Upperclass 0040 113 1 168 Independent 
+1 Upperclass 0047 114 1 191 
+1 Upperclass 0014 114 1 125 
+1 Upperclass 0012 114 1 125 Independent 
+3 Upperclass 0042 114 1 441 
+4 Upperclass 0043 114 1 519 
+1 Upperclass 0049 114 1 173 
+2 Upperclass 0040 114 1 435 Independent 
+2 Upperclass 0047 115 1 380 
+1 Upperclass 0012 115 1 125 Independent 
+1 Upperclass 0043 115 1 238 Independent 
+4 Upperclass 0021 115 2 708 
+1 Upperclass 0040 115 1 207 Independent 
+1 Upperclass 0047 116 1 183 
+1 Upperclass 0043 116 1 210 Independent 
+1 Upperclass 0040 116 1 191 Independent 
+2 Upperclass 0047 117 1 370 
+1 Upperclass 0014 117 1 119 
+2 Upperclass Private bathroom 0603 117 1 337 
+3 Upperclass 0047 118 1 427 
+1 Upperclass 0014 118 1 123 
+2 Upperclass 0047 119 1 337 
+4 Upperclass Private bathroom 0014 119 1 837 
+1 Upperclass 0047 121 2 122 
+1 Upperclass 0053 121 2 173 Independent 
+1 Upperclass 0014 121 1 112 
+4 Upperclass 0030 121 2 529 
+3 Upperclass 0042 121 2 414 
+2 Upperclass 0043 121 2 313 
+4 Upperclass 0021 121 1 600
+2 Upperclass 0049 121 2 384 
+2 Upperclass Private bathroom 0040 121 2 444 Independent 
+1 Upperclass Shared bathroom 0603 121 1 190 
+4 Upperclass 0047 122 2 503 
+4 Upperclass 0014 122 1 518 
+3 Upperclass 0030 122 2 441 
+1 Upperclass 0042 122 2 151 
+3 Upperclass 0043 122 2 392 
+4 Upperclass 0021 122 1 637 
+1 Upperclass 0040 122 2 168 Independent 
+2 Upperclass Private bathroom 0603 122 1 305 
+4 Upperclass 0047 123 2 502 
+4 Upperclass 0053 123 2 503 Independent 
+1 Upperclass 0014 123 1 123 
+1 Upperclass 0042 123 2 171 
+4 Upperclass 0043 123 2 523 
+4 Upperclass 0021 123 2 617 
+1 Upperclass Shared bathroom 0603 123 1 166 
+2 Upperclass 0047 124 2 336 
+1 Upperclass 0053 124 2 174 
+3 Upperclass 0042 124 2 454 
+4 Upperclass 0043 124 2 518 
+1 Upperclass 0021 124 2 219 
+2 Upperclass Private bathroom 0040 124 2 438 Independent 
+1 Upperclass Shared bathroom 0603 124 1 147 
+4 Upperclass 0047 125 2 498 
+1 Upperclass 0053 125 2 179 
+1 Upperclass 0014 125 1 128 
+1 Upperclass 0043 125 2 238 
+1 Upperclass 0040 125 2 186 Independent 
+1 Upperclass Shared bathroom 0603 125 1 166 
+1 Upperclass 0047 126 2 167 
+1 Upperclass 0053 126 2 165 Independent 
+1 Upperclass 0014 126 1 108
+1 Upperclass Shared bathroom 0603 126 1 148 
+4 Upperclass 0014 127 1 536 
+1 Upperclass Shared bathroom 0603 127 1 166 
+4 Upperclass 0014 128 1 509 
+1 Upperclass Shared bathroom 0603 128 1 147 
+1 Upperclass Shared bathroom 0603 130 1 148 
+4 Upperclass 0047 131 3 482 
+1 Upperclass 0053 131 3 184 Independent 
+3 Upperclass 0042 131 3 400 
+1 Upperclass 0043 131 3 139 
+3 Upperclass 0021 131 1 464 
+2 Upperclass Private bathroom 0040 131 3 464 Independent 
+1 Upperclass Shared bathroom 0603 131 1 196 
+1 Upperclass 0047 132 3 219 
+2 Upperclass 0053 132 3 318 Independent 
+1 Upperclass 0042 132 3 152 
+1 Upperclass 0043 132 3 176 
+1 Upperclass 0040 132 3 177 Independent 
+3 Upperclass 0047 133 3 415 
+1 Upperclass 0053 133 3 233 Independent 
+4 Upperclass 0042 133 3 525 
+4 Upperclass 0043 133 3 524 
+1 Upperclass 0040 133 3 174 Independent 
+1 Upperclass Shared bathroom 0603 133 1 196 
+1 Upperclass 0053 134 3 172 Independent 
+3 Upperclass 0043 134 3 473 
+4 Upperclass 0021 134 2 537 
+2 Upperclass Private bathroom 0040 134 3 436 Independent 
+1 Upperclass 0053 135 3 131 Independent 
+1 Upperclass 0040 135 3 145 Independent 
+1 Upperclass 0053 136 3 166 Independent 
+1 Upperclass 0043 136 3 142 
+1 Upperclass Shared bathroom 0603 136 1 147 
+1 Upperclass 0043 137 3 137
+1 Upperclass Shared bathroom 0603 138 1 148 
+4 Upperclass Private bathroom 0603 140 1 755 
+4 Upperclass 0047 141 4 799 
+2 Upperclass 0053 141 4 378 
+4 Upperclass 0043 141 4 642 
+2 Upperclass 0021 141 1 288 
+2 Upperclass 0040 141 4 373 Independent 
+1 Upperclass 0053 142 4 165 
+4 Upperclass 0021 142 1 644 
+2 Upperclass 0040 142 4 295 Independent 
+1 Upperclass Shared bathroom 0603 142 1 140 
+1 Upperclass 0053 143 4 185 
+4 Upperclass 0021 143 1 595 
+1 Upperclass 0040 143 4 129 
+1 Upperclass 0040 144 4 192 
+1 Upperclass Shared bathroom 0603 144 1 154 
+4 Upperclass 0021 145 2 521 
+4 Upperclass 0021 146 2 653 
+2 Upperclass Private bathroom 0603 147 1 280 
+1 Upperclass Shared bathroom 0603 148 1 166 
+2 Upperclass Private bathroom 0603 149 1 280 
+1 Upperclass Shared bathroom 0603 150 1 166 
+3 Upperclass 0043 151 5 406 
+2 Upperclass Private bathroom 0603 153 1 280 
+1 Upperclass Shared bathroom 0603 156 1 166 
+1 Upperclass Shared bathroom 0603 158 1 166 
+1 Upperclass Shared bathroom 0603 160 1 147 Independent 
+1 Upperclass Shared bathroom 0603 162 1 140 Independent 
+2 Upperclass Private bathroom 0603 164 1 278 Independent 
+2 Upperclass Private bathroom 0603 168 1 278 Independent 
+2 Upperclass Private bathroom 0603 170 1 278 Independent 
+1 Upperclass Shared bathroom 0603 171 1 166 Independent 
+2 Upperclass Private bathroom 0603 172 1 278 Independent 
+1 Upperclass Shared bathroom 0603 173 1 166 Independent
+2 Upperclass Private bathroom 0603 174 1 278 Independent 
+1 Upperclass 0012 200 2 125 Independent 
+1 Upperclass 0047 201 Baseme173 
+1 Upperclass 0042 201 Baseme146 
+1 Upperclass 0043 201 Baseme182 
+2 Upperclass 0049 201 Baseme338 Independent 
+2 Upperclass Private bathroom 0603 201 2 288 
+2 Upperclass 0047 202 Baseme375 
+2 Upperclass 0042 202 Baseme370 
+1 Upperclass 0043 202 Baseme187 
+4 Upperclass Private bathroom 0603 202 2 755 
+2 Upperclass 0047 203 Baseme345 
+3 Upperclass 0042 203 Baseme463 
+1 Upperclass 0043 203 Baseme209 
+1 Upperclass 0012 204 2 125 Independent 
+1 Upperclass 0042 204 Baseme179 
+1 Upperclass 0043 204 Baseme213 
+1 Upperclass 0012 205 2 125 Independent 
+1 Upperclass 0042 205 Baseme167 
+1 Upperclass 0043 205 Baseme198 
+1 Upperclass 0043 206 Baseme193 
+1 Upperclass 0012 207 2 120 Independent 
+1 Upperclass 0043 207 Baseme193 
+4 Upperclass Private bathroom 0603 207 2 510 
+1 Upperclass 0014 210 2 228 
+1 Upperclass 0053 211 1 176 Independent 
+4 Upperclass 0014 211 2 501 
+3 Upperclass 0030 211 1 425 
+3 Upperclass 0042 211 1 397 
+1 Upperclass 0043 211 1 175 
+1 Upperclass 0049 211 1 179 Independent 
+2 Upperclass 0040 211 1 375 
+3 Upperclass 0047 212 1 378 
+1 Upperclass 0053 212 1 205 Independent
+4 Upperclass 0014 212 2 518 
+3 Upperclass 0030 212 1 409 
+1 Upperclass 0012 212 2 120 Independent 
+3 Upperclass 0043 212 1 401 
+1 Upperclass 0049 212 1 199 Independent 
+1 Upperclass 0040 212 1 148 Independent 
+1 Upperclass 0047 213 1 144 
+2 Upperclass 0053 213 1 252 Independent 
+1 Upperclass 0014 213 2 126 
+2 Upperclass 0012 213 2 260 
+1 Upperclass 0042 213 1 168 
+3 Upperclass 0049 213 1 450 Independent 
+2 Upperclass 0040 213 1 350 
+1 Upperclass Shared bathroom 0603 213 2 166 
+1 Upperclass 0047 214 1 153 
+1 Upperclass 0053 214 1 234 Independent 
+1 Upperclass 0014 214 2 127 
+1 Upperclass 0043 214 1 162 
+3 Upperclass 0049 214 1 434 Independent 
+1 Upperclass 0040 214 1 146 Independent 
+2 Upperclass 0047 215 1 349 
+1 Upperclass 0042 215 1 166 
+2 Upperclass 0043 215 1 366 
+1 Upperclass Shared bathroom 0603 215 2 166 
+1 Upperclass 0012 216 2 120 Independent 
+2 Upperclass 0043 216 1 363 
+2 Upperclass 0043 217 1 392 
+2 Upperclass Private bathroom 0603 217 2 337 
+1 Upperclass 0043 218 1 165 
+3 Upperclass 0014 219 2 495 
+3 Upperclass 0014 220 2 497 
+1 Upperclass 0043 220 2 179 
+2 Upperclass 0047 221 2 331 
+1 Upperclass 0053 221 2 176
+4 Upperclass 0014 221 2 505 
+3 Upperclass 0030 221 2 428 
+3 Upperclass 0042 221 2 430 
+1 Upperclass 0043 221 2 133 
+1 Upperclass 0049 221 2 188 Independent 
+2 Upperclass 0040 221 2 373 
+1 Upperclass Shared bathroom 0603 221 2 190 
+1 Upperclass 0047 222 2 87 
+1 Upperclass 0053 222 2 178 
+1 Upperclass 0014 222 2 125 
+3 Upperclass 0030 222 2 415 
+4 Upperclass 0042 222 2 545 
+1 Upperclass 0043 222 2 93 
+1 Upperclass 0049 222 2 189 Independent 
+1 Upperclass 0040 222 2 165 
+2 Upperclass Private bathroom 0603 222 2 305 
+1 Upperclass 0047 223 2 157 
+1 Upperclass 0053 223 2 169 
+1 Upperclass 0043 223 2 133 
+3 Upperclass 0049 223 2 440 Independent 
+1 Upperclass 0040 223 2 176 
+1 Upperclass Shared bathroom 0603 223 2 166 
+1 Upperclass 0047 224 2 148 
+1 Upperclass 0053 224 2 175 
+1 Upperclass 0043 224 2 167 
+1 Upperclass 0049 224 2 206 Independent 
+1 Upperclass 0040 224 2 168 
+1 Upperclass Shared bathroom 0603 224 2 147 
+1 Upperclass 0047 225 2 145 
+1 Upperclass 0053 225 2 177 
+1 Upperclass 0014 225 2 130 
+2 Upperclass 0043 225 2 370 
+1 Upperclass 0049 225 2 194 Independent 
+1 Upperclass 0040 225 2 163
+1 Upperclass 0047 226 2 139 
+3 Upperclass 0053 226 2 433 
+1 Upperclass 0014 226 2 127 
+3 Upperclass 0043 226 2 490 
+1 Upperclass Shared bathroom 0603 226 2 148 
+1 Upperclass 0053 227 2 185 
+4 Upperclass 0014 227 2 505 
+1 Upperclass 0043 227 2 110 
+1 Upperclass 0053 228 2 196 
+4 Upperclass 0014 228 2 519 
+1 Upperclass 0043 228 2 106 
+1 Upperclass 0043 229 2 166 
+1 Upperclass 0043 230 3 143 
+1 Upperclass 0040 230 3 82 
+1 Upperclass 0053 231 3 182 
+1 Upperclass 0030 231 3 126 
+1 Upperclass 0043 231 3 144 
+4 Upperclass 0049 231 3 686 Independent 
+1 Upperclass Shared bathroom 0603 231 2 196 
+1 Upperclass 0047 232 3 139 
+1 Upperclass 0053 232 3 128 
+1 Upperclass 0030 232 3 152 
+3 Upperclass 0043 232 3 454 
+4 Upperclass 0049 232 3 722 Independent 
+1 Upperclass 0040 232 3 132 
+1 Upperclass Shared bathroom 0603 232 2 147 
+1 Upperclass 0047 233 3 174 
+1 Upperclass 0053 233 3 140 
+1 Upperclass 0030 233 3 160 
+1 Upperclass 0043 233 3 194 
+1 Upperclass 0040 233 3 134 
+1 Upperclass Shared bathroom 0603 233 2 196 
+1 Upperclass 0047 234 3 156 
+1 Upperclass 0053 234 3 156
+4 Upperclass 0030 234 3 639 
+3 Upperclass 0043 234 3 436 
+2 Upperclass 0040 234 3 263 
+1 Upperclass Shared bathroom 0603 234 2 148 
+1 Upperclass 0047 235 3 176 
+1 Upperclass 0053 235 3 149 
+1 Upperclass 0030 235 3 151 
+1 Upperclass 0043 235 3 164 
+1 Upperclass 0040 235 3 157 
+4 Upperclass 0053 236 3 521 
+1 Upperclass 0030 236 3 127 
+1 Upperclass 0043 236 3 181 
+1 Upperclass Shared bathroom 0603 236 2 147 
+2 Upperclass 0053 237 3 449 
+1 Upperclass Shared bathroom 0603 238 2 148 
+4 Upperclass Private bathroom 0603 240 2 755 
+1 Upperclass 0053 241 4 216 
+2 Upperclass 0049 241 4 562 Independent 
+1 Upperclass 0040 241 4 230 
+1 Upperclass 0053 242 4 157 
+2 Upperclass 0049 242 4 420 Independent 
+2 Upperclass 0040 242 4 237 
+1 Upperclass Shared bathroom 0603 242 2 140 
+1 Upperclass 0053 243 4 214 
+1 Upperclass 0040 243 4 136 
+2 Upperclass 0053 244 4 342 
+1 Upperclass Shared bathroom 0603 244 2 154 
+2 Upperclass Private bathroom 0603 247 2 280 
+1 Upperclass Shared bathroom 0603 248 2 166 
+2 Upperclass Private bathroom 0603 249 2 280 
+1 Upperclass Shared bathroom 0603 250 2 166 
+1 Upperclass Shared bathroom 0603 252 2 166 
+2 Upperclass Private bathroom 0603 253 2 280 
+1 Upperclass Shared bathroom 0603 254 2 166
+1 Upperclass Shared bathroom 0603 260 2 151 Independent 
+1 Upperclass Shared bathroom 0603 262 2 161 Independent 
+2 Upperclass Private bathroom 0603 264 2 278 Independent 
+1 Upperclass Shared bathroom 0603 265 2 166 Independent 
+2 Upperclass Private bathroom 0603 266 2 278 Independent 
+1 Upperclass Shared bathroom 0603 267 2 166 Independent 
+2 Upperclass Private bathroom 0603 268 2 278 
+2 Upperclass Private bathroom 0603 270 2 278 
+1 Upperclass Shared bathroom 0603 271 2 166 Independent 
+2 Upperclass Private bathroom 0603 272 2 278 Independent 
+1 Upperclass Shared bathroom 0603 273 2 166 Independent 
+2 Upperclass Private bathroom 0603 274 2 278 Independent 
+1 Upperclass 0012 300 3 125 
+4 Upperclass Private bathroom 0047 301 Baseme556 
+1 Upperclass 0042 301 Baseme174 
+1 Upperclass 0043 301 Baseme216 
+1 Upperclass 0049 301 Baseme172 Independent 
+2 Upperclass Private bathroom 0603 301 3 288 
+4 Upperclass 0619 301 3 632 
+1 Upperclass 0012 302 3 120 
+1 Upperclass 0042 302 Baseme188 
+3 Upperclass Private bathroom 0043 302 Baseme436 
+1 Upperclass 0049 302 Baseme216 Independent 
+4 Upperclass Private bathroom 0603 302 3 755 
+1 Upperclass 0619 302 3 185 
+2 Upperclass 0012 303 3 260 
+1 Upperclass 0042 303 Baseme185 
+1 Upperclass 0049 303 Baseme200 Independent 
+1 Upperclass 0619 303 3 196 
+1 Upperclass 0012 304 3 125 
+3 Upperclass 0042 304 Baseme431 
+1 Upperclass 0049 304 Baseme181 Independent 
+2 Upperclass 0619 304 3 319 
+1 Upperclass 0012 305 3 125
+1 Upperclass 0619 305 3 149 
+1 Upperclass 0012 306 3 120 
+1 Upperclass 0042 306 Baseme168 
+2 Upperclass 0619 306 3 423 
+1 Upperclass 0012 307 3 120 
+1 Upperclass 0042 307 Baseme164 
+6 Upperclass 0023 307 3 873 
+4 Upperclass Private bathroom 0603 307 3 510 
+1 Upperclass 0042 308 Baseme166 
+2 Upperclass 0023 308 3 327 
+1 Upperclass Shared bathroom 0603 308 3 148 
+1 Upperclass 0023 309 3 152 
+1 Upperclass 0012 310 3 125 
+1 Upperclass 0023 310 3 170 
+2 Upperclass 0047 311 1 363 
+3 Upperclass 0053 311 1 396 
+4 Upperclass 0014 311 3 502 
+3 Upperclass 0030 311 1 424 
+1 Upperclass 0012 311 3 125 
+3 Upperclass 0042 311 1 414 
+3 Upperclass 0043 311 1 407 
+3 Upperclass 0049 311 1 400 
+2 Upperclass 0023 311 3 347 
+1 Upperclass 0040 311 1 209 
+2 Upperclass 0047 312 1 355 
+1 Upperclass 0053 312 1 172 
+3 Upperclass 0014 312 3 500 
+3 Upperclass 0030 312 1 415 
+1 Upperclass 0012 312 3 120 
+3 Upperclass 0042 312 1 453 
+1 Upperclass 0043 312 1 196 
+1 Upperclass 0049 312 1 178 
+2 Upperclass 0023 312 3 284 
+1 Upperclass 0040 312 1 210
+2 Upperclass 0047 313 1 364 
+1 Upperclass 0053 313 1 176 
+2 Upperclass 0012 313 3 260 
+1 Upperclass 0042 313 1 173 
+1 Upperclass 0043 313 1 194 
+1 Upperclass 0049 313 1 174 
+1 Upperclass 0023 313 3 234 
+2 Upperclass 0040 313 1 349 
+1 Upperclass 0047 314 1 185 
+3 Upperclass 0053 314 1 394 
+1 Upperclass 0014 314 3 129 
+1 Upperclass 0012 314 3 125 
+1 Upperclass 0042 314 1 170 
+3 Upperclass 0043 314 1 431 
+3 Upperclass 0040 314 1 407 
+1 Upperclass 0012 315 3 125 
+2 Upperclass 0042 315 1 351 
+1 Upperclass 0049 315 1 177 
+1 Upperclass 0040 315 1 166 
+1 Upperclass 0012 316 3 120 
+2 Upperclass 0042 316 1 382 
+1 Upperclass 0040 316 1 169 
+1 Upperclass 0012 317 3 120 
+2 Upperclass 0042 317 1 376 
+4 Upperclass 0014 318 3 507 
+1 Upperclass 0042 318 1 211 
+3 Upperclass 0014 319 3 490 
+4 Upperclass 0014 320 3 503 
+1 Upperclass 0047 321 2 128 
+3 Upperclass 0053 321 2 393 
+3 Upperclass 0014 321 3 498 
+3 Upperclass 0030 321 2 429 
+2 Upperclass 0042 321 2 411 
+3 Upperclass 0043 321 2 457
+3 Upperclass 0049 321 2 396 Independent 
+1 Upperclass 0040 321 2 213 
+2 Upperclass 0047 322 2 296 
+1 Upperclass 0053 322 2 175 
+1 Upperclass 0014 322 3 124 
+3 Upperclass 0030 322 2 416 
+3 Upperclass 0042 322 2 437 
+1 Upperclass 0049 322 2 181 Independent 
+2 Upperclass 0040 322 2 348 
+2 Upperclass Private bathroom 0603 322 3 297 
+1 Upperclass 0047 323 2 190 
+1 Upperclass 0053 323 2 175 
+1 Upperclass 0042 323 2 168 
+1 Upperclass 0043 323 2 113 
+1 Upperclass 0049 323 2 179 Independent 
+3 Upperclass 0040 323 2 414 
+2 Upperclass 0047 324 2 246 
+3 Upperclass 0053 324 2 389 
+1 Upperclass 0042 324 2 174 
+3 Upperclass 0043 324 2 461 
+1 Upperclass 0049 324 2 177 Independent 
+1 Upperclass 0040 324 2 174 
+1 Upperclass Shared bathroom 0603 324 3 147 
+1 Upperclass 0047 325 2 160 
+1 Upperclass 0014 325 3 132 
+2 Upperclass 0042 325 2 350 
+1 Upperclass 0049 325 2 146 Independent 
+1 Upperclass 0040 325 2 169 
+1 Upperclass 0014 326 3 124 
+3 Upperclass 0042 326 2 386 
+1 Upperclass Shared bathroom 0603 326 3 148 
+4 Upperclass 0014 327 3 501 
+1 Upperclass 0042 327 2 112 
+3 Upperclass 0014 328 3 495
+1 Upperclass 0042 328 2 133 
+1 Upperclass Shared bathroom 0603 328 3 147 
+1 Upperclass 0014 329 3 237 
+1 Upperclass 0042 329 2 119 
+1 Upperclass Shared bathroom 0603 330 3 148 
+4 Upperclass 0047 331 3 686 
+4 Upperclass 0042 331 3 638 
+4 Upperclass 0043 331 3 525 
+1 Upperclass 0049 331 3 170 
+1 Upperclass Shared bathroom 0603 331 3 196 
+1 Upperclass 0047 332 3 119 
+1 Upperclass 0053 332 3 185 
+1 Upperclass 0042 332 3 184 
+1 Upperclass 0043 332 3 120 
+1 Upperclass 0049 332 3 165 
+1 Upperclass 0040 332 3 231 
+1 Upperclass 0047 333 3 144 
+1 Upperclass 0053 333 3 138 
+1 Upperclass 0042 333 3 188 
+3 Upperclass 0043 333 3 402 
+3 Upperclass 0040 333 3 423 
+1 Upperclass Shared bathroom 0603 333 3 196 
+1 Upperclass 0047 334 3 142 
+1 Upperclass 0053 334 3 124 
+1 Upperclass 0042 334 3 198 
+1 Upperclass 0040 334 3 177 
+1 Upperclass 0047 335 3 158 
+1 Upperclass 0042 335 3 190 
+1 Upperclass 0040 335 3 113 
+1 Upperclass Shared bathroom 0603 335 3 160 
+1 Upperclass Shared bathroom 0603 336 3 147 
+1 Upperclass Shared bathroom 0603 338 3 148 
+4 Upperclass Private bathroom 0603 340 3 755 
+4 Upperclass 0042 341 4 603
+2 Upperclass 0040 342 4 317 
+1 Upperclass 0040 343 4 228 
+1 Upperclass 0040 344 4 216 
+4 Upperclass 0040 345 4 577 
+1 Upperclass Shared bathroom 0603 345 3 181 
+1 Upperclass 0040 346 4 101 
+1 Upperclass Shared bathroom 0603 348 3 166 
+1 Upperclass Shared bathroom 0603 350 3 166 
+1 Upperclass Shared bathroom 0603 352 3 166 
+2 Upperclass Private bathroom 0603 353 3 280 
+1 Upperclass Shared bathroom 0603 354 3 166 
+1 Upperclass Shared bathroom 0603 355 3 181 
+1 Upperclass Shared bathroom 0603 360 3 151 
+1 Upperclass Shared bathroom 0603 361 3 160 
+1 Upperclass Shared bathroom 0603 362 3 161 
+2 Upperclass Private bathroom 0603 364 3 278 
+2 Upperclass Private bathroom 0603 366 3 278 
+4 Upperclass Private bathroom 0603 367 3 783 Independent 
+2 Upperclass Private bathroom 0603 368 3 278 
+2 Upperclass Private bathroom 0603 370 3 278 
+1 Upperclass Shared bathroom 0603 371 3 166 
+2 Upperclass Private bathroom 0603 372 3 278 
+1 Upperclass Shared bathroom 0603 373 3 166 
+2 Upperclass Private bathroom 0603 374 3 278 
+4 Upperclass 0021 399 3 776 
+1 Upperclass 0047 401 Baseme154 
+3 Upperclass Private bathroom 0053 401 Baseme593 
+1 Upperclass 0030 401 Baseme223 
+4 Upperclass 0012 401 4 735 
+1 Upperclass 0049 401 Baseme219 Yes 
+1 Upperclass 0603 401 4 134 
+2 Upperclass 0619 401 4 433 
+1 Upperclass 0047 402 Baseme186 
+1 Upperclass 0053 402 Baseme217
+3 Upperclass 0030 402 Baseme399 
+1 Upperclass 0049 402 Baseme249 Yes 
+1 Upperclass 0603 402 4 134 
+1 Upperclass 0619 402 4 193 
+3 Upperclass 0047 403 Baseme414 
+1 Upperclass 0030 403 Baseme235 
+4 Upperclass 0012 403 4 705 
+1 Upperclass 0603 403 4 134 
+1 Upperclass 0619 403 4 174 
+1 Upperclass 0047 404 Baseme190 
+2 Upperclass 0030 404 Baseme394 
+1 Upperclass 0012 404 4 125 
+1 Upperclass 0603 404 4 134 
+1 Upperclass 0619 404 4 216 
+1 Upperclass 0047 405 Baseme196 
+1 Upperclass 0012 405 4 125 
+1 Upperclass 0603 405 4 134 
+1 Upperclass 0012 406 4 120 
+1 Upperclass 0603 406 4 134 
+1 Upperclass 0619 406 4 179 
+1 Upperclass 0012 407 4 120 
+1 Upperclass 0603 407 4 134 
+3 Upperclass 0619 407 4 429 
+6 Upperclass 0023 408 4 868 
+1 Upperclass 0603 409 4 134 
+1 Upperclass 0014 410 4 230 
+1 Upperclass 0603 410 4 134 
+3 Upperclass 0047 411 1 839 
+4 Upperclass 0014 411 4 512 
+4 Upperclass 0012 411 4 735 
+1 Upperclass 0049 411 1 182 Yes 
+1 Upperclass 0040 411 1 179 
+1 Upperclass 0603 411 4 134 
+4 Upperclass 0014 412 4 516
+3 Upperclass 0030 412 1 399 
+1 Upperclass 0049 412 1 168 Yes 
+1 Upperclass 0040 412 1 176 
+1 Upperclass 0603 412 4 134 
+3 Upperclass 0047 413 1 459 
+3 Upperclass Private bathroom 0053 413 1 557 
+1 Upperclass 0014 413 4 128 
+1 Upperclass 0030 413 1 235 
+4 Upperclass 0012 413 4 705 
+1 Upperclass 0049 413 1 198 Yes 
+1 Upperclass 0040 413 1 178 
+1 Upperclass 0603 413 4 134 
+1 Upperclass 0014 414 4 134 
+3 Upperclass 0030 414 1 437 
+1 Upperclass 0012 414 4 125 
+1 Upperclass 0040 414 1 200 
+1 Upperclass 0603 414 4 134 
+1 Upperclass 0012 415 4 125 
+1 Upperclass 0603 415 4 134 
+1 Upperclass 0012 416 4 120 
+1 Upperclass 0603 416 4 134 
+1 Upperclass 0014 417 4 120 
+1 Upperclass 0012 417 4 120 
+1 Upperclass 0603 417 4 134 
+4 Upperclass 0014 418 4 523 
+1 Upperclass 0603 418 4 134 
+4 Upperclass 0014 419 4 520 
+3 Upperclass 0014 420 4 500 
+2 Upperclass 0047 421 2 351 
+1 Upperclass 0053 421 2 230 
+4 Upperclass 0014 421 4 507 
+5 Upperclass 0030 421 2 775 
+2 Upperclass 0049 421 2 302 Yes 
+1 Upperclass 0040 421 2 180
+2 Upperclass 0053 422 2 495 
+1 Upperclass 0014 422 4 126 
+3 Upperclass 0030 422 2 396 
+1 Upperclass 0049 422 2 90 
+1 Upperclass 0040 422 2 171 
+1 Upperclass 0603 422 4 134 
+2 Upperclass 0049 423 2 350 Yes 
+1 Upperclass 0040 423 2 164 
+1 Upperclass 0040 424 2 166 
+1 Upperclass 0014 425 4 129 
+1 Upperclass 0014 426 4 122 
+4 Upperclass 0014 427 4 530 
+1 Upperclass 0040 427 2 167 
+4 Upperclass 0014 428 4 508 
+2 Upperclass 0040 428 2 172 
+1 Upperclass 0014 429 4 220 
+1 Upperclass 0040 429 2 113 
+2 Upperclass 0047 431 3 330 
+1 Upperclass 0053 431 3 171 
+1 Upperclass 0030 431 3 153 
+2 Upperclass 0049 431 3 283 Yes 
+1 Upperclass 0040 431 3 175 
+2 Upperclass 0053 432 3 332 
+1 Upperclass 0030 432 3 164 
+2 Upperclass 0049 432 3 248 Yes 
+1 Upperclass 0040 432 3 133 
+1 Upperclass 0603 432 4 134 
+1 Upperclass 0053 433 3 179 
+1 Upperclass 0030 433 3 152 
+1 Upperclass 0049 433 3 122 
+1 Upperclass 0040 433 3 183 
+1 Upperclass 0603 433 4 134 
+1 Upperclass 0030 434 3 124 
+1 Upperclass 0040 434 3 152
+1 Upperclass 0030 435 3 120 
+2 Upperclass 0040 435 3 247 
+1 Upperclass 0603 435 4 134 
+1 Upperclass 0030 436 3 126 
+1 Upperclass 0040 436 3 131 
+1 Upperclass 0603 436 4 134 
+1 Upperclass 0030 437 3 191 
+1 Upperclass 0040 437 3 128 
+1 Upperclass 0603 437 4 134 
+1 Upperclass 0030 438 3 180 
+2 Upperclass 0040 438 3 239 
+1 Upperclass 0030 439 3 142 
+1 Upperclass 0040 439 3 117 
+1 Upperclass 0603 439 4 134 
+1 Upperclass 0040 440 4 103 
+2 Upperclass 0047 441 4 372 
+1 Upperclass 0040 441 4 115 
+1 Upperclass 0603 441 4 134 
+2 Upperclass 0040 442 4 428 
+1 Upperclass 0603 442 4 134 
+2 Upperclass 0040 443 4 319 
+1 Upperclass 0603 443 4 134 
+1 Upperclass 0603 444 4 134 
+1 Upperclass 0603 447 4 134 
+1 Upperclass 0603 448 4 134 
+4 Upperclass 0053 501 Baseme538 
+2 Upperclass 0053 502 Baseme292 
+1 Upperclass 0053 503 Baseme158 
+2 Upperclass 0053 504 Baseme309 
+1 Upperclass 0053 511 1 175 
+2 Upperclass 0030 511 1 351 
+3 Upperclass 0047 511 1 436 
+4 Upperclass Private bathroom 0040 511 1 809 
+3 Upperclass 0053 512 1 424
+2 Upperclass 0047 512 1 377 
+1 Upperclass 0053 513 1 176 
+2 Upperclass 0047 513 1 364 
+1 Upperclass 0053 514 1 163 
+2 Upperclass 0053 515 1 369 
+1 Upperclass 0053 516 1 187 
+1 Upperclass 0053 517 1 202 
+1 Upperclass 0053 521 2 163 
+2 Upperclass 0030 521 2 347 
+3 Upperclass 0047 521 2 440 
+2 Upperclass 0030 522 2 360 
+2 Upperclass 0047 522 2 357 
+1 Upperclass 0053 523 2 105 
+2 Upperclass 0047 523 2 361 
+2 Upperclass 0053 525 2 314 
+1 Upperclass 0053 527 2 188 
+1 Upperclass 0053 528 2 194 
+1 Upperclass 0053 531 3 207 
+5 Upperclass 0047 531 3 768 
+1 Upperclass 0053 532 3 216 
+1 Upperclass 0047 532 3 127 
+1 Upperclass 0053 533 3 112 
+1 Upperclass 0047 533 3 150 
+1 Upperclass 0053 534 3 119 
+3 Upperclass 0053 535 3 486 
+4 Upperclass 0030 601 Baseme684 
+1 Upperclass 0040 601 Baseme188 
+4 Upperclass 0040 602 Baseme563 
+1 Upperclass 0040 603 Baseme234 
+3 Upperclass 0030 611 1 439 
+2 Upperclass 0040 611 1 349 
+2 Upperclass 0030 612 1 266 
+2 Upperclass 0047 612 1 349 
+1 Upperclass 0040 612 1 176
+2 Upperclass 0030 613 1 253 
+1 Upperclass 0047 613 1 155 
+1 Upperclass 0040 613 1 204 
+2 Upperclass Private bathroom 0047 614 1 380 
+3 Upperclass 0040 614 1 402 
+1 Upperclass 0047 615 1 187 
+1 Upperclass 0040 615 1 156 
+3 Upperclass 0047 616 1 409 
+1 Upperclass 0040 616 1 196 
+3 Upperclass 0047 617 1 485 
+1 Upperclass 0040 617 1 199 
+1 Upperclass 0047 618 1 175 
+3 Upperclass 0030 621 2 431 
+2 Upperclass 0047 621 2 381 
+2 Upperclass 0040 621 2 353 
+2 Upperclass 0030 622 2 265 
+1 Upperclass 0047 622 2 181 
+1 Upperclass 0040 622 2 166 
+2 Upperclass 0030 623 2 257 
+2 Upperclass 0047 623 2 430 
+1 Upperclass 0040 623 2 205 
+1 Upperclass 0047 624 2 191 
+1 Upperclass 0040 624 2 178 
+3 Upperclass 0047 625 2 395 
+1 Upperclass 0040 625 2 194 
+1 Upperclass 0047 626 2 190 
+1 Upperclass 0040 626 2 125 
+2 Upperclass 0047 627 2 437 
+1 Upperclass 0040 630 3 121 
+3 Upperclass 0030 631 3 456 
+3 Upperclass 0047 631 3 444 
+1 Upperclass 0040 631 3 84 
+1 Upperclass 0030 632 3 148 
+4 Upperclass 0047 632 3 621
+1 Upperclass 0040 632 3 194 
+1 Upperclass 0030 633 3 226 
+2 Upperclass 0047 633 3 409 
+1 Upperclass 0040 633 3 215 
+1 Upperclass 0030 634 3 130 
+1 Upperclass 0040 634 3 215 
+4 Upperclass 0040 641 4 588 
+1 Upperclass 0040 643 4 149 
+1 Upperclass 0040 701 Baseme162 
+1 Upperclass 0040 702 Baseme161 
+1 Upperclass 0040 703 Baseme155 
+2 Upperclass 0040 704 Baseme399 
+1 Upperclass 0040 705 Baseme168 
+1 Upperclass 0040 711 1 168 
+1 Upperclass 0040 712 1 164 
+1 Upperclass 0040 713 1 171 
+1 Upperclass 0040 714 1 170 
+1 Upperclass 0040 715 1 165 
+1 Upperclass 0040 716 1 149 
+1 Upperclass 0040 717 1 167 
+3 Upperclass 0040 718 1 389 
+1 Upperclass 0040 719 1 165 
+1 Upperclass 0040 721 2 177 
+1 Upperclass 0040 722 2 164 
+1 Upperclass 0040 724 2 131 
+1 Upperclass 0040 725 2 133 
+1 Upperclass 0040 727 2 155 
+3 Upperclass 0040 728 2 446 
+1 Upperclass 0040 731 3 177 
+1 Upperclass 0040 732 3 144 
+1 Upperclass 0040 733 3 145 
+2 Upperclass 0040 734 3 252 
+1 Upperclass 0040 735 3 251 
+1 Upperclass 0040 741 4 183
+1 Upperclass 0040 742 4 156 
+1 Upperclass 0040 743 4 137 
+3 Upperclass 0012 101N 1 460 
+3 Upperclass 0012 101S 1 460 Independent 
+3 Upperclass 0012 102N 1 460 Independent 
+3 Upperclass 0012 102S 1 460 Independent 
+1 Upperclass 0012 200N 2 150 Independent 
+3 Upperclass 0012 201N 2 460 
+3 Upperclass 0012 201S 2 460 
+3 Upperclass 0012 202N 2 460 
+3 Upperclass 0012 202S 2 460 
+1 Upperclass 0047 222A 2 92 
+1 Upperclass 0043 222A 2 139 
+1 Upperclass 0047 223A 2 129 
+1 Upperclass 0012 300N 3 150 
+3 Upperclass 0012 301N 3 460 
+3 Upperclass 0012 301S 3 460 
+3 Upperclass 0012 302N 3 460 
+3 Upperclass 0012 302S 3 460 
+1 Upperclass 0042 329A 2 123 
+1 Upperclass 0012 400N 4 150 
+1 Upperclass 0012 400S 4 150 
+3 Upperclass 0012 401N 4 460 
+3 Upperclass 0012 401S 4 460 
+3 Upperclass 0012 402N 4 460 
+3 Upperclass 0012 402S 4 460 
+1 Upperclass 0040 441A 4 124 
+1 Upperclass 0053 523A 2 235 
+1 Upperclass 0040 631A 3 88 
+2 Upperclass 0021 A10 Baseme309 Independent 
+4 Upperclass 0021 A14 Baseme522 Independent 
+2 Upperclass 0021 A16 Baseme404 Independent 
+2 Upperclass 0021 A20 Baseme328 Independent 
+1 Upperclass 0021 A24 Baseme189 Independent
+2 Upperclass 0021 A28 Baseme420 Independent 
+1 Upperclass 0021 A34 Baseme228 Independent 
+1 Upperclass 0021 A36 Baseme201 Independent 
+4 Upperclass 0021 A38 Baseme548 Independent 
+4 Upperclass 0021 A40 Baseme562 
+2 Upperclass 0021 A46 Baseme444 
+4 Upperclass 0021 A48 Baseme529 
+4 Upperclass 0021 A54 Baseme501 
+4 Upperclass 0021 A56 Baseme610 
+1 Upperclass Shared bathroom 0696 401 4 137 Independent 
+4 Upperclass Private bathroom 0696 402 4 580 Independent 
+1 Upperclass Shared bathroom 0696 403 4 128 Independent 
+4 Upperclass Private bathroom 0696 405 4 580 Independent 
+1 Upperclass Shared bathroom 0696 408 4 140 Independent 
+3 Upperclass 0023 T01 Baseme395 Independent 
+1 Upperclass 0023 T02 Baseme154 Independent 
+3 Upperclass 0023 T03 1 419 
+1 Upperclass 0023 T04 1 184 
+1 Upperclass 0023 T05 1 195 
+3 Upperclass 0023 T06 2 442 
+1 Upperclass 0023 T07 2 186 
+1 Upperclass 0023 T09 2 155 
+1 Upperclass 0023 T11 2 139 
+6 Upperclass Private bathroom 0023 T12 3 1278 
+4 Whitman 0671 101 2 722 
+1 Whitman 0671 105 2 148 
+4 Whitman 0671 201 3 755 
+4 Whitman 0671 225 3 687 
+1 Whitman 0671 305 4 139 
+1 Whitman 0671 308 4 131 
+1 Whitman 0671 312 4 129 
+1 Whitman 0671 316 4 129 
+1 Whitman 0671 317 4 113 
+1 Whitman 0671 318 4 132
+1 Whitman 0671 321 4 120 
+4 Whitman 0671 323 4 1065 
+1 Whitman 0669 204 2 139 
+1 Whitman 0669 205 2 113 
+1 Whitman 0669 210 2 147 
+1 Whitman 0669 212 2 152 
+1 Whitman 0669 216 2 149 
+4 Whitman 0669 218 2 514 
+4 Whitman 0669 309 3 512 
+1 Whitman 0669 311 3 115 
+1 Whitman 0669 313 3 115 
+4 Whitman 0669 314 3 484 
+4 Whitman 0669 315 3 484 
+1 Whitman 0669 316 3 148 
+1 Whitman 0669 317 3 115 
+4 Whitman 0669 318 3 517 
+4 Whitman 0669 320 3 460 
+1 Whitman 0669 407 4 206 Yes 
+1 Whitman 0669 408 4 167 Yes 
+1 Whitman 0669 409 4 152 Yes 
+1 Whitman 0669 410 4 133 Yes 
+2 Whitman 0669 411 4 208 Yes 
+1 Whitman 0669 412 4 131 Yes 
+1 Whitman 0669 414 4 137 Yes 
+2 Whitman 0669 415 4 201 Yes 
+1 Whitman 0669 416 4 134 Yes 
+1 Whitman 0669 417 4 153 Yes 
+1 Whitman 0669 418 4 140 Yes 
+1 Whitman 0669 419 4 152 Yes 
+1 Whitman 0669 420 4 134 Yes 
+1 Whitman 0669 421 4 195 Yes 
+1 Whitman 0669 422 4 131 Yes 
+1 Whitman 0669 424 4 150 Yes 
+1 Whitman 0669 426 4 150 Yes
+1 Whitman 0669 428 4 130 Yes 
+1 Whitman 0670 202 2 160 Yes 
+4 Whitman 0670 204 2 450 Yes 
+1 Whitman 0670 206 2 143 Yes 
+1 Whitman 0670 207 2 146 Yes 
+1 Whitman 0670 208 2 149 Yes 
+1 Whitman 0670 209 2 146 Yes 
+1 Whitman 0670 210 2 150 Yes 
+1 Whitman 0670 211 2 147 Yes 
+1 Whitman 0670 212 2 149 Yes 
+1 Whitman 0670 213 2 146 Yes 
+1 Whitman 0670 214 2 149 Yes 
+1 Whitman 0670 215 2 147 Yes 
+1 Whitman 0670 216 2 138 Yes 
+1 Whitman 0670 217 2 143 Yes 
+4 Whitman 0636 105 1 496 
+1 Whitman 0636 106 1 144 
+4 Whitman 0636 107 1 529 
+1 Whitman 0636 108 1 148 
+1 Whitman 0636 109 1 117 
+1 Whitman 0636 110 1 148 
+4 Whitman 0636 112 1 460 
+4 Whitman 0636 114 1 593 
+1 Whitman 0636 201 2 125 
+1 Whitman 0636 203 2 118 
+1 Whitman 0636 206 2 144 
+1 Whitman 0636 209 2 118 
+1 Whitman 0636 301 3 131 
+1 Whitman 0636 302 3 146 
+1 Whitman 0636 303 3 117 
+1 Whitman 0636 304 3 176 
+4 Whitman 0636 305 3 495 
+1 Whitman 0636 306 3 169 
+4 Whitman 0636 307 3 500
+1 Whitman 0636 308 3 146 
+1 Whitman 0636 311 3 117 
+1 Whitman 0636 312 3 152 
+4 Whitman 0636 314 3 965 
+2 Whitman 0636 409 4 229 
+1 Whitman Shared bathroom 0673 105 1 116 
+1 Whitman Shared bathroom 0673 107 1 114 
+1 Whitman 0673 108 1 144 
+1 Whitman 0673 109 1 144 
+1 Whitman 0673 113 1 220 
+1 Whitman 0673 118 1 146 
+1 Whitman 0673 120 1 146 
+1 Whitman 0673 123 1 140 
+1 Whitman 0673 125 1 140 
+1 Whitman 0673 206 2 215 
+1 Whitman Shared bathroom 0673 215 2 109 
+1 Whitman Shared bathroom 0673 217 2 114 
+1 Whitman Shared bathroom 0673 222 2 118 
+1 Whitman 0673 223 2 140 
+1 Whitman Shared bathroom 0673 224 2 113 
+1 Whitman Shared bathroom 0673 305 3 114 
+4 Whitman 0673 306 3 465 
+1 Whitman Shared bathroom 0673 307 3 114 
+1 Whitman 0673 308 3 144 
+1 Whitman 0673 309 3 146 
+1 Whitman Shared bathroom 0673 310 3 113 
+4 Whitman 0673 311 3 456 
+1 Whitman Shared bathroom 0673 312 3 118 
+1 Whitman 0673 313 3 109 
+2 Whitman 0673 314 3 222 
+1 Whitman Shared bathroom 0673 315 3 109 
+2 Whitman 0673 316 3 223 
+1 Whitman Shared bathroom 0673 317 3 114 
+1 Whitman Shared bathroom 0673 318 3 118
+4 Whitman 0673 319 3 458 
+1 Whitman Shared bathroom 0673 320 3 113 
+1 Whitman 0673 321 3 145 
+1 Whitman 0673 425 4 137 
+1 Whitman 0673 427 4 130 
+1 Whitman 0673 429 4 119 
+1 Whitman 0668 007 Baseme107 
+1 Whitman 0668 015 Baseme144 
+1 Whitman 0668 016 Baseme118 
+1 Whitman 0668 017 Baseme150 
+4 Whitman 0668 018 Baseme466 
+2 Whitman Private bathroom 0668 019 Baseme232 
+1 Whitman 0668 023 Baseme147 
+1 Whitman 0668 024 Baseme115 
+1 Whitman 0668 025 Baseme147 
+1 Whitman 0668 026 Baseme130 
+1 Whitman 0668 027 Baseme164 
+1 Whitman 0668 101 1 149 
+4 Whitman 0668 103 1 484 
+1 Whitman 0668 104 1 170 
+4 Whitman 0668 105 1 475 
+1 Whitman 0668 107 1 131 
+4 Whitman 0668 113 1 465 Yes 
+1 Whitman 0668 114 1 101 Yes 
+4 Whitman 0668 116 1 465 Yes 
+4 Whitman 0668 117 1 466 Yes 
+1 Whitman 0668 121 1 147 Yes 
+4 Whitman 0668 123 1 702 Yes 
+4 Whitman 0668 201 2 1115 
+1 Whitman 0668 212 2 119 
+1 Whitman 0668 225 2 147 
+1 Whitman 0668 226 2 114 
+1 Whitman 0668 227 2 147 
+1 Whitman 0668 228 2 117
+4 Whitman 0668 229 2 706 
+4 Whitman 0668 301 3 1020 
+2 Whitman 0668 302 3 288 
+1 Whitman 0668 303 3 177 
+1 Whitman 0668 305 3 115 
+1 Whitman 0668 307 3 108 
+3 Whitman Shared bathroom 0672 101A 1 430 
+3 Whitman Shared bathroom 0672 101D 1 475 
+1 Whitman 0672 203A 2 157 
+1 Whitman 0672 203B 2 220 
+1 Whitman 0672 205 2 156 
+1 Whitman 0672 207 2 155 
+1 Whitman 0672 301 3 173 
+1 Whitman 0672 304A 3 157 
+1 Whitman 0672 304B 3 220 
+1 Whitman 0672 306 3 156 
+1 Whitman 0672 309 3 188 
+1 Whitman 0672 311 3 188 
+1 Whitman 0672 401 4 181 
+1 Whitman 0672 402 4 128 
+1 Whitman 0672 403 4 185 
+1 Whitman 0672 404 4 143 
+1 Whitman 0672 405 4 165 
+1 Whitman 0672 406 4 140 
+1 Whitman 0672 407A 4 150 
+1 Whitman 0672 407B 4 110 
+4 Whitman 0686 102 1 554 
+1 Whitman 0686 106 1 138 
+4 Whitman 0686 202 2 558 
+1 Whitman 0686 203 2 193 
+1 Whitman 0686 204 2 202 
+1 Whitman 0686 205 2 195 
+1 Whitman 0686 206 2 137 
+4 Whitman 0686 302 3 510
+1 Whitman 0686 303 3 179 
+1 Whitman 0686 305 3 211 
+4 Whitman 0686 402 4 485 
+1 Whitman 0686 403 4 128 
+1 Whitman 0686 404 4 109 
+1 Whitman 0686 405 4 131 
+1 Whitman 0686 406 4 109 
+2 Whitman Shared bathroom 0674 302 3 240 
+2 Whitman Shared bathroom 0674 304 3 231 
+4 Whitman Private bathroom 0674 402 4 965 
+2 Whitman 0674 403 4 584 
+6 Wilson Private bathroom 0095 101 1 1056 
+1 Wilson 0091 103 Baseme125 
+1 Wilson 0091 104 Baseme131 
+1 Wilson 0091 105 Baseme115 
+4 Wilson Private bathroom 0164 111 1 613 
+1 Wilson 0095 111 1 111 
+4 Wilson Private bathroom 0164 112 1 614 
+1 Wilson 0092 112 1 145 Yes 
+1 Wilson 0095 112 1 120 
+1 Wilson 0092 113 1 118 Yes 
+1 Wilson 0095 113 1 116 
+1 Wilson 0092 114 1 143 Yes 
+1 Wilson 0095 114 1 122 
+1 Wilson 0093 115 1 163 
+1 Wilson 0095 115 1 166 
+1 Wilson 0094 116 1 143 Yes 
+1 Wilson 0095 116 1 138 
+1 Wilson 0095 117 1 167 
+4 Wilson Private bathroom 0164 121 2 605 
+6 Wilson Private bathroom 0091 121 2 887 
+8 Wilson Private bathroom 0092 121 2 1155 Yes 
+10 Wilson Private bathroom 0094 121 2 1794 Yes 
+4 Wilson Private bathroom 0164 122 2 630
+1 Wilson 0091 122 2 163 
+1 Wilson 0094 122 2 142 Yes 
+1 Wilson 0056 123 2 161 
+1 Wilson 0056 124 2 151 
+1 Wilson 0091 125 2 118 
+1 Wilson 0093 125 1 119 
+2 Wilson 0094 125 2 225 Yes 
+1 Wilson 0091 126 2 119 
+1 Wilson 0093 126 1 145 
+2 Wilson 0094 126 2 221 Yes 
+1 Wilson 0095 130 2 155 
+6 Wilson Private bathroom 0164 131 3 865 
+6 Wilson Private bathroom 0091 131 3 889 
+8 Wilson Private bathroom 0092 131 3 1149 Yes 
+1 Wilson 0095 131 2 119 
+6 Wilson Private bathroom 0164 132 3 844 
+4 Wilson 0092 132 3 605 Yes 
+1 Wilson 0095 132 2 117 
+1 Wilson 0056 132 3 151 
+2 Wilson 0164 133 3 200 
+1 Wilson 0095 133 2 115 
+4 Wilson 0164 135 3 508 
+1 Wilson 0091 201 Baseme150 
+4 Wilson Private bathroom 0164 201 Baseme703 
+1 Wilson 0094 201 Baseme147 Yes 
+1 Wilson 0091 202 Baseme130 
+4 Wilson Private bathroom 0164 202 Baseme627 
+1 Wilson 0094 202 Baseme152 Yes 
+1 Wilson 0091 203 Baseme116 
+1 Wilson 0094 203 Baseme107 Yes 
+1 Wilson 0091 204 Baseme137 
+3 Wilson Private bathroom 0094 204 Baseme619 Yes 
+1 Wilson 0091 205 Baseme121 
+1 Wilson 0091 206 Baseme128
+7 Wilson Private bathroom 0092 211 1 1146 Yes 
+1 Wilson 0092 212 1 144 Yes 
+4 Wilson Private bathroom 0164 212 1 606 
+1 Wilson 0094 212 1 164 Yes 
+1 Wilson 0092 213 1 142 Yes 
+1 Wilson 0056 213 1 157 
+1 Wilson 0091 214 1 117 
+1 Wilson 0092 214 1 156 Yes 
+1 Wilson 0056 214 1 164 
+1 Wilson 0091 215 1 117 
+1 Wilson 0092 215 1 164 Yes 
+1 Wilson 0091 216 1 145 
+1 Wilson 0094 216 1 118 Yes 
+1 Wilson 0094 217 1 155 Yes 
+1 Wilson 0056 220 2 148 
+1 Wilson 0092 222 2 151 Yes 
+1 Wilson 0093 222 2 141 
+1 Wilson 0094 222 2 113 Yes 
+1 Wilson 0094 223 2 119 Yes 
+1 Wilson 0056 223 2 152 
+1 Wilson 0094 224 2 116 Yes 
+1 Wilson 0092 225 2 163 Yes 
+1 Wilson 0093 225 2 114 
+1 Wilson 0091 226 2 141 
+1 Wilson 0093 226 2 119 
+1 Wilson 0094 226 2 161 Yes 
+1 Wilson 0094 227 2 160 Yes 
+4 Wilson Private bathroom 0093 228 2 620 
+4 Wilson 0164 231 3 513 
+4 Wilson 0056 231 3 701 
+1 Wilson 0093 232 2 158 
+4 Wilson Private bathroom 0164 232 3 603 
+1 Wilson 0092 233 3 134 Yes 
+1 Wilson 0093 233 2 117
+1 Wilson 0092 234 3 149 Yes 
+2 Wilson 0093 234 2 229 
+2 Wilson 0092 235 3 250 Yes 
+1 Wilson 0091 236 3 142 
+4 Wilson Private bathroom 0162 301 3 617 
+2 Wilson 0056 301 Baseme246 
+4 Wilson Private bathroom 0162 302 3 606 
+2 Wilson 0056 302 Baseme186 
+2 Wilson 0056 303 Baseme185 
+1 Wilson 0056 304 Baseme183 
+2 Wilson 0056 305 Baseme186 
+4 Wilson 0056 312 1 476 
+1 Wilson 0056 313 1 146 
+1 Wilson 0056 319 1 176 
+1 Wilson 0056 324 2 158 
+1 Wilson 0056 327 2 175 
+9 Wilson Private bathroom 0093 331 3 1665 
+4 Wilson 0056 331 3 755 
+2 Wilson 0056 332 3 659 
+2 Wilson 0056 333 3 201 
+1 Wilson 0093 335 3 148 
+1 Wilson 0093 337 3 150 
+1 Wilson 0093 338 3 118 
+1 Wilson 0093 339 3 118 
+1 Wilson 0093 340 3 118 
+1 Wilson 0093 341 3 115 
+1 Wilson 0093 342 3 118 
+1 Wilson 0093 343 3 145 
+6 Wilson Private bathroom 0162 401 4 881 
+6 Wilson Private bathroom 0162 402 4 881

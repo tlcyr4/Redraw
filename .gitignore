@@ -14,3 +14,5 @@ Original Floorplans
 colored/
 preprocessed/
 shrunk/
+resized/
+data/polygons/*.png

@@ -72,18 +72,18 @@ awk '/[0-9]/{print $0}' |
 sed 's/\ College//g' |
 #shield forbes
 sed 's/Forbes/Africa/g' |
-python antialias.py |
-sed 's/Africa/Forbes/g' |
-sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' |
-sed 's/\(B\)\([0-9][0-9]\)/A\2/g' |
-sed 's/Baseme/A /g' |
+python antialias.py | 
+sed 's/0148 A/0592 /g' | 
+sed 's/Africa/Forbes/g' | 
+sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' | 
+# sed 's/\(B\)\([0-9][0-9]\)/0\2/g' | tee before.txt |
+sed 's/Baseme/A /g' |tee after.txt |
 awk '{if($4=="bathroom") $4=""; else $3 = "Pub\t"$3; print $0}' |
 sed 's/Private/Prv/g' | sed 's/Shared/Sha/g' |
 awk '{if($8!="Yes") $8="No "$8;print $0}' |
 awk '{if($9=="Independent") $2="Independent";if($4=="0153")$2="Spelman";$9="";print $0}' |
 awk '{if(length($5)<3) $5=sprintf("%03d",$5); print $0}' |
 awk '{print $4" "$5 >"tmp1"; $4=$5=""; print $0}' | tr " " "\t" >tmp2
-
 
 
 paste -d "\t" tmp1 tmp2 |
@@ -155,8 +155,8 @@ lists = json.load(sys.stdin)
 dicts = {}
 for room in lists:
     room[3] = str(room[3]).zfill(3)
-    if room[3][0] == "B":
-        room[3] = "A" + room[3][1:]
+    # if room[3][0] == "B":
+    #     room[3] = "0" + room[3][1:]
     dicts[room[12] + " " + room[3]] = {
         "draw"  : room[0],
         "level"   : room[2],
@@ -171,6 +171,7 @@ json.dump(dicts, sys.stdout, indent=4)
 
 # preprocess tigerapp json
 cat tigerapps.json |
+sed 's/B\([0-9][0-9][0-9]\)/\1/g' |
 python antialias.py |
 sed 's/0148 College/Forbes/g' |
 sed 's/ College//g' | python taclean.py |
@@ -191,7 +192,7 @@ for line in sys.stdin:
     else:
         num_rooms = taclean[tokens[0]]["num_rooms"]
     if tokens[0].split()[0] in "0042 0007 0043 0047 0049 0091 0164" and tokens[4] == "A":
-        tokens[4] = "00"
+        tokens[4] = "0"
     if tokens[0].split()[0] in "0671":
         tokens[4] = str(int(tokens[4]) - 1)
     rooms.append({
@@ -224,7 +225,11 @@ for polyfile in glob("polygons/*.json"):
         id = building + " " + polygon["number"].zfill(3)
         x0 = polygon["origin"][0]
         y0 = polygon["origin"][1]
-        points = [[point[0][0] + x0, point[0][1] + y0] for point in polygon["polygon"]]
+        # xrat = 10200.0 / float(polygon["dimensions"][1])
+        # yrat = 6600.0 / float(polygon["dimensions"][0])
+        xpad = (10200 - polygon["dimensions"][1])/2
+        ypad = (6600 - polygon["dimensions"][0]) / 2
+        points = [[point[0][0] + x0 + xpad, point[0][1] + y0 + ypad] for point in polygon["polygon"]]
         if id not in out_polygons:
             out_polygons[id] = []
         out_polygons[id].append(points)
@@ -250,8 +255,7 @@ for room in rooms:
         del polygons[room["building"] + " " + room["number"]]
         polygons[room["building"] + " " + room["number"] +"used"] = True
     else:
-        if room["building"] == "0148" and "1" in room["level"]:
-            log.write(room["number"] + "\n")
+        log.write(room["building"] + " " + room["number"] + "\n")
         room["polygons"] = []
         misses += 1
         if room["building"] + " " + room["level"] not in missfloor:
@@ -286,7 +290,7 @@ log.write("Unused by floor\n\n")
 [log.write(bldg + "\t" + str(unused[bldg]) + "\n") for bldg in unused]
 ' > addpoly.py
 
-sed -i 's/\([TA]\)\([0-9][0-9]\)/\2/g' AVAIL18.json
+# sed -i 's/\([TA]\)\([0-9][0-9]\)/\2/g' AVAIL18.json
 
 python addpoly.py
 

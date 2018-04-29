@@ -16,7 +16,8 @@ for fn in inFiles:
     img = (255-img)
     if "0694-00" in fn or "0696-00" in fn or "0696-01" in fn or "0696-02" in fn or "0047-00" in fn or "0060-01" in fn:
         img = cv.threshold(img, 1, 255, cv.THRESH_BINARY)[1]
-        pass
+    elif "0053-01" in fn or "0053-02" in fn:
+        img = cv.threshold(img, 100, 255, cv.THRESH_BINARY)[1]
     else:
         img = cv.threshold(img, 200, 255, cv.THRESH_BINARY)[1]
     thresholded = np.copy(img)
@@ -65,13 +66,13 @@ for fn in inFiles:
         "0695-01":[1,3],
         "0696-03":[1,3],
         "0693-01":[1,2],
-        "0153-01":[1,2,3,4,5,7,8],
+        "0153-01":[1,2,3,4,5,7,8,9],
         "0153-02":range(1,8),
         "0153-03":[1,2],
         "0148-04":[1,3],
         "0047-04":[1,2],
         "0030-A":[1,2],
-        # "0153-04":[1,2],
+        "0668-04":[1,2],
         "0043-05":[2],
         "0042-04":[2],
         "0023-01":[1,2],
@@ -93,9 +94,22 @@ for fn in inFiles:
     img[:,:] = 0
     for i in cclist:
         img[stats[labelled, cv.CC_STAT_AREA] == areas[i-1]] = 255
+
+    if "-clean" in sys.argv:
+        cv.imwrite(outFilename, img)
+        exit()
     segment = Segment(img)
     hulls = [segment.convex_hull(cc) for cc in range(1,1+len(cclist))]
     origins = (Point(segment.bbox(cc)[0::2]) for cc in range(1,1+len(cclist)))
+
+    segment = Segment(img)
+    bboxes = [segment.bbox(label) for label in segment.labels if label != 0]
+    left = min(bbox[0] for bbox in bboxes)
+    right = max(bbox[1] for bbox in bboxes)
+    top = min(bbox[2] for bbox in bboxes)
+    bottom = max(bbox[3] for bbox in bboxes)
+
+    bbox = (left,right,top,bottom)
 
     # bring back things inside convex hull
 
@@ -105,6 +119,8 @@ for fn in inFiles:
             
     img = cv.bitwise_and(thresholded, mask)
 
+    if "-trim" in sys.argv:
+        img = img[top:bottom,left:right]
     
 
 

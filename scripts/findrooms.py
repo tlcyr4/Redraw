@@ -15,8 +15,9 @@ def main(inFilename):
 
     # parse/use inFilename
     img = cv.imread(inFilename, cv.IMREAD_GRAYSCALE)
-    outFilename = path.join("..", "results", path.basename(inFilename))
-    building = path.basename(path.dirname(inFilename))
+    print(inFilename)
+    outFilename = path.join("data", "polygons", path.basename(inFilename))
+    building = path.basename(inFilename)[:4]
     floornum = path.splitext(path.basename(inFilename))[0][-1]
 
     # get settings for this building
@@ -26,8 +27,11 @@ def main(inFilename):
         settings[tokens[0].strip(":").lower()] = building in tokens[1:]
 
     # run analysis
-    floor = Floor(cv.imread(inFilename, cv.IMREAD_COLOR), floornum, building)
-    floor.segment(room_upper_thresh = None, text_thresh=2200)
+    floor = Floor(cv.imread(inFilename, cv.IMREAD_COLOR), floornum, building, preprocessed=preprocessed)
+    text_thresh = 2200
+    if building == "0010":
+        text_thresh = 3000
+    floor.segment(room_upper_thresh = None, text_thresh=text_thresh)
     floor.find_doors(settings["cluttered"], settings["close_door"], corr_thresh = .03)
     floor.transplant_doors()
     floor.find_rooms(settings["efr"], settings["two_digit"])
@@ -58,7 +62,7 @@ inFiles = glob(sys.argv[1])
 verbose = "-v" in sys.argv
 timing = "-time" in sys.argv
 real = "-real" in sys.argv
-
+preprocessed = "-p" in sys.argv
 
 
 if timing:
