@@ -5,7 +5,7 @@ import Center from 'react-center';
 import HomeMap from './homeMap.png';
 import Logo from './raw.jpg';
 import './App.css';
-import ImageMapper from 'react-image-mapper';
+import ImageMapper from './ImageMapper';
 import BuildingCoordData from './building_polygons.json';
 import BuildingQueryName from './buildings.json';
 import {
@@ -168,7 +168,7 @@ class App extends Component {
 	}
 
 	handleHover = (obj, num, event) => {
-		//display the information of the room OR building on hover.
+		// Do Something
 	}
 
 	// Handles the changing of the floors
@@ -203,7 +203,6 @@ class App extends Component {
 
 	// handle the processing of the start screen
 	processBuildingJSON() {
-		console.log("HI");
 		for (var i = 0; i < BuildingCoordData.length; i++) {
 			var oneBuild = BuildingCoordData[i];
 			var oneBuildPoly = oneBuild.geometry.coordinates;
@@ -236,25 +235,28 @@ class App extends Component {
 		this.roomIDRendered = [];
 		const imageWidthScaled = window.innerWidth*0.6;
 		var ratio = imageWidthScaled/2550.0;
+		
 		// Iterate through all rooms in the json file
 		for (var i = 0; i < retQuery.length; i++) {
 			var iRoom = retQuery[i];
+			
 			// Hard-Coded to only display those on one floor
 			var temp = parseInt(iRoom.level, 10);
 			if (isNaN(temp))
 				temp = iRoom.level;
 
 			if (temp == this.floor) {
-				var roomCoords = [];
 				var roomRaw = JSON.parse(iRoom.polygons);
 				
 				for (var k = 0; k < roomRaw.length; k++) {
+					var roomCoords = [];
 					var roomArray = roomRaw[k];
+					
 					for (var j = 0; j < roomArray.length; j++) {
 						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
 						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
 					}
-					areaArray.push({shape: 'poly', coords: roomCoords});
+					areaArray.push({ _id: iRoom.room_id, shape: 'poly', coords: roomCoords});
 					// hold onto the order of the polygons wrt to the rooms
 					// useful for when handling click
 					this.roomIDRendered.push(iRoom.room_id);
@@ -302,7 +304,6 @@ class App extends Component {
 		}
 		console.log("Room Clicked", this.roomClicked);
 		if (parseInt(this.roomClicked, 10) >= 0) {
-			console.log("YAY");
 			info = (
 				<div id = "roomClicked">
 					<h3>{this.searchLink}</h3>
