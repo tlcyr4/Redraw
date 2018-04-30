@@ -11,7 +11,7 @@ def query(request):
 		queries['floor__building__name'] = queries.pop('building').replace("%20"," ")
 	if 'level' in queries:
 		queries['floor__level'] = queries.pop('level')
-	queried = Room.objects.filter(**queries)
+	queried = Room.objects.filter(**queries).order_by('floor__level')
 	results = list(queried.values())
 
 	for room in results:
