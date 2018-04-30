@@ -25,6 +25,7 @@ class App extends Component {
 		this.floorNameLabel = (<p></p>);
 		this.floor = 0;	// Floor-ID for the Rooms
 		this.floorList = []; // Holds onto a list of all the floors in a building
+		this.floorListB2M = []; // Just holds HOME button!
 		this.floorButtonClicked = 0; // determine whether a specific floor button is clicked
 
 		this.searchLink = ""; // A string to hold the query searched
@@ -81,6 +82,7 @@ class App extends Component {
 
 	        this.floorList = [];
 	        this.roomidFloorList = [];
+	        this.floorListB2M = [];
 	        var currFloorID = -1;
 	        // handle the number of floors there are
 	        for (var i = 0; i < data.length; i++) {
@@ -98,10 +100,11 @@ class App extends Component {
 	        		currFloorID = entry.level;
 	        	}
 	        }
+	        this.floorListB2M.push("H");
 	        this.floorNameLabel = (
 			<div id="floorLabel">
-				<h2 id="floorBuildingName" class = ".centerLabel">{this.searchLink}</h2>
-				<h3 id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</h3>
+				<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
+				<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
 			</div>
 			);
 	        this.forceUpdate();
@@ -164,15 +167,28 @@ class App extends Component {
 	    }
 	}
 
-
-	handleHover = (obj, num, event) => {
-		// Do Something
+	// Reset the map
+	resetPage = (event) => {
+		// reset everything
+		this.floor = 0;
+		this.floorButtonClicked = 0;
+		this.searchLink = "";
+		this.start = 0;
+		this.imagePath = HomeMap;
+		this.floorNameLabel = (<p></p>);
+		this.floorList = [];
+		this.floorListB2M = [];
+		this.roomidFloorList = [];
+		this.roomClicked = -1;
+		this.forceUpdate();
 	}
 
 	// Handles the changing of the floors
-	changeFloor = (event, listValue) => {
+	changeFloor = (event) => {
+
 		var activeFloor = event.target.id;
 		var index = -1;
+
 		// get the index to get the correct room_id index
 		for (var i = 0; i < this.floorList.length; i++) {
 			if (activeFloor == this.floorList[i])
@@ -183,7 +199,6 @@ class App extends Component {
 		this.floor = activeFloor;
 		this.floorButtonClicked = 1;
 		this.roomClicked = -1;
-		console.log(this.floor);
 		this.getQuery();
 	}
 
@@ -201,39 +216,48 @@ class App extends Component {
 
 	// handle the processing of the start screen
 	processBuildingJSON() {
+		const imageWidthScaled = window.innerWidth*0.43;
+		var ratio = imageWidthScaled/1166.0;
+
 		for (var i = 0; i < BuildingCoordData.length; i++) {
 			var oneBuild = BuildingCoordData[i];
-			console.log(oneBuild);
 			var oneBuildPoly = oneBuild.geometry.coordinates;
 			var buildingCoords = [];
 
 			for (var j = 0; j < oneBuildPoly.length; j++) {
 				var gpsCoor = oneBuildPoly[j];
-				var buildX = parseInt(gpsCoor[0],10) * window.innerWidth*0.6/1166.0;
-				var buildY = parseInt(gpsCoor[1],10) * window.innerWidth*0.6/1166.0;
+				var buildX = parseInt(gpsCoor[0],10) * ratio;
+				var buildY = parseInt(gpsCoor[1],10) * ratio;
 				buildingCoords.push(buildX);
 				buildingCoords.push(buildY);
 			}
-			this.buildingPolygons.push({shape: 'poly', coords: buildingCoords, name: oneBuild.properties.name, _id: oneBuild.properties.id})
+			this.buildingPolygons.push({
+				_id: oneBuild.properties.id,
+				shape: 'poly', 
+				coords: buildingCoords, 
+				tooltip: {name: oneBuild.properties.name, moreInfo: oneBuild.properties.type} 
+			})
 			// hold onto the order in which the buildings are added
 			this.buildingIDRendered.push(oneBuild.properties);
 		}
 		this.start = 1;
+
+		return imageWidthScaled;
 	}
 
 
 	render() {
-		// run only once
-		if (this.start === 0) {
-			this.processBuildingJSON();
-		}
-
 		// Process the JSON received from Back-End
 		var retQuery = this.state.rooms;
 		var areaArray = [];
 		this.roomIDRendered = [];
-		const imageWidthScaled = window.innerWidth*0.6;
+		var imageWidthScaled = window.innerWidth*0.6;
 		var ratio = imageWidthScaled/2550.0;
+
+		// run only once
+		if (this.start === 0) {
+			imageWidthScaled = this.processBuildingJSON();
+		}
 		
 		// Iterate through all rooms in the json file
 		for (var i = 0; i < retQuery.length; i++) {
@@ -255,7 +279,17 @@ class App extends Component {
 						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
 						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
 					}
-					areaArray.push({ _id: iRoom.room_id, shape: 'poly', coords: roomCoords, name:"Room "+ iRoom.number});
+
+					var residentPlurality = " Residents";
+					if (iRoom.num_occupants === 1)
+						residentPlurality = " Resident";
+
+					areaArray.push({ 
+						_id: iRoom.room_id, 
+						shape: 'poly', 
+						coords: roomCoords, 
+						tooltip: {name: "Room "+ iRoom.number, moreInfo: iRoom.num_occupants + residentPlurality}
+					});
 					// hold onto the order of the polygons wrt to the rooms
 					// useful for when handling click
 					this.roomIDRendered.push(iRoom.room_id);
@@ -300,29 +334,34 @@ class App extends Component {
 		}
 
 		if (parseInt(this.roomClicked, 10) >= 0) {
+			var subFree = "No";
+			if (this.currRoom.sub_free)
+				subFree = "Yes";
+
 			info = (
 				<div id = "roomClicked">
-					<h3>{this.searchLink}</h3>
-					<h4>{"Floor " + this.currRoom.floor}</h4>
-					<p class="roomContent">{"Room Number: " + this.currRoom.roomNum}</p>
-					<p class="roomContent">{"Room Size: " + this.currRoom.sqft + " sqft"}</p>
-					<p class="roomContent">{"Occupant Size: " + this.currRoom.num_occupants}</p>
-					<p class="roomContent">{"Number of Rooms: " + this.currRoom.num_rooms}</p>
-					<p class="roomContent">{"Draw Type: " + this.currRoom.drawType}</p>
+					<h4>{this.searchLink}</h4>
+					<h5>{"Floor " + this.currRoom.floor}</h5>
+					<ul>
+						<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
+						<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
+						<li class="roomContent"><p>{"Occupant Size: " + this.currRoom.num_occupants}</p></li>
+						<li class="roomContent"><p>{"Number of Rooms: " + this.currRoom.num_rooms}</p></li>
+						<li class="roomContent"><p>{"Draw Type: " + this.currRoom.drawType}</p></li>
+						<li class="roomContent"><p>{"Sub Free: " + subFree}</p></li>
+					</ul>
 				</div>
 				);
 		}
 		
 		return (
-				<div className = "App">
+				<div className = "App" id="AppBackground">
 					
 					<div id = "header">
 						<img id ="headerImg" src={Logo} alt="R"/>
-						<p data-tip data-for="getToolTip">edraw</p>
+						<p>edraw</p>
 					</div>
-					<div>
-					
-					</div>
+
 					<div id ="formBlock">
 						<form onSubmit = {this.handleSubmit}>
 							<input type="text"
@@ -346,7 +385,6 @@ class App extends Component {
 									strokeColor={borderColor}
 									width={imageWidthScaled}
 									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-									onMouseEnter={(obj, num, event) => this.handleHover(obj, num, event)}
 									lineWidth='3'
 								/>
 								
@@ -356,12 +394,20 @@ class App extends Component {
 						<div id = "rightContent">
 							{this.floorNameLabel}
 							<ul id = "floorButtons">
+								{this.floorListB2M.map(listValue =>
+									<li class="backToMap">
+										<input id={listValue}
+										value="Back To Map"
+										type="button"
+										onClick={(event) => this.resetPage(event)}/>
+									</li>
+								)}
 								{this.floorList.map(listValue => 
 									<li>
 										<input id={listValue}
 										value={"Floor " + listValue} 
 										type="button"
-										onClick={(event) => this.changeFloor(event, this)}/>
+										onClick={(event) => this.changeFloor(event)}/>
 									</li>
 								)}
 							</ul>
