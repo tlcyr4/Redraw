@@ -22,6 +22,7 @@
     "react-scripts": "1.1.1",
     "react-side-bar": "^0.3.5",
     "react-sidebar": "^2.3.2",
+    "react-tooltip": "^3.5.0",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {

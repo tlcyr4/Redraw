@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
 import Center from 'react-center';
-import HomeMap from './homeMap.png';
-import Logo from './raw.jpg';
+
+import HomeMap from './images/homeMap.png';
+import Logo from './images/raw.jpg';
 import './App.css';
 import ImageMapper from './ImageMapper';
 import BuildingCoordData from './building_polygons.json';
 import BuildingQueryName from './buildings.json';
-import {
-  BrowserRouter,
-} from 'react-router-dom';
 
 // Manages the main logic of the page
 class App extends Component {
@@ -106,7 +104,6 @@ class App extends Component {
 				<h3 id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</h3>
 			</div>
 			);
-	        console.log("All floors", this.floorList);
 	        this.forceUpdate();
 		}
       })
@@ -167,6 +164,7 @@ class App extends Component {
 	    }
 	}
 
+
 	handleHover = (obj, num, event) => {
 		// Do Something
 	}
@@ -174,7 +172,6 @@ class App extends Component {
 	// Handles the changing of the floors
 	changeFloor = (event, listValue) => {
 		var activeFloor = event.target.id;
-		console.log("Just clicked floor " + event.target.id);
 		var index = -1;
 		// get the index to get the correct room_id index
 		for (var i = 0; i < this.floorList.length; i++) {
@@ -186,6 +183,7 @@ class App extends Component {
 		this.floor = activeFloor;
 		this.floorButtonClicked = 1;
 		this.roomClicked = -1;
+		console.log(this.floor);
 		this.getQuery();
 	}
 
@@ -205,6 +203,7 @@ class App extends Component {
 	processBuildingJSON() {
 		for (var i = 0; i < BuildingCoordData.length; i++) {
 			var oneBuild = BuildingCoordData[i];
+			console.log(oneBuild);
 			var oneBuildPoly = oneBuild.geometry.coordinates;
 			var buildingCoords = [];
 
@@ -215,7 +214,7 @@ class App extends Component {
 				buildingCoords.push(buildX);
 				buildingCoords.push(buildY);
 			}
-			this.buildingPolygons.push({shape: 'poly', coords: buildingCoords})
+			this.buildingPolygons.push({shape: 'poly', coords: buildingCoords, name: oneBuild.properties.name, _id: oneBuild.properties.id})
 			// hold onto the order in which the buildings are added
 			this.buildingIDRendered.push(oneBuild.properties);
 		}
@@ -256,7 +255,7 @@ class App extends Component {
 						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
 						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
 					}
-					areaArray.push({ _id: iRoom.room_id, shape: 'poly', coords: roomCoords});
+					areaArray.push({ _id: iRoom.room_id, shape: 'poly', coords: roomCoords, name:"Room "+ iRoom.number});
 					// hold onto the order of the polygons wrt to the rooms
 					// useful for when handling click
 					this.roomIDRendered.push(iRoom.room_id);
@@ -264,7 +263,7 @@ class App extends Component {
 			}
 		}
 		// Diplays the array of polygons loaded for debugging purposes.
-		console.log("Polygons", areaArray);
+		// console.log("Polygons", areaArray);
 
 		// Make the MAP to be drawn in for floor plans
 		var MAP = {
@@ -275,34 +274,31 @@ class App extends Component {
 		var fillColor = "rgba(255, 165, 0, 0.7)";
 		// border color for floors
 		var borderColor = "rgba(255, 255, 255, 0)";
+
+		var info = (
+				<div id = "roomNotClicked">
+					<h3>Click a Room!</h3>
+				</div>
+			);
 		
-		// the case when we are in the map screen, overwrite styles
+		// overwrite for cases when home screen
 		if (this.imagePath === HomeMap) {
+			// map of polygons
 			MAP = {
 				name: 'my-map',
 				areas: this.buildingPolygons,
 			};
 			fillColor = "rgba(255, 0, 255, 0.85)";
 			borderColor = "rgba(200,200,250, 1)";
-		}
 
-		// the bottom right room information
-		var info;
-		if (this.imagePath === HomeMap) {
+			// bottom right
 			info = (
 				<div id = "roomNotClicked">
 					<h3>Click a Building!</h3>
 				</div>
 			);
 		}
-		else {
-			info = (
-				<div id = "roomNotClicked">
-					<h3>Click a Room!</h3>
-				</div>
-			);
-		}
-		console.log("Room Clicked", this.roomClicked);
+
 		if (parseInt(this.roomClicked, 10) >= 0) {
 			info = (
 				<div id = "roomClicked">
@@ -318,14 +314,11 @@ class App extends Component {
 		}
 		
 		return (
-			<BrowserRouter>	
 				<div className = "App">
 					
-
 					<div id = "header">
-						
 						<img id ="headerImg" src={Logo} alt="R"/>
-						<p>edraw</p>
+						<p data-tip data-for="getToolTip">edraw</p>
 					</div>
 					<div>
 					
@@ -354,8 +347,10 @@ class App extends Component {
 									width={imageWidthScaled}
 									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
 									onMouseEnter={(obj, num, event) => this.handleHover(obj, num, event)}
-									lineWidth="3"
+									lineWidth='3'
 								/>
+								
+
 							</Center>
 						</div>
 						<div id = "rightContent">
@@ -378,7 +373,6 @@ class App extends Component {
 					</div>
 
 				</div>
-			</BrowserRouter>
 		);
 	}
 }
