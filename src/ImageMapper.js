@@ -93,8 +93,8 @@ export default class ImageMapper extends Component {
 				<area class={area._id} shape={area.shape} coords={area.coords.join(',')}
 					  onMouseEnter={this.hoverOn.bind(this, area, index)}
 					  onMouseLeave={this.hoverOff.bind(this, area, index)}
-					  onClick={this.click.bind(this, area, index)} href={area.href} data-tip data-for={area._id}/>
-				<ReactToolTip id={area._id} type='info'>{area.name}</ReactToolTip>
+					  onClick={this.click.bind(this, area, index)} href={area.href} data-tip data-for={"area"+area._id}/>
+				<ReactToolTip id={"area"+area._id} type='info'>{area.name}</ReactToolTip>
 			</div>
 		));
 	}
