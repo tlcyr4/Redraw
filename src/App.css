@@ -205,15 +205,24 @@ div#roomInfo {
   overflow: auto;
   border-radius: 0.5vw;
   border: 0.1vw solid #000;
+  text-align: left; 
 }
 
 div#roomNotClicked {
   margin-top: 10%;
+  text-align: center;
+}
+
+div#legendDiv {
+  background-color: #EEE;
+  padding-left: 2vw;
 }
 
 div#roomClicked {
   margin-top: 10%;
+  text-align: center;
 }
+
 div#roomClicked h4 {
   font-size: 1vw;
   line-height: 0.2vw;

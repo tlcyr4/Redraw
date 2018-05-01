@@ -3,11 +3,12 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Center from 'react-center';
 
-import DiscreteColorLegend from 'react-vis/dist/legends/discrete-color-legend';
+import { DiscreteColorLegend } from 'react-vis';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
 import './App.css';
+import './styles.css';
 import ImageMapper from './ImageMapper';
 import BuildingCoordData from './building_polygons.json';
 import BuildingQueryName from './buildings.json';
@@ -49,13 +50,13 @@ class App extends Component {
 
 		// make a legend! (one time thing!)
 		this.items = [
-			{title: 'Rockefeller', color: '#97c574', disabled: 'false'},
-			{title: 'Mathey', color: '#b3604d', disabled: 'false'},
-			{title: 'Whitman', color: '#a9d6e3', disabled: 'false'},
-			{title: 'Wilson', color: '#f7b164', disabled: 'false'},
-			{title: 'Butler', color: '#5B8fbe', disabled: 'false'},
-			{title: 'Forbes', color: '#f3766d', disabled: 'false'},
-			{title: 'Upperclass', color: '#a4a2a0', disabled: 'false'}
+			{title: 'Rockefeller', color: '#97c574'},
+			{title: 'Mathey', color: '#b3604d'},
+			{title: 'Whitman', color: '#a9d6e3'},
+			{title: 'Wilson', color: '#f7b164'},
+			{title: 'Butler', color: '#5B8fbe'},
+			{title: 'Forbes', color: '#f3766d'},
+			{title: 'Upperclass', color: '#a4a2a0'}
 		];
 
 		// Bindings
@@ -340,8 +341,17 @@ class App extends Component {
 
 			// bottom right
 			info = (
-				<div id = "roomNotClicked">
-					<h3>Click a Building!</h3>
+				<div>
+					<div id = "roomNotClicked">
+						<h3>Click a Building!</h3>
+					</div>
+					<div id = "legendDiv">
+						<DiscreteColorLegend
+						    height={window.innerHeight*0.3}
+						    width={window.innerWidth*0.09}
+						    items={this.items}
+						/>
+					</div>
 				</div>
 			);
 		}
