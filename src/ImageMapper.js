@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactToolTip from 'react-tooltip';
 
 export default class ImageMapper extends Component {
 	constructor(props) {
@@ -88,10 +89,16 @@ export default class ImageMapper extends Component {
 
 	renderAreas() {
 		return this.props.map.areas.map((area, index) => (
-			<area class={area._id} shape={area.shape} coords={area.coords.join(',')}
-				  onMouseEnter={this.hoverOn.bind(this, area, index)}
-				  onMouseLeave={this.hoverOff.bind(this, area, index)}
-				  onClick={this.click.bind(this, area, index)} href={area.href} />
+			<div key = {index.toString()}>
+				<area class={area._id} shape={area.shape} coords={area.coords.join(',')}
+					  onMouseEnter={this.hoverOn.bind(this, area, index)}
+					  onMouseLeave={this.hoverOff.bind(this, area, index)}
+					  onClick={this.click.bind(this, area, index)} href={area.href} data-tip data-for={"area"+area._id}/>
+				<ReactToolTip id={"area"+area._id} type='info'>
+					<p>{area.tooltip.name}</p>
+					<p>{area.tooltip.moreInfo}</p>
+				</ReactToolTip>
+			</div>
 		));
 	}
 
@@ -124,12 +131,18 @@ ImageMapper.propTypes = {
 	fillColor: PropTypes.string,
 	height: PropTypes.number,
 	lineWidth: PropTypes.number,
+	// map! IMPORTANT
 	map: PropTypes.shape({
 		areas: PropTypes.arrayOf(PropTypes.shape({
+			// get the corresponding area
 			area: PropTypes.shape({
 				coords: PropTypes.arrayOf(PropTypes.number),
 				href: PropTypes.string,
 				shape: PropTypes.string,
+				tooltip: PropTypes.shape({
+					name: PropTypes.string,
+					moreInfo: PropTypes.string,
+				}),
 			})
 		})),
 		name: PropTypes.string,
