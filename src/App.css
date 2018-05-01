@@ -208,7 +208,7 @@ div#roomInfo {
 }
 
 div#roomNotClicked {
-  margin-top: 30%;
+  margin-top: 10%;
 }
 
 div#roomClicked {
@@ -246,6 +246,6 @@ li.roomContent {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 0.35vw;
-    background-color: rgba(100,100,100,.5);
+    background-color: rgba(50,50,50,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }

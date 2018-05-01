@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faSearch from '@fortawesome/fontawesome-free-solid/faSearch'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Center from 'react-center';
+
+import DiscreteColorLegend from 'react-vis/dist/legends/discrete-color-legend';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
@@ -44,6 +46,17 @@ class App extends Component {
 		// keep track of all the information of the room!
 		this.roomClicked = -1;
 		this.currRoom = [];
+
+		// make a legend! (one time thing!)
+		this.items = [
+			{title: 'Rockefeller', color: '#97c574', disabled: 'false'},
+			{title: 'Mathey', color: '#b3604d', disabled: 'false'},
+			{title: 'Whitman', color: '#a9d6e3', disabled: 'false'},
+			{title: 'Wilson', color: '#f7b164', disabled: 'false'},
+			{title: 'Butler', color: '#5B8fbe', disabled: 'false'},
+			{title: 'Forbes', color: '#f3766d', disabled: 'false'},
+			{title: 'Upperclass', color: '#a4a2a0', disabled: 'false'}
+		];
 
 		// Bindings
 		this.getQuery = this.getQuery.bind(this);
@@ -387,7 +400,6 @@ class App extends Component {
 									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
 									lineWidth='3'
 								/>
-								
 
 							</Center>
 						</div>
