@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Center from 'react-center';
-
 import { DiscreteColorLegend } from 'react-vis';
+import { RingLoader } from 'react-spinners';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
@@ -21,6 +21,7 @@ class App extends Component {
 		
     this.state = {
 			rooms: [], // Contains all rooms returned by getQuery()
+			loading: false, // for the loading wheel
 		};
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
@@ -77,9 +78,11 @@ class App extends Component {
       .then(data => {
         this.setState({
           rooms: data,
+          loading: false,
         });
         // Update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
+			this.state.loading = true;
 			this.roomClicked = -1;
 			// for now, default to the first floor
 			if (!this.floorButtonClicked) {
@@ -122,6 +125,7 @@ class App extends Component {
 			</div>
 			);
 	        this.forceUpdate();
+	        this.state.loading=false;
 		}
       })
       .catch(error => console.log(error));
@@ -413,6 +417,7 @@ class App extends Component {
 
 							</Center>
 						</div>
+
 						<div id = "rightContent">
 							{this.floorNameLabel}
 							<ul id = "floorButtons">
@@ -433,11 +438,20 @@ class App extends Component {
 									</li>
 								)}
 							</ul>
+							
 
 							<div id = "roomInfo">
 								{info}
 							</div>
 						</div>
+
+						<div id="loading">
+							<RingLoader
+								color={'#ffa500'} 
+								loading={this.state.loading} 
+						    />
+					    </div>
+
 					</div>
 
 				</div>

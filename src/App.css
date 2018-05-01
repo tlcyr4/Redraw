@@ -246,6 +246,13 @@ li.roomContent {
   line-height: 0.7vw;
 }
 
+div#loading {
+  position: absolute;
+  top: 50%;
+  left: 49%;
+  z-index: 5000;
+}
+
 /* Always show scroll bar -- indicate what is scrollable */
 ::-webkit-scrollbar {
     -webkit-appearance: none;
