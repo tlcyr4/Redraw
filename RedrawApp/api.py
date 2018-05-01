@@ -54,5 +54,6 @@ def favorites(request):
 		favorites[length - 1] = None
 	profile.save()
 	trimmed = [fav for fav in favorites if fav != None]
-	return HttpResponse(json.dumps(trimmed), content_type="application/json")
+	rooms = list(Room.objects.filter(pk__in=trimmed).values())
+	return HttpResponse(json.dumps(rooms), content_type="application/json")
 
