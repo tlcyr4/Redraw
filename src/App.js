@@ -10,6 +10,9 @@ import Logo from './images/raw.jpg';
 import './App.css';
 import './styles.css';
 import ImageMapper from './ImageMapper';
+import Drawer from 'material-ui/Drawer';
+import {MenuItem} from 'material-ui/Menu';
+import Button from 'material-ui/Button';
 import BuildingCoordData from './building_polygons.json';
 import BuildingQueryName from './buildings.json';
 
@@ -21,6 +24,8 @@ class App extends Component {
 		
     this.state = {
 			rooms: [], // Contains all rooms returned by getQuery()
+			favorites: [], 
+			openDrawer: false,
 		};
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
@@ -46,7 +51,9 @@ class App extends Component {
 
 		// keep track of all the information of the room!
 		this.roomClicked = -1;
-		this.currRoom = [];
+		this.currRoom = [];	
+
+		this.favoritesList = []; //List of all favorites by a user 
 
 		// make a legend! (one time thing!)
 		this.items = [
@@ -125,7 +132,37 @@ class App extends Component {
 		}
       })
       .catch(error => console.log(error));
-  }
+  	}
+
+  	updateFavorites() {
+  		const url = '/api/favorites/?room_id='+this.roomClicked; 
+  		fetch(url, {credentials: 'same-origin'})
+  		    .then(response => {
+        		return response.json();
+      		})
+      		.then((data) => {
+      			console.log(data);
+      		})
+      		.catch(error => console.log(error))
+  	}
+
+  	getFavorites() {
+  		const url = '/api/favorites/?room_id=0'; 
+
+  		fetch(url, {credentials: 'same-origin'})
+  			.then(response => {
+        		return response.json();
+      		})
+  			.then((data) => {
+  				this.setState({
+  					favorites: data,
+  				})
+  				if (Array.isArray(data) && data.length) {
+
+  				}
+  			})  
+  			.catch(error => console.log(error))
+  	}
 
 	// Using ROOM-ID, receive floorplan filepath from Back-End.
 	getFloorplan() {
@@ -139,6 +176,21 @@ class App extends Component {
 				this.forceUpdate();
 			})
 			.catch(error => console.log(error));
+	}
+
+	handleDrawerOpen = () => this.setState({openDrawer: true}); 
+
+	handleDrawerClose = () => this.setState({openDrawer: false})
+
+	handleFavoritesClick = (obj, num, event) => {
+		/*var query = this.state.rooms;
+		for (var i = 0; i < query.length; i++) {
+			var iRoom = query[i]; 
+			if (iRoom.room_id == this.roomIDRendered[num])
+				this.roomid = iRoom.room_id; 
+		}*/
+		this.updateFavorites();
+		console.log("success?");
 	}
 
 	// Handles the click for the Polygons in the ImageMapper
@@ -365,6 +417,9 @@ class App extends Component {
 				<div id = "roomClicked">
 					<h4>{this.searchLink}</h4>
 					<h5>{"Floor " + this.currRoom.floor}</h5>
+					<MenuItem onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
+						Toggle Favorites 
+					</MenuItem>
 					<ul>
 						<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
 						<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
@@ -383,6 +438,31 @@ class App extends Component {
 					<div id = "header">
 						<img id ="headerImg" src={Logo} alt="R"/>
 						<p>edraw</p>
+
+						<div className ="FavoritesBar"> 
+							<Button
+								className="Favorites"
+								onClick={this.handleDrawerOpen}
+								style={{
+									height:'54px',
+									position: 'absolute',
+									right: '0px'
+								}}>
+								Favorites 
+							</Button> 
+							<Drawer 
+								open={this.state.openDrawer}>
+								<MenuItem> CrazyLongMenuItem </MenuItem>
+								<MenuItem 
+									onClick={this.handleDrawerClose}
+									style={{
+										width: '100%',
+										position: 'absolute',
+										bottom: '0'}}>
+									Close
+								</MenuItem>
+							</Drawer>
+						</div>
 					</div>
 
 					<div id ="formBlock">
