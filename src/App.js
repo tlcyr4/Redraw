@@ -72,6 +72,7 @@ class App extends Component {
 		this.getFloorplan = this.getFloorplan.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.processBuildingJSON = this.processBuildingJSON.bind(this);
+		this.updateFavorites = this.updateFavorites.bind(this);
 	}
 
 	// Makes an API call to return all rooms associated with the building
@@ -162,9 +163,14 @@ class App extends Component {
   				this.setState({
   					favorites: data,
   				})
-  				if (Array.isArray(data) && data.length) {
-
-  				}
+				this.favoritesList = [];
+				for (var i = 0; i < data.length; i++) {
+					this.favoritesList.push(data[i])
+				}
+				console.log("data:");
+				console.log(data);
+				console.log("favortes list:");
+				console.log(this.favoritesList);
   			})  
   			.catch(error => console.log(error))
   	}
@@ -183,7 +189,11 @@ class App extends Component {
 			.catch(error => console.log(error));
 	}
 
-	handleDrawerOpen = () => this.setState({openDrawer: true}); 
+	handleDrawerOpen = (obj, num, event) => {
+		this.setState({openDrawer: true});
+		this.getFavorites(); 
+		console.log("success?")
+	}
 
 	handleDrawerClose = () => this.setState({openDrawer: false})
 
@@ -447,7 +457,7 @@ class App extends Component {
 						<div className ="FavoritesBar"> 
 							<Button
 								className="Favorites"
-								onClick={this.handleDrawerOpen}
+								onClick={(obj, num, event)=>this.handleDrawerOpen(obj, num, event)}
 								style={{
 									height:'54px',
 									position: 'absolute',
