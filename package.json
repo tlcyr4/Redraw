@@ -18,6 +18,7 @@
     "react": "^16.3.0",
     "react-autosuggest": "^9.3.4",
     "react-center": "^1.1.1",
+    "react-delay": "^0.1.0",
     "react-dom": "^16.3.0",
     "react-final-form": "^3.4.0",
     "react-fontawesome": "^1.6.1",

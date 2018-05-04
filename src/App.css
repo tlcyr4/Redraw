@@ -161,7 +161,7 @@ ul#floorButtons {
 }
 
 ul#floorButtons li {
-  margin-left: -20%;
+  margin-left: -12%;
 }
 
 
@@ -211,6 +211,7 @@ div#roomInfo {
 }
 
 div#roomNotClicked {
+  font-size: 1vw;
   margin-top: 10%;
   text-align: center;
 }
@@ -226,7 +227,6 @@ div#roomClicked {
 
 div#roomClicked h4 {
   font-size: 1vw;
-  line-height: 0.2vw;
   word-wrap: break-word;
 }
 div#roomClicked h5 {

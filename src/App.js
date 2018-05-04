@@ -5,6 +5,7 @@ import Center from 'react-center';
 import { DiscreteColorLegend } from 'react-vis';
 import { FadeLoader } from 'react-spinners';
 import { Form, Field } from 'react-final-form';
+import { RingLoader } from 'react-spinners';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
@@ -87,6 +88,7 @@ class App extends Component {
         // Update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
 			this.state.loading = true;
+			this.forceUpdate();
 			this.roomClicked = -1;
 			// for now, default to the first floor
 			if (!this.floorButtonClicked) {
@@ -129,7 +131,7 @@ class App extends Component {
 			</div>
 			);
 	        this.forceUpdate();
-	        this.state.loading=false;
+	        this.state.loading = false;
 		}
       })
       .catch(error => console.log(error));
