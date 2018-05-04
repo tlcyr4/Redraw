@@ -54,7 +54,7 @@ class App extends Component {
 		this.roomClicked = -1;
 		this.currRoom = [];	
 
-		this.favoritesList = []; //List of all favorites by a user 
+		this.favoritesList = []; // favorites
 
 		// make a legend! (one time thing!)
 		this.items = [
@@ -73,6 +73,7 @@ class App extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.processBuildingJSON = this.processBuildingJSON.bind(this);
 		this.updateFavorites = this.updateFavorites.bind(this);
+		this.getFavorites = this.getFavorites.bind(this);
 	}
 
 	// Makes an API call to return all rooms associated with the building
@@ -160,16 +161,20 @@ class App extends Component {
         		return response.json();
       		})
   			.then((data) => {
-  				this.setState({
-  					favorites: data,
-  				})
+				
 				this.favoritesList = [];
-				for (var i = 0; i < data.length; i++) {
-					this.favoritesList.push(data[i])
+				if (Array.isArray(data) && data.length) {
+					for (var i = 0; i < data.length; i++) {
+						var entry = data[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
 				}
-				console.log("data:");
-				console.log(data);
-				console.log("favorites list:");
+				console.log("favorites:");
 				console.log(this.favoritesList);
   			})  
   			.catch(error => console.log(error))
@@ -196,6 +201,97 @@ class App extends Component {
 	}
 
 	handleDrawerClose = () => this.setState({openDrawer: false})
+
+	handleFavoritesSearch = (room, e) => {
+		this.searchLink = room.buildingName;
+		this.roomid = room.RoomID; 
+		this.floor = room.level; 
+		this.setState({openDrawer: false});
+
+		const url = '/api/search/?building='+this.searchLink;
+
+	    fetch(url, {credentials: "same-origin"})
+	      .then(response => {
+	        return response.json();
+	      })
+	      .then(data => {
+	        this.setState({
+	          rooms: data,
+	          loading: false,
+	        });
+	        // Update the room image pathing, if query
+			if (Array.isArray(data) && data.length) {
+				this.state.loading = true;
+				this.forceUpdate();
+				this.roomClicked = -1;
+				// for now, default to the first floor
+				this.getFloorplan();
+
+		        console.log("New Rooms", this.state.rooms);
+
+		        this.floorList = [];
+		        this.roomidFloorList = [];
+		        this.floorListB2M = [];
+		        var currFloorID = -1;
+		        // handle the number of floors there are
+		        for (var i = 0; i < data.length; i++) {
+		        	var entry = data[i];
+		        	if (currFloorID !== entry.level) {
+		        		var alphabet2 = parseInt(entry.level, 10);
+		        		if (isNaN(alphabet2))
+		        			this.floorList.push(entry.level);
+		        		else
+		        			this.floorList.push(alphabet2);
+
+		        		// get the room_id for that specific level
+		        		this.roomidFloorList.push(entry.room_id);
+
+		        		currFloorID = entry.level;
+		        	}
+		        }
+		        this.floorListB2M.push("H");
+		        this.floorNameLabel = (
+				<div id="floorLabel">
+					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
+					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
+				</div>
+				);
+				var query = this.state.rooms;
+			    for (var i = 0; i < query.length; i++) {
+			      var iRoom = query[i];
+			      // print how many sqft the room is on the console
+			      if (iRoom.room_id == this.roomid) {
+
+			      	// update the room info
+			      	this.roomClicked = iRoom.room_id;
+			      	var checkAlpha = parseInt(iRoom.level, 10);
+			      	if (isNaN(checkAlpha))
+			      		this.currRoom.floor = iRoom.level;
+			      	else
+			      		this.currRoom.floor = checkAlpha;
+			      	this.currRoom.roomNum = iRoom.number;
+			      	// make sure that the entry is not undefined
+			      	if (iRoom.num_rooms === null)
+			      		this.currRoom.num_rooms = iRoom.num_occupants;
+			      	else	   
+			      		this.currRoom.num_rooms = iRoom.num_rooms;
+			      	this.currRoom.num_occupants = iRoom.num_occupants;
+			      	this.currRoom.sqft = iRoom.sqft;
+			      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+			      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+			      		+ this.currRoom.drawType.slice(1);
+			      	this.forceUpdate();
+			        break;
+			      }
+			   }
+		   	console.log("did i reach here", this.currRoom.floor);
+		        this.forceUpdate();
+		        this.state.loading = false;
+			}
+	      })
+	      .catch(error => console.log(error));
+	      
+	}
 
 	handleFavoritesClick = (obj, num, event) => {
 		/*var query = this.state.rooms;
@@ -467,7 +563,13 @@ class App extends Component {
 							</Button> 
 							<Drawer 
 								open={this.state.openDrawer}>
-								<MenuItem> CrazyLongMenuItem </MenuItem>
+								<ul>
+									{this.favoritesList.map((room, index)=>(
+										<MenuItem onClick={(e)=>this.handleFavoritesSearch(room, e)}> 
+											{room.buildingName} {room.RoomNum} 
+										</MenuItem>
+									))}
+								</ul>
 								<MenuItem 
 									onClick={this.handleDrawerClose}
 									style={{
