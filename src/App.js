@@ -112,7 +112,7 @@ class App extends Component {
 
 	// Makes an API call to return all rooms associated with the building
 	getQuery() {
-    const url = '/api/search/?building='+this.searchLink;
+    const url = '/api/search/?'+this.searchLink;
 
     fetch(url, {credentials: "same-origin"})
       .then(response => {
@@ -192,7 +192,7 @@ class App extends Component {
 
 		if (this.imagePath === HomeMap) {
 			var buildingQ = this.buildingIDRendered[num].id;
-			this.searchLink = BuildingQueryName[buildingQ].name;
+			this.searchLink = "building=" + BuildingQueryName[buildingQ].name;
 			this.getQuery();
 		}
 		else {
@@ -227,22 +227,6 @@ class App extends Component {
 	    }
 	}
 
-	// Reset the map
-	/*resetPage = (event) => {
-		// reset everything
-		this.floor = 0;
-		this.floorButtonClicked = 0;
-		this.searchLink = "";
-		this.start = 0;
-		this.imagePath = HomeMap;
-		this.floorNameLabel = (<p></p>);
-		this.floorList = [];
-		this.floorListB2M = [];
-		this.roomidFloorList = [];
-		this.roomClicked = -1;
-		this.forceUpdate();
-	}*/
-
 	// Handles the changing of the floors
 	changeFloor = (event) => {
 
@@ -264,8 +248,18 @@ class App extends Component {
 
 	// Handles the form submission by making a call to the API
 	onSubmit = async values => {
-		const searchData = values['building'];
-	
+		var searchData = "";
+		var numField = 0;
+		console.log(values);
+		Object.keys(values).map(function(key, index) {
+				if (values[key]) {
+					if (numField > 0) { searchData += "&"; }
+					searchData += (key + "=" + values[key]);
+					numField++;
+				}
+		});
+		console.log(searchData);
+		
 		/* ADD ERROR PROCESSING... Finding Room that doesn't exist */		
 		this.searchLink = searchData;
 		this.floorButtonClicked = 0;
@@ -274,7 +268,10 @@ class App extends Component {
 	
 	validate = (values) => {
 		const errArray = {};
-	  if (!values.building) { errArray.building = 'Required' }
+	  if (!values.building) { 
+			errArray.building = 'Required';
+			console.log("Validation Fired!"); 
+		}
 	  return errArray;
 	}
 	
@@ -467,35 +464,39 @@ class App extends Component {
 								render={({ handleSubmit, pristine, submitting, values }) => (
 									<form onSubmit={handleSubmit}>
 										<div>
+											<label>Building Name</label>
 											<Field
 												name="building"
 												items={buildings}
 												component={DownshiftInput}
-												placeholder="Building name..."
+												placeholder="Start typing..."
 											/>
 										</div>
 										<div>
-											<Field name="floor" component="select">
+											<label>Floor</label>
+											<Field name="level" component="select">
 												<option />
 												<option value="A">A</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="4">5</option>
+												<option value="00">0</option>
+												<option value="01">1</option>
+												<option value="02">2</option>
+												<option value="03">3</option>
+												<option value="04">4</option>
+												<option value="05">5</option>
 											</Field>
 										</div>
 										<div>
-											<Field name="draw" component="select">
+											<label>Draw Section</label>
+											<Field name="draws_in_id" component="select">
 												<option />
-												<option value="Butler">Butler</option>
-												<option value="Forbes">Forbes</option>
-												<option value="Independent">Independent</option>
-												<option value="Mathey">Mathey</option>
-												<option value="Rockefeller">Rockefeller</option>
-												<option value="Upperclass">Upperclass</option>
-												<option value="Whitman">Whitman</option>
-												<option value="Wilson">Wilson</option>
+												<option value="1">Butler</option>
+												<option value="2">Forbes</option>
+												<option value="3">Independent</option>
+												<option value="4">Mathey</option>
+												<option value="5">Rockefeller</option>
+												<option value="6">Upperclass</option>
+												<option value="7">Whitman</option>
+												<option value="8">Wilson</option>
 											</Field>
 										</div>
 										<div>
