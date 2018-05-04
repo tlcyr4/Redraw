@@ -93,7 +93,8 @@ export default class ImageMapper extends Component {
 				<area class={area._id} shape={area.shape} coords={area.coords.join(',')}
 					  onMouseEnter={this.hoverOn.bind(this, area, index)}
 					  onMouseLeave={this.hoverOff.bind(this, area, index)}
-					  onClick={this.click.bind(this, area, index)} href={area.href} data-tip data-for={"area"+area._id}/>
+					  onClick={this.click.bind(this, area, index)} 
+					  href={area.href} data-tip data-for={"area"+area._id}/>
 				<ReactToolTip id={"area"+area._id} type='info'>
 					<p>{area.tooltip.name}</p>
 					<p>{area.tooltip.moreInfo}</p>
@@ -109,7 +110,7 @@ export default class ImageMapper extends Component {
 					 ref={node => this.img = node} onLoad={this.initCanvas}
 					 onClick={this.props.onImageClick} />
 				<canvas ref={node => this.canvas = node} style={this.styles.canvas} />
-				<map name={this.props.map.name} style={this.styles.map}>{ this.renderAreas() }</map>
+				<map name={this.props.map.name} style={this.styles.map}> { this.renderAreas() } </map>
 			</div>
 		);
 	}
