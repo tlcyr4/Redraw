@@ -1,17 +1,56 @@
+// library imports
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Center from 'react-center';
 import { DiscreteColorLegend } from 'react-vis';
 import { RingLoader } from 'react-spinners';
+import ImageMapper from './ImageMapper';
 
+// material imports
+import { withStyles } from 'material-ui/styles';
+import Tabs, { Tab } from 'material-ui/Tabs';
+import { createMuiTheme } from 'material-ui/styles';
+import orange from 'material-ui/colors/orange';
+import Drawer from 'material-ui/Drawer';
+import {MenuItem} from 'material-ui/Menu';
+import Button from 'material-ui/Button';
+
+// image import
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
-import './App.css';
-import './styles.css';
-import ImageMapper from './ImageMapper';
-import BuildingCoordData from './building_polygons.json';
-import BuildingQueryName from './buildings.json';
+import BrokenDoor from './images/404Door.png';
+
+// team profile picture import
+import DChae from './images/squadpic/DC.png';
+import Tigar from './images/squadpic/Tigar.png';
+import Kesin from './images/squadpic/Kesin.png';
+import ChooChoo from './images/squadpic/Chuchu.png';
+
+// style import
+import './styling/App.css';
+import './styling/styles.css';
+
+// import relevant json files
+import BuildingCoordData from './json/building_polygons.json';
+import BuildingQueryName from './json/buildings.json';
+
+/*===========================================================================*/
+/* Change up the styling!                                                    */
+/*===========================================================================*/
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
+});
+
+const primary = orange[300];
+
+/*===========================================================================*/
+/*===========================================================================*/
+/*===========================================================================*/
 
 // Manages the main logic of the page
 class App extends Component {
@@ -21,7 +60,10 @@ class App extends Component {
 		
     this.state = {
 			rooms: [], // Contains all rooms returned by getQuery()
+			favorites: [], 
+			openDrawer: false,
 			loading: false, // for the loading wheel
+			pageNum: -1, // for deciding which page it is in
 		};
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
@@ -47,7 +89,9 @@ class App extends Component {
 
 		// keep track of all the information of the room!
 		this.roomClicked = -1;
-		this.currRoom = [];
+		this.currRoom = [];	
+
+		this.favoritesList = []; // favorites
 
 		// make a legend! (one time thing!)
 		this.items = [
@@ -65,6 +109,8 @@ class App extends Component {
 		this.getFloorplan = this.getFloorplan.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.processBuildingJSON = this.processBuildingJSON.bind(this);
+		this.updateFavorites = this.updateFavorites.bind(this);
+		this.getFavorites = this.getFavorites.bind(this);
 	}
 
 	// Makes an API call to return all rooms associated with the building
@@ -130,7 +176,46 @@ class App extends Component {
 		}
       })
       .catch(error => console.log(error));
-  }
+  	}
+
+  	updateFavorites() {
+  		const url = '/api/favorites/?room_id='+this.roomClicked; 
+  		fetch(url, {credentials: 'same-origin'})
+  		    .then(response => {
+        		return response.json();
+      		})
+      		.then((data) => {
+      			console.log(data);
+      		})
+      		.catch(error => console.log(error))
+  	}
+
+  	getFavorites() {
+  		const url = '/api/favorites/?room_id=0'; 
+
+  		fetch(url, {credentials: 'same-origin'})
+  			.then(response => {
+        		return response.json();
+      		})
+  			.then((data) => {
+				
+				this.favoritesList = [];
+				if (Array.isArray(data) && data.length) {
+					for (var i = 0; i < data.length; i++) {
+						var entry = data[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
+				}
+				console.log("favorites:");
+				console.log(this.favoritesList);
+  			})  
+  			.catch(error => console.log(error))
+  	}
 
 	// Using ROOM-ID, receive floorplan filepath from Back-End.
 	getFloorplan() {
@@ -144,6 +229,115 @@ class App extends Component {
 				this.forceUpdate();
 			})
 			.catch(error => console.log(error));
+	}
+
+	handleDrawerOpen = (obj, num, event) => {
+		this.setState({openDrawer: true});
+		this.getFavorites(); 
+	}
+
+	handleDrawerClose = () => this.setState({openDrawer: false})
+
+	handleFavoritesSearch = (room, e) => {
+		this.searchLink = room.buildingName;
+		this.roomid = room.RoomID; 
+		this.floor = room.level; 
+		this.setState({openDrawer: false});
+
+		const url = '/api/search/?building='+this.searchLink;
+
+	    fetch(url, {credentials: "same-origin"})
+	      .then(response => {
+	        return response.json();
+	      })
+	      .then(data => {
+	        this.setState({
+	          rooms: data,
+	          loading: false,
+	        });
+	        // Update the room image pathing, if query
+			if (Array.isArray(data) && data.length) {
+				this.state.loading = true;
+				this.forceUpdate();
+				this.roomClicked = -1;
+				// for now, default to the first floor
+				this.getFloorplan();
+
+		        console.log("New Rooms", this.state.rooms);
+
+		        this.floorList = [];
+		        this.roomidFloorList = [];
+		        this.floorListB2M = [];
+		        var currFloorID = -1;
+		        // handle the number of floors there are
+		        for (var i = 0; i < data.length; i++) {
+		        	var entry = data[i];
+		        	if (currFloorID !== entry.level) {
+		        		var alphabet2 = parseInt(entry.level, 10);
+		        		if (isNaN(alphabet2))
+		        			this.floorList.push(entry.level);
+		        		else
+		        			this.floorList.push(alphabet2);
+
+		        		// get the room_id for that specific level
+		        		this.roomidFloorList.push(entry.room_id);
+
+		        		currFloorID = entry.level;
+		        	}
+		        }
+		        this.floorListB2M.push("H");
+		        this.floorNameLabel = (
+				<div id="floorLabel">
+					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
+					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
+				</div>
+				);
+				var query = this.state.rooms;
+			    for (var i = 0; i < query.length; i++) {
+			      var iRoom = query[i];
+			      // print how many sqft the room is on the console
+			      if (iRoom.room_id == this.roomid) {
+
+			      	// update the room info
+			      	this.roomClicked = iRoom.room_id;
+			      	var checkAlpha = parseInt(iRoom.level, 10);
+			      	if (isNaN(checkAlpha))
+			      		this.currRoom.floor = iRoom.level;
+			      	else
+			      		this.currRoom.floor = checkAlpha;
+			      	this.currRoom.roomNum = iRoom.number;
+			      	// make sure that the entry is not undefined
+			      	if (iRoom.num_rooms === null)
+			      		this.currRoom.num_rooms = iRoom.num_occupants;
+			      	else	   
+			      		this.currRoom.num_rooms = iRoom.num_rooms;
+			      	this.currRoom.num_occupants = iRoom.num_occupants;
+			      	this.currRoom.sqft = iRoom.sqft;
+			      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+			      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+			      		+ this.currRoom.drawType.slice(1);
+			      	this.forceUpdate();
+			        break;
+			      }
+			   }
+		   	console.log("did i reach here", this.currRoom.floor);
+		        this.forceUpdate();
+		        this.state.loading = false;
+			}
+	      })
+	      .catch(error => console.log(error));
+	      
+	}
+
+	handleFavoritesClick = (obj, num, event) => {
+		/*var query = this.state.rooms;
+		for (var i = 0; i < query.length; i++) {
+			var iRoom = query[i]; 
+			if (iRoom.room_id == this.roomIDRendered[num])
+				this.roomid = iRoom.room_id; 
+		}*/
+		this.updateFavorites();
+		console.log("success?");
 	}
 
 	// Handles the click for the Polygons in the ImageMapper
@@ -187,7 +381,7 @@ class App extends Component {
 	}
 
 	// Reset the map
-	resetPage = (event) => {
+	/*resetPage = (event) => {
 		// reset everything
 		this.floor = 0;
 		this.floorButtonClicked = 0;
@@ -200,7 +394,7 @@ class App extends Component {
 		this.roomidFloorList = [];
 		this.roomClicked = -1;
 		this.forceUpdate();
-	}
+	}*/
 
 	// Handles the changing of the floors
 	changeFloor = (event) => {
@@ -232,6 +426,14 @@ class App extends Component {
 		this.floorButtonClicked = 0;
 		this.getQuery();
 	}
+
+	// handle change of page!
+	handlePage = (event, value) => {
+		this.setState({ value });
+		this.state.pageNum = value;
+		this.forceUpdate();
+	};
+
 
 	// handle the processing of the start screen
 	processBuildingJSON() {
@@ -266,200 +468,366 @@ class App extends Component {
 
 
 	render() {
-		// Process the JSON received from Back-End
-		var retQuery = this.state.rooms;
-		var areaArray = [];
-		this.roomIDRendered = [];
-		var imageWidthScaled = window.innerWidth*0.6;
-		var ratio = imageWidthScaled/2550.0;
+		const { classes } = this.props;
+		const { value } = this.state;
 
-		// run only once
-		if (this.start === 0) {
-			imageWidthScaled = this.processBuildingJSON();
-		}
-		
-		// Iterate through all rooms in the json file
-		for (var i = 0; i < retQuery.length; i++) {
-			var iRoom = retQuery[i];
+		/*=====================================================================*/
+		/* Default to to error message, should theoretically never happen      */
+		/*=====================================================================*/
+		var content = (
+				<div>
+					<img id = "brokenDoor" src = {BrokenDoor} alt="404 Error" height={window.innerHeight*0.8}/>
+					<div id = "pageNotFound">
+						<h1>Page Not Found</h1>
+						<h2>Oh no!</h2>
+						<p>Something went terribly wrong!</p>
+						<p>Please navigate out of the page and report the issue.</p>
+					</div>
+				</div>
+			);
+
+		/*=====================================================================*/
+		/* Change to the default mapping — main screen !                       */
+		/*=====================================================================*/
+		if (this.state.pageNum < 0) {		
+			// Process the JSON received from Back-End
+			var retQuery = this.state.rooms;
+			var areaArray = [];
+			this.roomIDRendered = [];
+			var imageWidthScaled = window.innerWidth*0.6;
+			var ratio = imageWidthScaled/2550.0;
+
+			// run only once
+			if (this.start === 0) {
+				imageWidthScaled = this.processBuildingJSON();
+			}
 			
-			// Hard-Coded to only display those on one floor
-			var temp = parseInt(iRoom.level, 10);
-			if (isNaN(temp))
-				temp = iRoom.level;
-
-			if (temp == this.floor) {
-				var roomRaw = JSON.parse(iRoom.polygons);
+			// Iterate through all rooms in the json file
+			for (var i = 0; i < retQuery.length; i++) {
+				var iRoom = retQuery[i];
 				
-				for (var k = 0; k < roomRaw.length; k++) {
-					var roomCoords = [];
-					var roomArray = roomRaw[k];
+				// Hard-Coded to only display those on one floor
+				var temp = parseInt(iRoom.level, 10);
+				if (isNaN(temp))
+					temp = iRoom.level;
+
+				if (temp == this.floor) {
+					var roomRaw = JSON.parse(iRoom.polygons);
 					
-					for (var j = 0; j < roomArray.length; j++) {
-						roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
-						roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
+					for (var k = 0; k < roomRaw.length; k++) {
+						var roomCoords = [];
+						var roomArray = roomRaw[k];
+						
+						for (var j = 0; j < roomArray.length; j++) {
+							roomCoords.push(parseInt(parseInt(roomArray[j][0], 10)/4*ratio, 10));
+							roomCoords.push(parseInt(parseInt(roomArray[j][1], 10)/4*ratio, 10));
+						}
+
+						var residentPlurality = " Residents";
+						if (iRoom.num_occupants === 1)
+							residentPlurality = " Resident";
+
+						areaArray.push({ 
+							_id: iRoom.room_id, 
+							shape: 'poly', 
+							coords: roomCoords, 
+							tooltip: {name: "Room "+ iRoom.number, moreInfo: iRoom.num_occupants + residentPlurality}
+						});
+						// hold onto the order of the polygons wrt to the rooms
+						// useful for when handling click
+						this.roomIDRendered.push(iRoom.room_id);
 					}
-
-					var residentPlurality = " Residents";
-					if (iRoom.num_occupants === 1)
-						residentPlurality = " Resident";
-
-					areaArray.push({ 
-						_id: iRoom.room_id, 
-						shape: 'poly', 
-						coords: roomCoords, 
-						tooltip: {name: "Room "+ iRoom.number, moreInfo: iRoom.num_occupants + residentPlurality}
-					});
-					// hold onto the order of the polygons wrt to the rooms
-					// useful for when handling click
-					this.roomIDRendered.push(iRoom.room_id);
 				}
 			}
-		}
-		// Diplays the array of polygons loaded for debugging purposes.
-		// console.log("Polygons", areaArray);
 
-		// Make the MAP to be drawn in for floor plans
-		var MAP = {
-			name: 'my-map',
-			areas: areaArray,
-		};
-		// fill color for floors
-		var fillColor = "rgba(255, 165, 0, 0.7)";
-		// border color for floors
-		var borderColor = "rgba(255, 255, 255, 0)";
-
-		var info = (
-				<div id = "roomNotClicked">
-					<h3>Click a Room!</h3>
-				</div>
-			);
-		
-		// overwrite for cases when home screen
-		if (this.imagePath === HomeMap) {
-			// map of polygons
-			MAP = {
+			// Make the MAP to be drawn in for floor plans
+			var MAP = {
 				name: 'my-map',
-				areas: this.buildingPolygons,
+				areas: areaArray,
 			};
-			fillColor = "rgba(255, 0, 255, 0.85)";
-			borderColor = "rgba(200,200,250, 1)";
+			// fill color for floors
+			var fillColor = "rgba(255, 165, 0, 0.7)";
+			// border color for floors
+			var borderColor = "rgba(255, 255, 255, 0)";
 
-			// bottom right
-			info = (
-				<div>
-					<div id = "roomNotClicked">
-						<h3>Click a Building!</h3>
+			var info = (
+					<div id = "roomInfo">
+						<div id = "roomNotClicked">
+							<h3>Click a Room!</h3>
+						</div>
 					</div>
-					<div id = "legendDiv">
-						<DiscreteColorLegend
-						    height={window.innerHeight*0.4}
-						    width={window.innerWidth*0.1}
-						    items={this.items}
-						/>
+				);
+			
+			// overwrite for cases when home screen
+			if (this.imagePath === HomeMap) {
+				// map of polygons
+				MAP = {
+					name: 'my-map',
+					areas: this.buildingPolygons,
+				};
+				fillColor = "rgba(255, 0, 255, 0.85)";
+				borderColor = "rgba(200,200,250, 1)";
+
+				// bottom right
+				info = (
+					<div id = "buildingInfo">
+						<div id = "roomNotClicked">
+							<h3>Click a Building!</h3>
+						</div>
+						<div id = "legendDiv">
+							<DiscreteColorLegend
+							    height={window.innerHeight*0.4}
+							    width={window.innerWidth*0.1}
+							    items={this.items}
+							/>
+						</div>
+					</div>
+				);
+			}
+
+			if (parseInt(this.roomClicked, 10) >= 0) {
+				var subFree = "No";
+				if (this.currRoom.sub_free)
+					subFree = "Yes";
+
+				info = (
+					<div id = "roomInfo">
+						<div id = "roomClicked">
+							<h4>{this.searchLink}</h4>
+							<h5>{"Floor " + this.currRoom.floor}</h5>
+
+
+							<MenuItem onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
+								Toggle Favorites 
+							</MenuItem>
+									
+
+							<ul>
+								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
+								<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
+								<li class="roomContent"><p>{"Occupant Size: " + this.currRoom.num_occupants}</p></li>
+								<li class="roomContent"><p>{"Number of Rooms: " + this.currRoom.num_rooms}</p></li>
+								<li class="roomContent"><p>{"Draw Type: " + this.currRoom.drawType}</p></li>
+								<li class="roomContent"><p>{"Sub Free: " + subFree}</p></li>
+							</ul>
+						</div>
+					</div>
+					);
+			}
+
+			// update the content!
+			content = (
+					<div>
+						<div id ="formBlock">
+							<form onSubmit = {this.handleSubmit}>
+								<input type="text"
+									placeholder="Search Room..."
+									name="search"
+									autoComplete = "off"/>
+								<button 
+									id="submitButton" 
+									type="submit">
+										<FontAwesomeIcon icon = {faSearch}/>
+								</button>
+							</form>
+						</div>
+						<div id = "mainContent">
+							<div id="centerContent">
+								<Center>
+										<ImageMapper	
+											src={this.imagePath} 
+											map={MAP} 
+											fillColor={fillColor}
+											strokeColor={borderColor}
+											width={imageWidthScaled}
+											onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+											lineWidth='3'
+										/>
+								</Center>
+							</div>
+
+							<div id = "rightContent">
+								{this.floorNameLabel}
+								<ul id = "floorButtons">
+									{this.floorListB2M.map(listValue =>
+										<li class="backToMap">
+											<a href="/">
+											<input id={listValue}
+											value="Back To Map"
+											type="button"/></a>
+										</li>
+									)}
+									{this.floorList.map(listValue => 
+										<li>
+											<input id={listValue}
+											value={"Floor " + listValue} 
+											type="button"
+											onClick={(event) => this.changeFloor(event)}/>
+										</li>
+									)}
+								</ul>
+
+								{info}
+
+							</div>
+
+							<div id="loading">
+								<RingLoader
+									color={'#ffa500'} 
+									loading={this.state.loading} 
+							    />
+						    </div>
+
+						</div>
+
+					</div>
+				);
+
+		}
+		
+		/*=====================================================================*/
+		/* Change to About page                                                */
+		/*=====================================================================*/
+		else if (this.state.pageNum === 0) {
+			content = (
+					<div id = "aboutDiv">
+						<div id = "aboutInfoDiv">
+							<h1 id="aboutHeader">Room Draw Made Easy</h1>
+							<p class="aboutInfo">
+								Interact directly with rooms and buildings to find rooms on campus. 
+								We emphasize simplicity and clean visualizations to help you find the perfect room for you.
+							</p>
+							<p class ="aboutInfo">
+								Redraw is the group's final project for COS 333: Advanced Programming Techniques, 
+								taught by Professor Brian Kernighan in Spring 2018. The team is advised by Jérémie Lumbroso. 
+								Special acknowledgement for all who have helped us along the way.
+							</p>
+						</div>
+						<div id="aboutSquadDiv">
+							<h1 id = "aboutSquad">Meet The Team</h1>
+						</div>
+						<div id = "squadImages">
+							<div id = "TC" class = "squad">
+								<img src = {Tigar} class = "picSquad" alt="Tigar"/>
+								<div class = "squadInfoB">
+									<p>Tigar Cyr</p>
+									<p>Backend Developer & Team Manager</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
+							</div>
+							<div id = "DC" class = "squad">
+								<img src = {DChae} class = "picSquad" alt="DChae"/>
+								<div class = "squadInfoO">
+									<p>Daniel Chae</p>
+									<p>Full Stack Developer</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
+							</div>
+							<div id = "KD" class = "squad">
+								<img src = {Kesin} class = "picSquad" alt="Kesin"/>
+								<div class = "squadInfoB">
+									<p>Kesin Ryan Dehejia</p>
+									<p>Frontend Developer</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
+							</div>
+							<div id = "CC" class = "squad">
+								<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
+								<div class = "squadInfoO">
+									<p>Chris Chu</p>
+									<p>Frontend Developer</p>
+									<p>Civil and Environmental Engineering</p>
+									<p>Class of 2019</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				);
+		}
+		else if (this.state.pageNum === 1) {
+			// has the same styling as the content in About page, therefore reusing the id names
+			content = (
+				<div id = "aboutDiv">
+					<div id = "aboutInfoDiv">
+						<h1 id = "aboutHeader">Feedback</h1>
+						<p class = "aboutInfo">
+							We value any feedback you give to us, as we are always trying to improve.
+						</p>
+						<p class = "aboutInfo">
+							Please send an email to <a href="mailto:tlcyr@princeton.edu">the team</a> with your feedback and we will 
+							be sure to get back to you, as needed!
+						</p>
+						<p class = "aboutInfo">
+							Thank you!
+						</p>
+						<p class = "aboutInfo">
+							~ Redraw Team
+						</p>
+
 					</div>
 				</div>
 			);
 		}
-
-		if (parseInt(this.roomClicked, 10) >= 0) {
-			var subFree = "No";
-			if (this.currRoom.sub_free)
-				subFree = "Yes";
-
-			info = (
-				<div id = "roomClicked">
-					<h4>{this.searchLink}</h4>
-					<h5>{"Floor " + this.currRoom.floor}</h5>
-					<ul>
-						<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
-						<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
-						<li class="roomContent"><p>{"Occupant Size: " + this.currRoom.num_occupants}</p></li>
-						<li class="roomContent"><p>{"Number of Rooms: " + this.currRoom.num_rooms}</p></li>
-						<li class="roomContent"><p>{"Draw Type: " + this.currRoom.drawType}</p></li>
-						<li class="roomContent"><p>{"Sub Free: " + subFree}</p></li>
-					</ul>
-				</div>
+		else if (this.state.pageNum === 2) {
+			content = (
+					<div></div>
 				);
+			window.location.replace("/accounts/logout");
 		}
 		
 		return (
 				<div className = "App" id="AppBackground">
 					
-					<div id = "header">
-						<img id ="headerImg" src={Logo} alt="R"/>
-						<p>edraw</p>
-					</div>
+					<div id = "header" className={classes.root}>
+						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
 
-					<div id ="formBlock">
-						<form onSubmit = {this.handleSubmit}>
-							<input type="text"
-								placeholder="Search Room..."
-								name="search"
-								autoComplete = "off"/>
-							<button 
-								id="submitButton" 
-								type="submit">
-									<FontAwesomeIcon icon = {faSearch}/>
-							</button>
-						</form>
-					</div>
-					<div id = "mainContent">
-						<div id="centerContent">
-							<Center>
-								<ImageMapper	
-									src={this.imagePath} 
-									map={MAP} 
-									fillColor={fillColor}
-									strokeColor={borderColor}
-									width={imageWidthScaled}
-									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-									lineWidth='3'
-								/>
-
-							</Center>
+						<div className ="FavoritesBar"> 
+							<Button
+								className="Favorites"
+								onClick={(obj, num, event)=>this.handleDrawerOpen(obj, num, event)}
+								style={{
+									height:'54px',
+									position: 'absolute',
+									right: '0px'
+								}}>
+								Favorites 
+							</Button> 
+							<Drawer 
+								open={this.state.openDrawer}>
+								<ul>
+									{this.favoritesList.map((room, index)=>(
+										<MenuItem onClick={(e)=>this.handleFavoritesSearch(room, e)}> 
+											{room.buildingName} {room.RoomNum} 
+										</MenuItem>
+									))}
+								</ul>
+								<MenuItem 
+									onClick={this.handleDrawerClose}
+									style={{
+										width: '100%',
+										position: 'absolute',
+										bottom: '0'}}>
+									Close
+								</MenuItem>
+							</Drawer>
 						</div>
 
-						<div id = "rightContent">
-							{this.floorNameLabel}
-							<ul id = "floorButtons">
-								{this.floorListB2M.map(listValue =>
-									<li class="backToMap">
-										<input id={listValue}
-										value="Back To Map"
-										type="button"
-										onClick={(event) => this.resetPage(event)}/>
-									</li>
-								)}
-								{this.floorList.map(listValue => 
-									<li>
-										<input id={listValue}
-										value={"Floor " + listValue} 
-										type="button"
-										onClick={(event) => this.changeFloor(event)}/>
-									</li>
-								)}
-							</ul>
-							
-
-							<div id = "roomInfo">
-								{info}
-							</div>
+						<div id = "tabs">
+							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
+								<Tab label = "About"/>
+								<Tab label = "Feedback"/>
+								<Tab label = "Logout"/>
+							</Tabs>
 						</div>
-
-						<div id="loading">
-							<RingLoader
-								color={'#ffa500'} 
-								loading={this.state.loading} 
-						    />
-					    </div>
-
 					</div>
-
+					{content}
+					
 				</div>
 		);
 	}
 }
 
-export default () => (
-	<App/>
-);
+export default withStyles(styles)(App);
