@@ -169,7 +169,7 @@ class App extends Component {
 				}
 				console.log("data:");
 				console.log(data);
-				console.log("favortes list:");
+				console.log("favorites list:");
 				console.log(this.favoritesList);
   			})  
   			.catch(error => console.log(error))
