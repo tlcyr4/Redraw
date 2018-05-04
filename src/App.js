@@ -125,8 +125,7 @@ class App extends Component {
         });
         // Update the room image pathing, if query
 		if (Array.isArray(data) && data.length) {
-			this.state.loading = true;
-			this.forceUpdate();
+			this.setState({ loading: true, });
 			this.roomClicked = -1;
 			// for now, default to the first floor
 			if (!this.floorButtonClicked) {
@@ -168,8 +167,7 @@ class App extends Component {
 				<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
 			</div>
 			);
-	        this.forceUpdate();
-	        this.state.loading = false;
+				this.setState({ loading: false, });
 		}
       })
       .catch(error => console.log(error));
@@ -282,9 +280,7 @@ class App extends Component {
 	
 	// handle change of page!
 	handlePage = (event, value) => {
-		this.setState({ value });
-		this.state.pageNum = value;
-		this.forceUpdate();
+		this.setState({ pageNum: value });
 	};
 
 
@@ -490,7 +486,7 @@ class App extends Component {
 											</Field>
 										</div>
 										<div>
-											<Field name="draw" component="select" multiple>
+											<Field name="draw" component="select">
 												<option />
 												<option value="Butler">Butler</option>
 												<option value="Forbes">Forbes</option>
@@ -501,6 +497,15 @@ class App extends Component {
 												<option value="Whitman">Whitman</option>
 												<option value="Wilson">Wilson</option>
 											</Field>
+										</div>
+										<div>
+											<Field
+												name="sqft"
+												component="input"
+												type="number"
+												min="0" 
+												max="1000"
+											/>
 										</div>
 										<div className="buttons">
 											<button
@@ -663,21 +668,21 @@ class App extends Component {
 		}
 		
 		return (
-				<div className = "App" id="AppBackground">
-					
-					<div id = "header" className={classes.root}>
-						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
-						<div id = "tabs">
-							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
-								<Tab label = "About"/>
-								<Tab label = "Feedback"/>
-								<Tab label = "Logout"/>
-							</Tabs>
-						</div>
+			<div className = "App" id="AppBackground">
+				
+				<div id = "header" className={classes.root}>
+					<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
+					<div id = "tabs">
+						<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
+							<Tab label = "About"/>
+							<Tab label = "Feedback"/>
+							<Tab label = "Logout"/>
+						</Tabs>
 					</div>
-					{content}
-					
 				</div>
+				
+				{content}
+				
 			</div>
 		);
 	}
