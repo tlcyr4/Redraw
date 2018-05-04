@@ -10,8 +10,7 @@ for fn in inFiles:
     outFilename = path.join(".", "resized", path.basename(fn))
     # outFilename = outFilename[:-3] + "jpg"
     img = imread(fn, IMREAD_GRAYSCALE)
-    if "0668-00" in fn:
-        img = img[img.shape[0]-6600:,:]
+    
     # shrink
     # goal size is 10200X6600
     new = np.zeros((6600,10200))
