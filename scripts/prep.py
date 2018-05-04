@@ -121,6 +121,8 @@ for fn in inFiles:
 
     if "-trim" in sys.argv:
         img = img[top:bottom,left:right]
+        if "0668-00" in fn:
+            img = img[img.shape[0]-6600:,:]
     
 
 
