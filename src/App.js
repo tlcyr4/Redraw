@@ -4,6 +4,7 @@ import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 import Center from 'react-center';
 import { DiscreteColorLegend } from 'react-vis';
 import { FadeLoader } from 'react-spinners';
+import { Form, Field } from 'react-final-form';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
@@ -12,6 +13,8 @@ import './styles.css';
 import ImageMapper from './ImageMapper';
 import BuildingCoordData from './building_polygons.json';
 import BuildingQueryName from './buildings.json';
+import DownshiftInput from './Downshift';
+import buildings from './buildings';
 
 // Manages the main logic of the page
 class App extends Component {
@@ -63,7 +66,8 @@ class App extends Component {
 		// Bindings
 		this.getQuery = this.getQuery.bind(this);
 		this.getFloorplan = this.getFloorplan.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
+		this.validate = this.validate.bind(this);
 		this.processBuildingJSON = this.processBuildingJSON.bind(this);
 	}
 
@@ -221,17 +225,21 @@ class App extends Component {
 	}
 
 	// Handles the form submission by making a call to the API
-	handleSubmit(event, obj) {
-		event.preventDefault();
-		const data = new FormData(event.target);
-		const searchData = data.get('search');
+	onSubmit = async values => {
+		const searchData = values['building'];
 	
 		/* ADD ERROR PROCESSING... Finding Room that doesn't exist */		
 		this.searchLink = searchData;
 		this.floorButtonClicked = 0;
 		this.getQuery();
 	}
-
+	
+	validate = (values) => {
+		const errArray = {};
+	  if (!values.building) { errArray.building = 'Required' }
+	  return errArray;
+	}
+	
 	// handle the processing of the start screen
 	processBuildingJSON() {
 		const imageWidthScaled = window.innerWidth*0.43;
@@ -382,79 +390,90 @@ class App extends Component {
 		}
 		
 		return (
-				<div className = "App" id="AppBackground">
-					
-					<div id = "header">
-						<img id ="headerImg" src={Logo} alt="R"/>
-						<p>edraw</p>
-					</div>
-
-					<div id ="formBlock">
-						<form onSubmit = {this.handleSubmit}>
-							<input type="text"
-								placeholder="Search Room..."
-								name="search"
-								autoComplete = "off"/>
-							<button 
-								id="submitButton" 
-								type="submit">
-									<FontAwesomeIcon icon = {faSearch}/>
-							</button>
-						</form>
-					</div>
-					<div id = "mainContent">
-						<div id="centerContent">
-							<Center>
-								<ImageMapper	
-									src={this.imagePath} 
-									map={MAP} 
-									fillColor={fillColor}
-									strokeColor={borderColor}
-									width={imageWidthScaled}
-									onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-									lineWidth='3'
-								/>
-
-							</Center>
-						</div>
-
-						<div id = "rightContent">
-							{this.floorNameLabel}
-							<ul id = "floorButtons">
-								{this.floorListB2M.map(listValue =>
-									<li class="backToMap">
-										<input id={listValue}
-										value="Back To Map"
-										type="button"
-										onClick={(event) => this.resetPage(event)}/>
-									</li>
-								)}
-								{this.floorList.map(listValue => 
-									<li>
-										<input id={listValue}
-										value={"Floor " + listValue} 
-										type="button"
-										onClick={(event) => this.changeFloor(event)}/>
-									</li>
-								)}
-							</ul>
-							
-
-							<div id = "roomInfo">
-								{info}
-							</div>
-						</div>
-
-						<div id="loading">
-							<FadeLoader
-								color={'#ffa500'} 
-								loading={this.state.loading} 
-						    />
-					    </div>
-
-					</div>
-
+			<div className="App" id="AppBackground">
+				
+				<div id="header">
+					<img id="headerImg" src={Logo} alt="R"/>
+					<p>edraw</p>
 				</div>
+
+				<div id="formBlock">
+					<Form
+						onSubmit={this.onSubmit}
+						validate={this.validate}
+						render={({ handleSubmit, pristine, submitting, values }) => (
+			        <form onSubmit={handleSubmit}>
+			          <div>
+			            <Field
+			              name="building"
+										items={buildings}
+										component={DownshiftInput}
+			              placeholder="Building name..."
+			            />
+			          </div>
+			          <div className="buttons">
+									<button
+										id="submitButton" 
+										type="submit"
+										disabled={submitting || pristine}>
+											<FontAwesomeIcon icon = {faSearch}/>
+									</button>
+			          </div>
+							</form>
+						)}
+					/>
+				</div>
+				
+				<div id = "mainContent">
+					<div id="centerContent">
+						<Center>
+							<ImageMapper	
+								src={this.imagePath} 
+								map={MAP} 
+								fillColor={fillColor}
+								strokeColor={borderColor}
+								width={imageWidthScaled}
+								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+								lineWidth='3'
+							/>
+
+						</Center>
+					</div>
+
+					<div id = "rightContent">
+						{this.floorNameLabel}
+						<ul id = "floorButtons">
+							{this.floorListB2M.map(listValue =>
+								<li class="backToMap">
+									<input id={listValue}
+									value="Back To Map"
+									type="button"
+									onClick={(event) => this.resetPage(event)}/>
+								</li>
+							)}
+							{this.floorList.map(listValue => 
+								<li>
+									<input id={listValue}
+									value={"Floor " + listValue} 
+									type="button"
+									onClick={(event) => this.changeFloor(event)}/>
+								</li>
+							)}
+						</ul>
+						
+						<div id = "roomInfo">
+							{info}
+						</div>
+					</div>
+
+					<div id="loading">
+						<FadeLoader
+							color={'#ffa500'} 
+							loading={this.state.loading} 
+					    />
+				  </div>
+				</div>
+			</div>
 		);
 	}
 }
