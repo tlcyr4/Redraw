@@ -18,6 +18,7 @@ def query(request):
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 		room['level'] = Floor.objects.get(id=room['floor_id']).level
 		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required
@@ -47,6 +48,7 @@ def favorites(request):
 			room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 			room['level'] = Floor.objects.get(id=room['floor_id']).level
 			room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+			room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 		return HttpResponse(json.dumps(rooms), content_type="application/json")
 	if room_id not in favorites:
 		if favorites[-1] != None:
@@ -65,5 +67,6 @@ def favorites(request):
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 		room['level'] = Floor.objects.get(id=room['floor_id']).level
 		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 	return HttpResponse(json.dumps(rooms), content_type="application/json")
 
