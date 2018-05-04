@@ -30,12 +30,17 @@ div#AppBackground {
   color: #eeeeee;
 }
 
+#header a {
+  text-decoration: none;
+}
+
 #header p {
   font-weight: bold;
   letter-spacing: 0.05vw;
   padding-left: 0.25vw;
   font-size: 1vw;
   float:left;
+  color: #eee;
 
   padding-top: 0.5vh;
   padding-bottom: 0.5vh;
@@ -307,11 +312,14 @@ div#pageNotFound {
 /******************* About Page Styling ******************/
 /*********************************************************/
 
-/* Entire div */
+/* Entire div: divided into header and content of top section
+and header and content (and images) of bottom section. In total
+there are two sections. */
 div#aboutDiv {
-  margin-top: 3vh;
+  margin-top: 2vh;
 }
 
+/* The top section div */
 div#aboutInfoDiv {
   background-color: #ADD8E6;
   opacity: 0.8;
@@ -321,23 +329,39 @@ div#aboutInfoDiv {
   padding: 2vh 0vh;
 }
 
+/* header for both sections */
 div#aboutDiv h1 {
   font-size: 2vw;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  color: #F0F0F0;
+  text-shadow: 0.1vw 0.1vw 0 #000;
   margin-top: 1vh;
-  margin-bottom: 1vh;
+  margin-bottom: 4vh;
   padding-bottom: 1vh;
 }
 
+/* paragraph for both sections */
 div#aboutDiv p {
   font-size: 1vw;
-
 }
 
-div#aboutSquad {
-  margin-top: 1vh;
-  
+/* div to margin the second header from the first section */
+div#aboutSquadDiv {
+  margin-top: 2vh;
 }
 
+/* header of the second section */
+h1#aboutSquad {
+  font-size: 2vw;
+  background-color: #ADD8E6;
+  opacity: 0.8;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2vh 0vh;
+}
+
+/* Entire second section content styling */
 div#squadImages {
   margin-top: 3vh;
   width: 100%;
@@ -345,11 +369,31 @@ div#squadImages {
   margin-right: auto;
 }
 
+/* Each of the members get their own sections */
 div.squad {
   float: left;
   width: 25%;
 }
 
+/* Customize the content of team profile under images */
+div.squadInfoB, div.squadInfoO {
+  padding: 0.5vh 0vh;
+  width: 90%;
+  opacity: 0.9;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+div.squadInfoB {
+  background-color: #007bff;
+}
+
+div.squadInfoO {
+  background-color: #ffa500;
+}
+
+/* Image of the teammates styled to be rounded */
 img.picSquad {
   width: 50%;
   border-radius: 50%;
@@ -357,7 +401,7 @@ img.picSquad {
 
 
 /*********************************************************/
-/***************** Page not Found Styles *****************/
+/***************** Report Problems Page ******************/
 /*********************************************************/
 
 

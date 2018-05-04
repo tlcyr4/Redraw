@@ -10,6 +10,8 @@ import ImageMapper from './ImageMapper';
 // material imports
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { createMuiTheme } from 'material-ui/styles';
+import orange from 'material-ui/colors/orange';
 
 // image import
 import HomeMap from './images/homeMap.png';
@@ -33,7 +35,15 @@ import BuildingQueryName from './json/buildings.json';
 /*===========================================================================*/
 /* Change up the styling!                                                    */
 /*===========================================================================*/
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
+});
 
+const primary = orange[300];
 
 /*===========================================================================*/
 /*===========================================================================*/
@@ -262,6 +272,7 @@ class App extends Component {
 
 	// handle change of page!
 	handlePage = (event, value) => {
+		this.setState({ value });
 		this.state.pageNum = value;
 		this.forceUpdate();
 	};
@@ -317,7 +328,6 @@ class App extends Component {
 					</div>
 				</div>
 			);
-		console.log(this.state.pageNum);
 
 		/*=====================================================================*/
 		/* Change to the default mapping — main screen !                       */
@@ -372,8 +382,6 @@ class App extends Component {
 					}
 				}
 			}
-			// Diplays the array of polygons loaded for debugging purposes.
-			// console.log("Polygons", areaArray);
 
 			// Make the MAP to be drawn in for floor plans
 			var MAP = {
@@ -522,33 +530,82 @@ class App extends Component {
 						<div id = "aboutInfoDiv">
 							<h1 id="aboutHeader">Room Draw Made Easy</h1>
 							<p class="aboutInfo">
-								Interact directly with rooms and buildings to find rooms on campus.
+								Interact directly with rooms and buildings to find rooms on campus. 
+								We emphasize simplicity and clean visualizations to help you find the perfect room for you.
 							</p>
-							<p class="aboutInfo">
-								We emphasize simplicity and clean visualization to help you find the perfect room for you.
+							<p class ="aboutInfo">
+								Redraw is the group's final project for COS 333: Advanced Programming Techniques, 
+								taught by Professor Brian Kernighan in Spring 2018. The team is advised by Jérémie Lumbroso. 
+								Special acknowledgement for all who have helped us along the way.
 							</p>
 						</div>
-
-						<h1 id = "aboutSquad">Meet The Team</h1>
+						<div id="aboutSquadDiv">
+							<h1 id = "aboutSquad">Meet The Team</h1>
+						</div>
 						<div id = "squadImages">
 							<div id = "TC" class = "squad">
 								<img src = {Tigar} class = "picSquad" alt="Tigar"/>
+								<div class = "squadInfoB">
+									<p>Tigar Cyr</p>
+									<p>Backend Developer & Team Manager</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
 							</div>
 							<div id = "DC" class = "squad">
 								<img src = {DChae} class = "picSquad" alt="DChae"/>
+								<div class = "squadInfoO">
+									<p>Daniel Chae</p>
+									<p>Full Stack Developer</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
 							</div>
 							<div id = "KD" class = "squad">
 								<img src = {Kesin} class = "picSquad" alt="Kesin"/>
+								<div class = "squadInfoB">
+									<p>Kesin Ryan Dehejia</p>
+									<p>Frontend Developer</p>
+									<p>Computer Science BSE</p>
+									<p>Class of 2020</p>
+								</div>
 							</div>
 							<div id = "CC" class = "squad">
 								<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
+								<div class = "squadInfoO">
+									<p>Chris Chu</p>
+									<p>Frontend Developer</p>
+									<p>Civil and Environmental Engineering</p>
+									<p>Class of 2019</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				);
 		}
 		else if (this.state.pageNum === 1) {
+			// has the same styling as the content in About page, therefore reusing the id names
+			content = (
+				<div id = "aboutDiv">
+					<div id = "aboutInfoDiv">
+						<h1 id = "aboutHeader">Feedback</h1>
+						<p class = "aboutInfo">
+							We value any feedback you give to us, as we are always trying to improve.
+						</p>
+						<p class = "aboutInfo">
+							Please send an email to <a href="mailto:tlcyr@princeton.edu">the team</a> with your feedback and we will 
+							be sure to get back to you, as needed!
+						</p>
+						<p class = "aboutInfo">
+							Thank you!
+						</p>
+						<p class = "aboutInfo">
+							~ Redraw Team
+						</p>
 
+					</div>
+				</div>
+			);
 		}
 		else if (this.state.pageNum === 2) {
 			content = (
@@ -561,12 +618,11 @@ class App extends Component {
 				<div className = "App" id="AppBackground">
 					
 					<div id = "header" className={classes.root}>
-						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/></a>
-						<p>edraw</p>
+						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
 						<div id = "tabs">
 							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
 								<Tab label = "About"/>
-								<Tab label = "Report Problem"/>
+								<Tab label = "Feedback"/>
 								<Tab label = "Logout"/>
 							</Tabs>
 						</div>
@@ -578,4 +634,4 @@ class App extends Component {
 	}
 }
 
-export default withStyles()(App);
+export default withStyles(styles)(App);
