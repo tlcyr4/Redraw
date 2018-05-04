@@ -380,22 +380,6 @@ class App extends Component {
 	    }
 	}
 
-	// Reset the map
-	/*resetPage = (event) => {
-		// reset everything
-		this.floor = 0;
-		this.floorButtonClicked = 0;
-		this.searchLink = "";
-		this.start = 0;
-		this.imagePath = HomeMap;
-		this.floorNameLabel = (<p></p>);
-		this.floorList = [];
-		this.floorListB2M = [];
-		this.roomidFloorList = [];
-		this.roomClicked = -1;
-		this.forceUpdate();
-	}*/
-
 	// Handles the changing of the floors
 	changeFloor = (event) => {
 
@@ -596,12 +580,6 @@ class App extends Component {
 							<h4>{this.searchLink}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
 
-
-							<MenuItem onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
-								Toggle Favorites 
-							</MenuItem>
-									
-
 							<ul>
 								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
 								<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
@@ -757,7 +735,7 @@ class App extends Component {
 							We value any feedback you give to us, as we are always trying to improve.
 						</p>
 						<p class = "aboutInfo">
-							Please send an email to <a href="mailto:tlcyr@princeton.edu">the team</a> with your feedback and we will 
+							Please send an email to <a href="mailto:tcyr@princeton.edu">the team</a> with your feedback and we will 
 							be sure to get back to you, as needed!
 						</p>
 						<p class = "aboutInfo">
@@ -783,37 +761,6 @@ class App extends Component {
 					
 					<div id = "header" className={classes.root}>
 						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
-
-						<div className ="FavoritesBar"> 
-							<Button
-								className="Favorites"
-								onClick={(obj, num, event)=>this.handleDrawerOpen(obj, num, event)}
-								style={{
-									height:'54px',
-									position: 'absolute',
-									right: '0px'
-								}}>
-								Favorites 
-							</Button> 
-							<Drawer 
-								open={this.state.openDrawer}>
-								<ul>
-									{this.favoritesList.map((room, index)=>(
-										<MenuItem onClick={(e)=>this.handleFavoritesSearch(room, e)}> 
-											{room.buildingName} {room.RoomNum} 
-										</MenuItem>
-									))}
-								</ul>
-								<MenuItem 
-									onClick={this.handleDrawerClose}
-									style={{
-										width: '100%',
-										position: 'absolute',
-										bottom: '0'}}>
-									Close
-								</MenuItem>
-							</Drawer>
-						</div>
 
 						<div id = "tabs">
 							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
