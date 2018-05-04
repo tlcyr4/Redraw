@@ -77,7 +77,12 @@ sed 's/0148 A/0592 /g' |
 sed 's/Africa/Forbes/g' | 
 sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' | 
 # sed 's/\(B\)\([0-9][0-9]\)/0\2/g' | tee before.txt |
-sed 's/Baseme/A /g' |tee after.txt |
+sed 's/Baseme/A /g' |
+sed 's/\(0668 0[0-9][0-9] \)\(A\)/\10/g' |
+sed 's/\(0094 [0-9]0[0-9] \)\(A\)/\10/g' | tee before.txt |
+sed 's/\(0023 [0-9][0-9] \)\(A\)/\10/g' |
+sed 's/\(0023 T[0-9][0-9] \)\(A\)/\10/g' |
+sed 's/\(0153 [78][12] \)\(1\)/\1A/g' |
 awk '{if($4=="bathroom") $4=""; else $3 = "Pub\t"$3; print $0}' |
 sed 's/Private/Prv/g' | sed 's/Shared/Sha/g' |
 awk '{if($8!="Yes") $8="No "$8;print $0}' |

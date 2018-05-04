@@ -23,6 +23,8 @@
     "react-final-form": "^3.4.0",
     "react-fontawesome": "^1.6.1",
     "react-image-mapper": "0.0.7",
+    "react-leaflet": "^1.9.1",
+    "react-pan-zoom-element": "^2.0.1",
     "react-pdf": "^3.0.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
@@ -31,6 +33,7 @@
     "react-spinners": "^0.3.2",
     "react-tooltip": "^3.5.0",
     "react-vis": "^1.9.2",
+    "react-zoom": "^0.3.1",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {

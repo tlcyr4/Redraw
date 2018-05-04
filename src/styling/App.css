@@ -1,0 +1,408 @@
+* {
+  border: none;
+  padding: none;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+}
+
+.App {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  background-image: url(../images/background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-origin: center;
+}
+
+div#AppBackground {
+  position: fixed;
+}
+
+/*********************************************************/
+/******************** Heading with name ******************/
+/*********************************************************/
+
+#header {
+  display: inline-block;
+  background: #007bff;
+  width: 100%;
+  height: 7vh;
+  color: #eeeeee;
+}
+
+#header a {
+  text-decoration: none;
+}
+
+#header p {
+  font-weight: bold;
+  letter-spacing: 0.05vw;
+  padding-left: 0.25vw;
+  font-size: 1vw;
+  float:left;
+  color: #eee;
+
+  padding-top: 0.5vh;
+  padding-bottom: 0.5vh;
+}
+
+#headerImg {
+  float:left;
+  padding-top: 1.5vh;
+  padding-left: 3%;
+  width: 1.8vw;
+  height: auto;
+}
+
+div#tabs {
+  float: right;
+  padding-top: 0.6vh;
+}
+
+/*********************************************************/
+/******************** Search bar (temp) ******************/
+/*********************************************************/
+#formBlock {
+  margin: 1vw 0.5vw 1vw 0.5vw;
+}
+
+form,
+div.form {
+  position: relative;
+	display: flex;
+  flex-direction: row;
+	flex-grow: 1;
+	border: 0.1vw solid #ccc;
+	background-color: white;
+	background-repeat: no-repeat;
+	padding: 0.6vw 0.8vw 0.6vw 0.8vw;
+	font-size: 1vw;
+}
+.downshift-options {
+  border: 1px solid #ddd;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+.downshift-options > div {
+  padding: 3px 5px;
+}
+
+/*********************************************************/
+/********************** Submit button ********************/
+/*********************************************************/
+
+button#submitButton {
+  width: 3%;
+  padding: 0.6vw 1.5vw 0.6vw 0.9vw;
+  border-radius: 0.5vw;
+  background: #ddd;
+  border: 0.1vw solid #ccc;
+  font-size: 1vw;
+  cursor: pointer;
+}
+
+button#submitButton:hover {
+  background: #ccc;
+}
+
+button#submitButton:focus {
+  outline: 0;
+}
+
+button#submitButton:active {
+  background: #bbb;
+}
+
+/*********************************************************/
+/****************** Change floor buttons *****************/
+/***************** Right side of content *****************/
+/***************** Display panel bottom R ****************/
+/*********************************************************/
+
+div#rightContent {
+  display: table;
+  margin: 0 auto;
+  width: 15%;
+  height: 75%;
+  position: absolute;
+  right: 3%;
+  top: 20%;
+  text-align: center;
+}
+
+/* Label on the top for the floor identification */
+div#floorLabel {
+  width: 100%;
+  position: relative;
+  color: #007bff;
+  line-height: 0.25vw;
+  display: block;
+  border-radius: 1vw;
+  border: 0.1vw solid #000;
+  background-color: #D0DFDF;
+}
+
+.centerLabel {
+  position: absolute;
+  bottom: 10%;
+  right: 20%;
+}
+
+p#floorBuildingName {
+  font-size: 1vw;
+  line-height: 0.1vw;
+  font-weight: bold;
+  word-wrap: break-word;
+  display: block;
+}
+
+p#floorNumberName {
+  font-size: 1vw;
+  font-weight: bold;
+  display: block;
+}
+
+/* Style the list of buttons for changing floors */
+ul#floorButtons {
+  width: 80%;
+  display: inline-block;
+  list-style: none !important;
+  overflow: scroll;
+}
+
+ul#floorButtons li {
+  margin-left: -12%;
+}
+
+
+ul#floorButtons input {
+  width: 70%;
+  background-color: #ffa500;
+  margin: 0.05vw 0vw;
+  color: white;
+  padding: 0.5vw 1vw;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  font-size: 1vw;
+  border-radius: 1.3vw;
+  border: 0.1vw solid #ffc860;
+}
+
+ul#floorButtons li.backToMap input {
+  color: #007bff;
+  margin-bottom: 0.5vw;
+}
+
+ul#floorButtons input:hover {
+  background: #ffae10;
+}
+
+ul#floorButtons input:focus {
+  outline:0;
+}
+
+ul#floorButtons input:active {
+  background: #ffb732;
+}
+
+/* Display information about the room selected */
+div#roomInfo {
+  width: 100%;
+  height: 35%;
+  background-color: #D0DFDF;
+  top-margin: 0.5vw;
+  position: absolute;
+  bottom: 0%;
+  overflow: auto;
+  border-radius: 0.5vw;
+  border: 0.1vw solid #000;
+  text-align: left; 
+}
+
+div#buildingInfo {
+  width: 100%;
+  height: 60%;
+  background-color: #D0DFDF;
+  top-margin: 0.5vw;
+  position: absolute;
+  bottom: 0%;
+  overflow: auto;
+  border-radius: 0.5vw;
+  border: 0.1vw solid #000;
+  text-align: left; 
+}
+
+div#roomNotClicked {
+  font-size: 1vw;
+  margin-top: 10%;
+  text-align: center;
+}
+
+div#legendDiv {
+  padding-left: 1vw;
+  font-size: 0.5vw;
+}
+
+div#roomClicked {
+  margin-top: 10%;
+  text-align: center;
+}
+
+div#roomClicked h4 {
+  font-size: 1vw;
+  word-wrap: break-word;
+}
+div#roomClicked h5 {
+  font-size: 0.95vw;
+}
+
+div#roomClicked ul {
+  margin-top: 0.2vw;
+  width: 80%;
+  list-style: none !important;
+}
+
+li.roomContent {
+  width: 100%;
+  display: block;
+  text-align: left;
+  margin-left: -5%;
+  font-size: 0.9vw;
+  line-height: 0.7vw;
+}
+
+div#loading {
+  position: absolute;
+  top: 50%;
+  left: 49%;
+  z-index: 5000;
+}
+
+/* Always show scroll bar -- indicate what is scrollable */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0.5vw;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0.35vw;
+    background-color: rgba(50,50,50,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+/*********************************************************/
+/***************** Page not Found Styles *****************/
+/*********************************************************/
+
+img#brokenDoor {
+  float: left;
+  padding-left: 20%;
+}
+
+div#pageNotFound {
+  background-color: #ADD8E6;
+  opacity: 0.9;
+  width: 30%;
+  height: 30%;
+  float: right;
+  margin-top: 10%;
+  margin-right: 15%;
+}
+
+/*********************************************************/
+/******************* About Page Styling ******************/
+/*********************************************************/
+
+/* Entire div: divided into header and content of top section
+and header and content (and images) of bottom section. In total
+there are two sections. */
+div#aboutDiv {
+  margin-top: 2vh;
+}
+
+/* The top section div */
+div#aboutInfoDiv {
+  background-color: #ADD8E6;
+  opacity: 0.8;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2vh 0vh;
+}
+
+/* header for both sections */
+div#aboutDiv h1 {
+  font-size: 2vw;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  color: #F0F0F0;
+  text-shadow: 0.1vw 0.1vw 0 #000;
+  margin-top: 1vh;
+  margin-bottom: 4vh;
+  padding-bottom: 1vh;
+}
+
+/* paragraph for both sections */
+div#aboutDiv p {
+  font-size: 1vw;
+}
+
+/* div to margin the second header from the first section */
+div#aboutSquadDiv {
+  margin-top: 2vh;
+}
+
+/* header of the second section */
+h1#aboutSquad {
+  font-size: 2vw;
+  background-color: #ADD8E6;
+  opacity: 0.8;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2vh 0vh;
+}
+
+/* Entire second section content styling */
+div#squadImages {
+  margin-top: 3vh;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Each of the members get their own sections */
+div.squad {
+  float: left;
+  width: 25%;
+}
+
+/* Customize the content of team profile under images */
+div.squadInfoB, div.squadInfoO {
+  padding: 0.5vh 0vh;
+  width: 90%;
+  opacity: 0.9;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+div.squadInfoB {
+  background-color: #007bff;
+}
+
+div.squadInfoO {
+  background-color: #ffa500;
+}
+
+/* Image of the teammates styled to be rounded */
+img.picSquad {
+  width: 50%;
+  border-radius: 50%;
+}
+
+
+/*********************************************************/
+/***************** Report Problems Page ******************/
+/*********************************************************/
+
+

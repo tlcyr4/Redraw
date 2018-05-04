@@ -18,6 +18,7 @@ def query(request):
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
 		room['level'] = Floor.objects.get(id=room['floor_id']).level
 		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required
@@ -42,7 +43,13 @@ def favorites(request):
 	length = len([fav for fav in favorites if fav != None])
 	if Room.objects.filter(room_id=room_id).count() == 0:
 		trimmed = [fav for fav in favorites if fav != None]
-		return HttpResponse(json.dumps(trimmed), content_type="application/json")
+		rooms = list(Room.objects.filter(pk__in=trimmed).values())
+		for room in rooms:
+			room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
+			room['level'] = Floor.objects.get(id=room['floor_id']).level
+			room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+			room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
+		return HttpResponse(json.dumps(rooms), content_type="application/json")
 	if room_id not in favorites:
 		if favorites[-1] != None:
 			return HttpResponseBadRequest("overflow")
@@ -54,6 +61,12 @@ def favorites(request):
 		favorites[length - 1] = None
 	profile.save()
 	trimmed = [fav for fav in favorites if fav != None]
+	
 	rooms = list(Room.objects.filter(pk__in=trimmed).values())
+	for room in rooms:
+		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
+		room['level'] = Floor.objects.get(id=room['floor_id']).level
+		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 	return HttpResponse(json.dumps(rooms), content_type="application/json")
 
