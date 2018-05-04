@@ -5,7 +5,6 @@ import Center from 'react-center';
 import { DiscreteColorLegend } from 'react-vis';
 import { FadeLoader } from 'react-spinners';
 import { Form, Field } from 'react-final-form';
-import { RingLoader } from 'react-spinners';
 
 import HomeMap from './images/homeMap.png';
 import Logo from './images/raw.jpg';
@@ -412,6 +411,30 @@ class App extends Component {
 										component={DownshiftInput}
 			              placeholder="Building name..."
 			            />
+								</div>
+								<div>
+									<Field name="floor" component="select">
+										<option />
+              			<option value="A">A</option>
+              			<option value="1">1</option>
+              			<option value="2">2</option>
+              			<option value="3">3</option>
+              			<option value="4">4</option>
+										<option value="4">5</option>
+            			</Field>
+								</div>
+								<div>
+									<Field name="draw" component="select" multiple>
+										<option />
+              			<option value="Butler">Butler</option>
+              			<option value="Forbes">Forbes</option>
+              			<option value="Independent">Independent</option>
+              			<option value="Mathey">Mathey</option>
+              			<option value="Rockefeller">Rockefeller</option>
+										<option value="Upperclass">Upperclass</option>
+										<option value="Whitman">Whitman</option>
+										<option value="Wilson">Wilson</option>
+            			</Field>
 			          </div>
 			          <div className="buttons">
 									<button

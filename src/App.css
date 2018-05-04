@@ -58,16 +58,15 @@ div#AppBackground {
 
 form,
 div.form {
-  text-align: center;
   position: relative;
 	display: flex;
-  flex-flow: row nowrap;
+  flex-direction: row;
+	flex-grow: 1;
 	border: 0.1vw solid #ccc;
 	background-color: white;
 	background-repeat: no-repeat;
 	padding: 0.6vw 0.8vw 0.6vw 0.8vw;
 	font-size: 1vw;
-	width: 70%;
 }
 .downshift-options {
   border: 1px solid #ddd;
