@@ -14,8 +14,11 @@ for fn in inFiles:
     img = cv.imread(fn, cv.IMREAD_GRAYSCALE)
     # original = np.copy(img)
     img = (255-img)
-    if "0694-00" in fn or "0696-00" in fn or "0696-01" in fn or "0696-02" in fn or "0047-00" in fn or "0060-01" in fn:
+    if "0694-00" in fn or "0047-00" in fn or "0060-01" in fn:
         img = cv.threshold(img, 1, 255, cv.THRESH_BINARY)[1]
+    elif "0696-00" in fn or "0696-01" in fn or "0696-02" in fn:
+        img = cv.threshold(img, 1, 255, cv.THRESH_BINARY)[1]
+        # img = cv.morphologyEx(img, cv.MORPH_OPEN,np.ones((3,3),np.uint8), iterations = 1)
     elif "0053-01" in fn or "0053-02" in fn:
         img = cv.threshold(img, 100, 255, cv.THRESH_BINARY)[1]
     else:

@@ -23,7 +23,9 @@ class Room:
         return (bbox[0],bbox[2])
     def getPoly(self):
         return self.poly
-    def draw(self, img, color = RED):
+    def drawOutline(self, img, color = RED):
         cv.drawContours(img, [self.getPoly()], 0, color, thickness = 5, offset = self.getOrigin())
+        
+    def drawNumber(self, img, color = RED):
         centroid = self.getCentroid()
         cv.putText(img, self.number, centroid, cv.FONT_HERSHEY_TRIPLEX, 3, BLUE, thickness = 3)    

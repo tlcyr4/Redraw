@@ -12,6 +12,9 @@ import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { createMuiTheme } from 'material-ui/styles';
 import orange from 'material-ui/colors/orange';
+import Drawer from 'material-ui/Drawer';
+import {MenuItem} from 'material-ui/Menu';
+import Button from 'material-ui/Button';
 
 // Imports for AutoSuggestion
 import buildings from './buildings';
@@ -62,6 +65,8 @@ class App extends Component {
 		
     this.state = {
 			rooms: [], // Contains all rooms returned by getQuery()
+			favorites: [], 
+			openDrawer: false,
 			loading: false, // for the loading wheel
 			pageNum: -1, // for deciding which page it is in
 		};
@@ -89,7 +94,9 @@ class App extends Component {
 
 		// keep track of all the information of the room!
 		this.roomClicked = -1;
-		this.currRoom = [];
+		this.currRoom = [];	
+
+		this.favoritesList = []; // favorites
 
 		// make a legend! (one time thing!)
 		this.items = [
@@ -108,6 +115,8 @@ class App extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.validate = this.validate.bind(this);
 		this.processBuildingJSON = this.processBuildingJSON.bind(this);
+		this.updateFavorites = this.updateFavorites.bind(this);
+		this.getFavorites = this.getFavorites.bind(this);
 	}
 
 	// Makes an API call to return all rooms associated with the building
@@ -171,7 +180,46 @@ class App extends Component {
 		}
       })
       .catch(error => console.log(error));
-  }
+  	}
+
+  	updateFavorites() {
+  		const url = '/api/favorites/?room_id='+this.roomClicked; 
+  		fetch(url, {credentials: 'same-origin'})
+  		    .then(response => {
+        		return response.json();
+      		})
+      		.then((data) => {
+      			console.log(data);
+      		})
+      		.catch(error => console.log(error))
+  	}
+
+  	getFavorites() {
+  		const url = '/api/favorites/?room_id=0'; 
+
+  		fetch(url, {credentials: 'same-origin'})
+  			.then(response => {
+        		return response.json();
+      		})
+  			.then((data) => {
+				
+				this.favoritesList = [];
+				if (Array.isArray(data) && data.length) {
+					for (var i = 0; i < data.length; i++) {
+						var entry = data[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
+				}
+				console.log("favorites:");
+				console.log(this.favoritesList);
+  			})  
+  			.catch(error => console.log(error))
+  	}
 
 	// Using ROOM-ID, receive floorplan filepath from Back-End.
 	getFloorplan() {
@@ -185,6 +233,115 @@ class App extends Component {
 				this.forceUpdate();
 			})
 			.catch(error => console.log(error));
+	}
+
+	handleDrawerOpen = (obj, num, event) => {
+		this.setState({openDrawer: true});
+		this.getFavorites(); 
+	}
+
+	handleDrawerClose = () => this.setState({openDrawer: false})
+
+	handleFavoritesSearch = (room, e) => {
+		this.searchLink = room.buildingName;
+		this.roomid = room.RoomID; 
+		this.floor = room.level; 
+		this.setState({openDrawer: false});
+
+		const url = '/api/search/?building='+this.searchLink;
+
+	    fetch(url, {credentials: "same-origin"})
+	      .then(response => {
+	        return response.json();
+	      })
+	      .then(data => {
+	        this.setState({
+	          rooms: data,
+	          loading: false,
+	        });
+	        // Update the room image pathing, if query
+			if (Array.isArray(data) && data.length) {
+				this.state.loading = true;
+				this.forceUpdate();
+				this.roomClicked = -1;
+				// for now, default to the first floor
+				this.getFloorplan();
+
+		        console.log("New Rooms", this.state.rooms);
+
+		        this.floorList = [];
+		        this.roomidFloorList = [];
+		        this.floorListB2M = [];
+		        var currFloorID = -1;
+		        // handle the number of floors there are
+		        for (var i = 0; i < data.length; i++) {
+		        	var entry = data[i];
+		        	if (currFloorID !== entry.level) {
+		        		var alphabet2 = parseInt(entry.level, 10);
+		        		if (isNaN(alphabet2))
+		        			this.floorList.push(entry.level);
+		        		else
+		        			this.floorList.push(alphabet2);
+
+		        		// get the room_id for that specific level
+		        		this.roomidFloorList.push(entry.room_id);
+
+		        		currFloorID = entry.level;
+		        	}
+		        }
+		        this.floorListB2M.push("H");
+		        this.floorNameLabel = (
+				<div id="floorLabel">
+					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
+					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
+				</div>
+				);
+				var query = this.state.rooms;
+			    for (var i = 0; i < query.length; i++) {
+			      var iRoom = query[i];
+			      // print how many sqft the room is on the console
+			      if (iRoom.room_id == this.roomid) {
+
+			      	// update the room info
+			      	this.roomClicked = iRoom.room_id;
+			      	var checkAlpha = parseInt(iRoom.level, 10);
+			      	if (isNaN(checkAlpha))
+			      		this.currRoom.floor = iRoom.level;
+			      	else
+			      		this.currRoom.floor = checkAlpha;
+			      	this.currRoom.roomNum = iRoom.number;
+			      	// make sure that the entry is not undefined
+			      	if (iRoom.num_rooms === null)
+			      		this.currRoom.num_rooms = iRoom.num_occupants;
+			      	else	   
+			      		this.currRoom.num_rooms = iRoom.num_rooms;
+			      	this.currRoom.num_occupants = iRoom.num_occupants;
+			      	this.currRoom.sqft = iRoom.sqft;
+			      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+			      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+			      		+ this.currRoom.drawType.slice(1);
+			      	this.forceUpdate();
+			        break;
+			      }
+			   }
+		   	console.log("did i reach here", this.currRoom.floor);
+		        this.forceUpdate();
+		        this.state.loading = false;
+			}
+	      })
+	      .catch(error => console.log(error));
+	      
+	}
+
+	handleFavoritesClick = (obj, num, event) => {
+		/*var query = this.state.rooms;
+		for (var i = 0; i < query.length; i++) {
+			var iRoom = query[i]; 
+			if (iRoom.room_id == this.roomIDRendered[num])
+				this.roomid = iRoom.room_id; 
+		}*/
+		this.updateFavorites();
+		console.log("success?");
 	}
 
 	// Handles the click for the Polygons in the ImageMapper
@@ -441,6 +598,7 @@ class App extends Component {
 						<div id = "roomClicked">
 							<h4>{this.searchLink}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
+
 							<ul>
 								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
 								<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
@@ -647,7 +805,7 @@ class App extends Component {
 							We value any feedback you give to us, as we are always trying to improve.
 						</p>
 						<p class = "aboutInfo">
-							Please send an email to <a href="mailto:tlcyr@princeton.edu">the team</a> with your feedback and we will 
+							Please send an email to <a href="mailto:tcyr@princeton.edu">the team</a> with your feedback and we will 
 							be sure to get back to you, as needed!
 						</p>
 						<p class = "aboutInfo">
@@ -669,18 +827,19 @@ class App extends Component {
 		}
 		
 		return (
-			<div className = "App" id="AppBackground">
-				
-				<div id = "header" className={classes.root}>
-					<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
-					<div id = "tabs">
-						<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
-							<Tab label = "About"/>
-							<Tab label = "Feedback"/>
-							<Tab label = "Logout"/>
-						</Tabs>
+				<div className = "App" id="AppBackground">
+					
+					<div id = "header" className={classes.root}>
+						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
+
+						<div id = "tabs">
+							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
+								<Tab label = "About"/>
+								<Tab label = "Feedback"/>
+								<Tab label = "Logout"/>
+							</Tabs>
+						</div>
 					</div>
-				</div>
 				
 				{content}
 				

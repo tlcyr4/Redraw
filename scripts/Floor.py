@@ -121,9 +121,35 @@ class Floor:
                 "2": [405],
                 "3": [500]
             },
-            "0148": {"3":[827]}
+            "0028": {"3":[1402]},
+            "0148": {"1":[521,746],"2":[158,670],"3":[827,329,99]},
+            "0592": {"2":[349]},
+            "0631": {"2":[2]},
+            "0686": {"3":[19]},
+            "0693": {"1":[129],"2":[126]},
+            "0694": {"2":[1],"3":[1]},
+            "0696": {"1":[458],"2":[279],"3":[144],"4":[24,104]}
         }
-        overrides = {}
+        overrides = {
+            "0021": {"1": {1493:"111"}},
+            "0028": {"1":{237:"111",238:"111"},   "3": {145:"116"}},
+            "0043": {"0": {23:"104"}},
+            "0092": {"1": {30:"112",67:"113",102:"114"}},
+            "0603": {"1":{822:"101",823:"101",1166:"122",1224:"122",1423:"122"},
+            "2":{1044:"201",1045:"201", 44:"272",58:"272",103:"272",1535:"222",1660:"222",1522:"202",1725:"202",1751:"202"},
+            "3":{1330:"301",1331:"301",1810:"322",1951:"322"}},
+            "0631": {"A":{222:"B21"}},
+            "0668": {"0":{383:"027"},"3":{25:"301",26:"301",29:"301",33:"301",35:"301",41:"302",46:"302"}},
+            "0686": {"4":{22:"402",57:"402",128:"402",129:"404",130:"406",34:"401"}},
+            "0693": {"1":{185:"103",215:"103",186:"103",62:"102",63:"102",64:"102",74:"102",188:"105",190:"107",292:"113",316:"113",372:"315",384:"315"},
+            "2":{208:"203",182:"203",183:"205",257:"311",314:"311",164:"306"}},
+            "0694": {"2":{268:"211",269:"211",271:"211",265:"213",284:"213",512:"214",514:"214",547:"214",510:"216",518:"210"},
+                "3": {38:"302",129:"302",139:"302",207:"302",211:"303",225:"304",244:"305",272:"313",273:"313",335:"313",328:"309",334:"309",567:"310"}},
+            "0695": {"1": {3:"104",7:"104",14:"104",37:"104",50:"102",60:"102",68:"102",97:"102",51:"101",59:"101",67:"101",137:"101"}},
+            "0696": {"1":{727:"104"},"2":{460:"201",769:"205",982:"205",985:"208"},
+            "3": {216:"301",241:"303",296:"303",445:"305",213:"302",336:"305",335:"302",363:"306",446:"308"},"4":{318:"406"}},
+            "0703": {"1":{318:"114"},"3":{35:"312",52:"312",64:"312",124:"312",331:"316"}}
+        }
         replacements = [
                 ("O","0"),
                 ("I","1"),
@@ -165,19 +191,25 @@ class Floor:
                     if room_label in skips[self.building][self.floornum]:
                         continue
             
-            regex = self.floornum + "[0-9][0-9]"
+            regex = None
 
             if self.building in regexes:
                 if type(regexes[self.building]) is dict and self.floornum in regexes[self.building]:
                     regex = regexes[self.building][self.floornum]
                 if type(regexes[self.building]) is str:
                     regex = regexes[self.building]
-            # print regex
+
+            if regex != None:
+                pass
+            elif efr or self.building == "0056":
+                regex = "[0-9]" + self.floornum + "[0-9]"
+            elif two_digit:
+                regex = "[0-9][0-9][0-9]?"
+            else:
+                regex = self.floornum + "[0-9][0-9]"
             roomnums = re.findall(regex,text)
 
-            if regex != "[0-9][0-9][0-9]":
-                pass
-            elif self.building == "0019" and self.floornum == "A":
+            if self.building == "0019" and self.floornum == "A":
                 if roomnums != [] and roomnums[0][0] == "8":
                     roomnums[0] = "B" + roomnums[0][1:]
             elif self.building == "0026":
@@ -186,141 +218,18 @@ class Floor:
                         continue
                     roomnums[0] = re.sub(r'\W+', '', roomnums[0])
                     roomnums[0] = "00" + roomnums[0][:2]
-            elif self.building == "0028" and self.floornum == "3":
-                # roomnums = re.findall("1[0-4][0-9]|[2-9][0-9]", text)
-                if room_label == 145:
-                    roomnums = ["116"]
-            elif "004" in self.building or self.building == "0053":
-                # roomnums = re.findall("[0-9]" + self.floornum + "[0-9]A?", text)
-                if self.building == "0043" and self.floornum == "0" and room_label == 23:
-                    roomnums = ["104"]
-            elif self.building == "0092" and self.floornum == "1":
-                # roomnums = re.findall("[0-9]" + self.floornum + "[0-9]", text)
-                override = {30:"112",67:"113",102:"114"}
-                if room_label in override:
-                    roomnums = [override[room_label]]
-            elif self.building == "0148":
-                # roomnums = re.findall("[0-9][0-9][0-9]", text)
-                if self.floornum == "3":
-                    if room_label == 827:
-                        roomnums = []
-                    roomnums = re.findall("3[0-9][0-9]", text)
-            elif self.building == "0603":
-                # roomnums = re.findall(self.floornum + "[0-9][0-9]", text)
-                if self.floornum == "1":
-                    if room_label in [822,823]:
-                        roomnums = ["101"]
-                    if room_label in [1166,1224,1423]:
-                        roomnums = ["122"]
-                if self.floornum == "2":
-                    if room_label in [1044,1045]:
-                        roomnums = ["201"]
-                    if room_label in [44,58,103]:
-                        roomnums = ["272"]
-                    if room_label in [1535,1660]:
-                        roomnums = ["222"]
-                    if room_label in [1522,1725,1751]:
-                        rooomnums = ["202"]
-                if self.floornum == "3":
-                    if room_label in [1330,1331]:
-                        roomnums = ["301"]
-                    if room_label in [1810,1951]:
-                        roomnums = ["322"]
-            elif self.building == "0619" and (self.floornum == "2" or self.floornum == "1"):
-                # roomnums = re.findall("T?[0-9][0-9]", text)
-                pass
             elif self.building == "0631" and self.floornum == "A":
-                # roomnums = re.findall("B?[0-9][0-9]", text)
                 if roomnums != [] and len(roomnums[0]) < 3:
                     roomnums[0] = "B" + roomnums[0]
-                if room_label == 222:
-                    roomnums = ["B21"]
             elif self.building == "0631" and self.floornum == "2":
-                # roomnums = re.findall("[0-9][0-9]|T[0-9]", text)
                 if roomnums != [] and roomnums[0][0] == "T":
                     roomnums[0] = "T02"
-            elif self.building == "0668" and self.floornum == "0":
-                # roomnums = re.findall("0[0-9][0-9]", text)
-                if room_label == 383:
-                    roomnums = ["027"]
-            elif self.building == "0668" and self.floornum == "3":
-                # roomnums = re.findall("3[0-9][0-9]", text)
-                if room_label in [25,29,26,33,35]:
-                    roomnums = ["301"]
-                if room_label in [41,46]:
-                    roomnums = ["302"]
-            elif self.building == "0672":
-                pass
-                # roomnums = re.findall(self.floornum+"[01][0-9][ABCD]?", text)#.replace("8","B").replace("GB","G3").replace("0B","03"))
-            elif self.building == "0686" and self.floornum == "4":
-                # roomnums = re.findall("4[0-9][0-9]", text)
-                if room_label in [22,57,128]:
-                    roomnums = ["402"]
-                if room_label in [129]:
-                    roomnums = ["404"]
-                if room_label in [130]:
-                    roomnums = ["406"]
-                if room_label in [34]:
-                    roomnums = ["401"]
-            elif self.building == "0694" and self.floornum == "3":
-                # roomnums = re.findall("3[0-9][0-9]?", text)
-                if room_label in [38,129,139,207]:
-                    roomnums = ["302"]
-                if room_label in [211]:
-                    roomnums = ["303"]
-                if room_label in [225]:
-                    roomnums = ["304"]
-                if room_label in [244]:
-                    roomnums = ["305"]
-            elif self.building == "0695" and self.floornum == "1":
-                # roomnums = re.findall("1[0-9][0-9]?", text)
-                if room_label in [3,7,14,37]:
-                    roomnums = ["104"]
-                if room_label in [50,60,68,97]:
-                    roomnums = ["102"]
-                if room_label in [51,59,67,137]:
-                    roomnums = ["101"]
-            elif self.building == "0696" and self.floornum == "1":
-                # roomnums = re.findall("1[0-9][0-9]?", text)
-                if room_label in [784]:
-                    roomnums = ["105"]
-                if room_label in [887,948]:
-                    roomnums = ["107"]
-                if room_label in [874]:
-                    roomnums = ["106"]
-                if room_label in [1041]:
-                    roomnums = ["108"]
-            elif self.building == "0696" and self.floornum == "3":
-                # roomnums = re.findall("3[0-9][0-9]?", text)
-                if room_label in [216]:
-                    roomnums = ["301"]
-                if room_label in [241,296]:
-                    roomnums = ["303"]
-                if room_label in [445]:
-                    roomnums = ["305"]
-                if room_label in [213,335]:
-                    roomnums = ["302"]
-                if room_label in [363]:
-                    roomnums = ["306"]
-                if room_label in [446]:
-                    roomnums = ["308"]
-            elif self.building == "0703" and self.floornum == "1":
-                # roomnums =  re.findall("1[0-9][0-9]", text)
-                if room_label == 318:
-                    roomnums = ["114"]
-            elif self.building == "0703" and self.floornum == "3":
-                # roomnums =  re.findall("3[0-9][0-9]", text)
-                if room_label in [52,35,64,124]:
-                    roomnums = ["312"]
-                if room_label in [331]:
-                    roomnums = ["316"]
-            elif efr or self.building == "0056":
-                roomnums = re.findall("[0-9]" + self.floornum + "[0-9]", text)
-            elif two_digit:
-                roomnums = re.findall("[0-9][0-9][0-9]?", text)
-            else:
-                # roomnums = re.findall(self.floornum + "[0-9][0-9]", text)
-                pass
+            
+
+            if self.building in overrides:
+                if self.floornum in overrides[self.building]:
+                    if room_label in overrides[self.building][self.floornum]:
+                        roomnums = [overrides[self.building][self.floornum][room_label]]
             if roomnums != [] and roomnums[0] != "00":
                 self.rooms[room_label] = Room(rooms, room_label, roomnums[0], self.building)
             # elif len(text) > 0:
@@ -441,6 +350,8 @@ class Floor:
             rooms.stats[door.into] = stats[1, :]
             rooms.centroids[door.into] = centroids[1]
     def toJSON(self):
+        if self.building in ["0021","0056"] and self.floornum == "0":
+            self.floornum = "A"
         return [{"polygon":room.getPoly().tolist(), 
                 "origin": room.getOrigin(), 
                 "number": room.number, 
@@ -452,4 +363,6 @@ class Floor:
             door.draw(self.original)
     def draw_rooms(self):
         for room in self.rooms.values():
-            room.draw(self.original)
+            room.drawOutline(self.original)
+        for room in self.rooms.values():
+            room.drawNumber(self.original)
