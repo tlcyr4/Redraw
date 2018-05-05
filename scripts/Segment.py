@@ -38,6 +38,8 @@ class Segment(object):
         for label in self.labels:
             if label != 0:
                 canvas[self.labelled == label] = randColor()
+        for label in self.labels:
+            if label != 0:
                 centroid = (int(self.centroids[label][0]), int(self.centroids[label][1]))
                 cv.putText(canvas, str(label), centroid, cv.FONT_HERSHEY_TRIPLEX, 3, (10,10,10), thickness = 3) 
         return canvas

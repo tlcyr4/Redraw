@@ -75,14 +75,24 @@ sed 's/Forbes/Africa/g' |
 python antialias.py | 
 sed 's/0148 A/0592 /g' | 
 sed 's/Africa/Forbes/g' | 
-sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' | 
-# sed 's/\(B\)\([0-9][0-9]\)/0\2/g' | tee before.txt |
+sed 's/\([A-Z]\)\([0-9][0-9][0-9]\)/\2/g' |
 sed 's/Baseme/A /g' |
 sed 's/\(0668 0[0-9][0-9] \)\(A\)/\10/g' |
-sed 's/\(0094 [0-9]0[0-9] \)\(A\)/\10/g' | tee before.txt |
+sed 's/\(0094 [0-9]0[0-9] \)\(A\)/\10/g' |
 sed 's/\(0023 [0-9][0-9] \)\(A\)/\10/g' |
 sed 's/\(0023 T[0-9][0-9] \)\(A\)/\10/g' |
 sed 's/\(0153 [78][12] \)\(1\)/\1A/g' |
+sed 's/0023 62 2/0023 62 1/g' | #error by housing
+sed 's/0153 73 2/0153 73 1/g' | #error by housing
+sed 's/0153 74 2/0153 74 1/g' | #error by housing
+sed 's/0153 75 3/0153 75 2/g' |
+sed 's/0153 76 3/0153 76 2/g' |
+sed 's/0153 77 4/0153 77 3/g' |
+sed 's/0153 78 4/0153 78 3/g' |
+sed 's/0153 83 2/0153 83 1/g' |
+sed 's/0153 84 2/0153 84 1/g' |
+sed 's/0153 85 3/0153 85 2/g' |
+sed 's/0153 86 3/0153 86 2/g' |
 awk '{if($4=="bathroom") $4=""; else $3 = "Pub\t"$3; print $0}' |
 sed 's/Private/Prv/g' | sed 's/Shared/Sha/g' |
 awk '{if($8!="Yes") $8="No "$8;print $0}' |
@@ -226,8 +236,10 @@ out_polygons = {}
 for polyfile in glob("polygons/*.json"):
     polygons = json.load(open(polyfile, "r"))
     building = path.basename(polyfile)[:4]
+    # level = path.basename(polyfile)[-6]
     for polygon in polygons:
-        id = building + " " + polygon["number"].zfill(3)
+        level = polygon["level"]
+        id = building + " " + level + " " + polygon["number"].zfill(3)
         x0 = polygon["origin"][0]
         y0 = polygon["origin"][1]
         # xrat = 10200.0 / float(polygon["dimensions"][1])
@@ -254,13 +266,15 @@ misses = 0
 hits = 0
 missfloor = {}
 for room in rooms:
-    if room["building"] + " " + room["number"] in polygons:
+    id = room["building"] + " " + room["level"] + " " + room["number"]
+    
+    if id in polygons:
         hits += 1
-        room["polygons"] = polygons[room["building"] + " " + room["number"]]
-        del polygons[room["building"] + " " + room["number"]]
-        polygons[room["building"] + " " + room["number"] +"used"] = True
+        room["polygons"] = polygons[room["building"] + " " + room["level"] + " " + room["number"]]
+        del polygons[room["building"] + " " + room["level"] + " " + room["number"]]
+        polygons[room["building"] + " " + room["level"] + " " + room["number"] +"used"] = True
     else:
-        log.write(room["building"] + " " + room["number"] + "\n")
+        log.write(room["building"] + " " + room["level"] + " " + room["number"] + "\n")
         room["polygons"] = []
         misses += 1
         if room["building"] + " " + room["level"] not in missfloor:
@@ -284,8 +298,8 @@ log.write("unused: " + str(len([polygon for polygon in polygons if "used" not in
 unused = {}
 for k,v in polygons.items():
     if "used" in k: continue
-    bldg, level = map(str,k.split())
-    level = level[0]
+    bldg, level, num = map(str,k.split())
+    # level = level[0]
     if bldg not in unused:
         unused[bldg] = {}
     if level not in unused[bldg]:
