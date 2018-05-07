@@ -681,10 +681,9 @@ class App extends Component {
 								Special acknowledgement for all who have helped us along the way.
 							</p>
 						</div>
-						<div id="aboutSquadDiv">
-							<h1 id = "aboutSquad">Meet The Team</h1>
-						</div>
+
 						<div id = "squadImages">
+							<h1 id = "aboutSquad">Meet The Team</h1>
 							<div id = "TC" class = "squad">
 								<img src = {Tigar} class = "picSquad" alt="Tigar"/>
 								<div class = "squadInfoB">
@@ -737,6 +736,10 @@ class App extends Component {
 						<p class = "aboutInfo">
 							Please send an email to <a href="mailto:tcyr@princeton.edu">the team</a> with your feedback and we will 
 							be sure to get back to you, as needed!
+						</p>
+						<p class = "aboutInfo">
+							Or take <a href="https://goo.gl/forms/2dHxJSRLhcgi2wjM2">this survey</a> to give us an evaluation of the site!
+							 We take your input very seriously and are always striving to improve the site.
 						</p>
 						<p class = "aboutInfo">
 							Thank you!

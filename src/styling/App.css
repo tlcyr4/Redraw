@@ -345,11 +345,6 @@ div#aboutDiv p {
   font-size: 1vw;
 }
 
-/* div to margin the second header from the first section */
-div#aboutSquadDiv {
-  margin-top: 2vh;
-}
-
 /* header of the second section */
 h1#aboutSquad {
   font-size: 2vw;
@@ -363,7 +358,10 @@ h1#aboutSquad {
 
 /* Entire second section content styling */
 div#squadImages {
-  margin-top: 3vh;
+  background-color: #ADD8E6;
+  display: inline-block;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
