@@ -48,6 +48,8 @@ def main(inFilename):
     cv.imwrite(outFilename, floor.original)
     
     # output extra debugging info
+    if mark:
+        cv.imwrite(path.join("marked",path.basename(inFilename)), floor.segments["rooms"].colored())
     if verbose:
         cv.imwrite("debug_rooms.png", floor.segments["rooms"].colored())
         cv.imwrite("debug_text.png", floor.segments["text"].img)
@@ -59,6 +61,7 @@ atexit.register(winsound.Beep, 600, 250)
 inFiles = glob(sys.argv[1])
 
 # command line options
+mark = "-m" in sys.argv
 verbose = "-v" in sys.argv
 timing = "-time" in sys.argv
 real = "-real" in sys.argv
