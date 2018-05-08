@@ -203,14 +203,14 @@ class App extends Component {
 		
 		const url = '/api/floorplan/?room_id=' + event.target.id;
 		
-		this.building = event.target.bldg;
+		this.building = event.target.getAttribute('bldg');
 		this.roomid = event.target.id;
 		this.roomClicked = -1;
-		this.floorButtonClicked = 0;
+		this.floorButtonClicked = 1;
 		
-		var alphabet = parseInt(event.target.level, 10);
+		var alphabet = parseInt(event.target.getAttribute('floor'), 10);
 		if (isNaN(alphabet))
-			this.floor = event.target.level;
+			this.floor = event.target.getAttribute('floor');
 		else
 			this.floor = alphabet;
 		
@@ -477,7 +477,7 @@ class App extends Component {
 				info = (
 					<div id = "roomInfo">
 						<div id = "roomClicked">
-							<h4>{this.searchLink}</h4>
+							<h4>{this.building}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
 
 							<ul>
