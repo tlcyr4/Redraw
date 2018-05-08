@@ -119,6 +119,8 @@ class App extends Component {
 		this.favoritesList = []; // favorites
 		this.loadFavorites = 0; // load the favorites when you open up the website
 
+		this.searchSwitch = 0; // this would allow us to make suren ot to reset roomClicked in getPolygons
+
 		// Create a legend! (one time thing!)
 		this.items = [
 			{title: 'Rockefeller', color: '#97c574'},
@@ -150,19 +152,22 @@ class App extends Component {
 	getPolygons() {
 		const url = '/api/search/?building=' + this.building;
 
-    fetch(url, {credentials: "same-origin"})
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.setState({
-          rooms_displayed: data,
-          loading: false,
-        });
+	    fetch(url, {credentials: "same-origin"})
+	      .then(response => {
+	        return response.json();
+	      })
+	      .then(data => {
+	        this.setState({
+	          rooms_displayed: data,
+	          loading: false,
+	        });
 				if (Array.isArray(data) && data.length) {
 					this.state.loading = true;
 					this.forceUpdate();
-					
+					if (this.searchSwitch === 0)
+						this.roomClicked = -1;
+					else
+						this.searchSwitch = 0;
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
 						var alphabet = parseInt([0].level, 10);
@@ -250,23 +255,30 @@ class App extends Component {
 		this.roomClicked = event.target.id;
 		this.floorButtonClicked = 1;
 		
+		// alphabet capitalizing
 		var alphabet = parseInt(event.target.getAttribute('floor'), 10);
 		if (isNaN(alphabet))
 			this.floor = event.target.getAttribute('floor');
 		else
 			this.floor = alphabet;
 		
+		// fetch data
 		fetch(url, {credentials: 'same-origin'})
 			.then((response) => { return response.blob(); })
 			.then((data) => {
 				var objectURL = URL.createObjectURL(data);
 				this.imagePath = objectURL;
+
+				// get the polygons
+				this.searchSwitch = 1;
 				this.getPolygons();
 				
 				var query = this.state.rooms_displayed;
+			// go through and find the room
 		    for (var i = 0; i < query.length; i++) {
 		      var iRoom = query[i];
 		      // print how many sqft the room is on the console
+		      console.log(iRoom.room_id, this.roomid);
 		      if (iRoom.room_id == this.roomid) {
 						
 		      	// update the room info
@@ -356,7 +368,6 @@ class App extends Component {
 			this.getPolygons();
 		}
 		else {
-				this.roomClicked = -1;
 		    var query = this.state.rooms_displayed;
 		    for (var i = 0; i < query.length; i++) {
 		      var iRoom = query[i];
@@ -567,7 +578,7 @@ class App extends Component {
 			var info = (
 					<div id="roomInfo">
 						<div id="roomNotClicked">
-							<FontAwesomeIcon icon={faBed}/>
+							Click a Room!
 						</div>
 					</div>
 				);
