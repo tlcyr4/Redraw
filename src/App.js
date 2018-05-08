@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
+import faBed from '@fortawesome/fontawesome-free-solid/faBed';
 import Center from 'react-center';
 import { DiscreteColorLegend } from 'react-vis';
 import { RingLoader } from 'react-spinners';
@@ -10,11 +11,6 @@ import ImageMapper from './ImageMapper';
 // material imports
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { createMuiTheme } from 'material-ui/styles';
-import orange from 'material-ui/colors/orange';
-import Drawer from 'material-ui/Drawer';
-import {MenuItem} from 'material-ui/Menu';
-import Button from 'material-ui/Button';
 
 // Imports for AutoSuggestion
 import buildings from './buildings';
@@ -51,8 +47,6 @@ const styles = theme => ({
   },
 });
 
-const primary = orange[300];
-
 /*===========================================================================*/
 /*===========================================================================*/
 /*===========================================================================*/
@@ -64,12 +58,14 @@ class App extends Component {
     super(props);
 		
     this.state = {
-			rooms: [], // Contains all rooms returned by getQuery()
+			rooms: [], 				// All rooms returned by a specific query
+			roomsToDraw: [], 	// The rooms which should be renderd over a floorplan
 			favorites: [], 
 			openDrawer: false,
-			loading: false, // for the loading wheel
-			pageNum: -1, // for deciding which page it is in
+			loading: false, 	// for the loading wheel
+			pageNum: -1, 			// decides which page is loaded
 		};
+		
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
 
@@ -87,18 +83,19 @@ class App extends Component {
 		// List of all the buildings that are clickable, used for ImageMapper
 		this.buildingIDRendered = [];
 		this.buildingPolygons = [];
-		this.start = 0; //check startup
+		this.start = 0; // check startup
 		
-		// Default image path is set to Wendell, but changes on click
+		// Default Background Image is a Campus Map
 		this.imagePath = HomeMap;
 
-		// keep track of all the information of the room!
+		// Holds of all the information of the room!
 		this.roomClicked = -1;
 		this.currRoom = [];	
 
-		this.favoritesList = []; // favorites
+		// To be used by ChuChu
+		this.favoritesList = []; 
 
-		// make a legend! (one time thing!)
+		// Create a legend! (one time thing!)
 		this.items = [
 			{title: 'Rockefeller', color: '#97c574'},
 			{title: 'Mathey', color: '#b3604d'},
@@ -136,7 +133,7 @@ class App extends Component {
 		if (Array.isArray(data) && data.length) {
 			this.setState({ loading: true, });
 			this.roomClicked = -1;
-			// for now, default to the first floor
+			// For now, default to the first floor
 			if (!this.floorButtonClicked) {
 				var alphabet = parseInt(data[0].level, 10);
 				if (isNaN(alphabet))
@@ -146,37 +143,37 @@ class App extends Component {
 				this.roomid = data[0].room_id;
 			}
 			this.getFloorplan();
+			
+      console.log("New Rooms", this.state.rooms);
 
-	        console.log("New Rooms", this.state.rooms);
+      this.floorList = [];
+      this.roomidFloorList = [];
+      this.floorListB2M = [];
+      var currFloorID = -1;
+      // handle the number of floors there are
+      for (var i = 0; i < data.length; i++) {
+      	var entry = data[i];
+      	if (currFloorID !== entry.level) {
+      		var alphabet2 = parseInt(entry.level, 10);
+      		if (isNaN(alphabet2))
+      			this.floorList.push(entry.level);
+      		else
+      			this.floorList.push(alphabet2);
 
-	        this.floorList = [];
-	        this.roomidFloorList = [];
-	        this.floorListB2M = [];
-	        var currFloorID = -1;
-	        // handle the number of floors there are
-	        for (var i = 0; i < data.length; i++) {
-	        	var entry = data[i];
-	        	if (currFloorID !== entry.level) {
-	        		var alphabet2 = parseInt(entry.level, 10);
-	        		if (isNaN(alphabet2))
-	        			this.floorList.push(entry.level);
-	        		else
-	        			this.floorList.push(alphabet2);
+      		// get the room_id for that specific level
+      		this.roomidFloorList.push(entry.room_id);
 
-	        		// get the room_id for that specific level
-	        		this.roomidFloorList.push(entry.room_id);
-
-	        		currFloorID = entry.level;
-	        	}
-	        }
-	        this.floorListB2M.push("H");
-	        this.floorNameLabel = (
-			<div id="floorLabel">
-				<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
-				<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
-			</div>
+      		currFloorID = entry.level;
+      	}
+      }
+      this.floorListB2M.push("H");
+	    this.floorNameLabel = (
+				<div id="floorLabel">
+					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
+					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
+				</div>
 			);
-				this.setState({ loading: false, });
+			this.setState({ loading: false, });
 		}
       })
       .catch(error => console.log(error));
@@ -215,8 +212,7 @@ class App extends Component {
 						});
 					}
 				}
-				console.log("favorites:");
-				console.log(this.favoritesList);
+				console.log("favorites: " + this.favoritesList);
   			})  
   			.catch(error => console.log(error))
   	}
@@ -261,8 +257,7 @@ class App extends Component {
 	        });
 	        // Update the room image pathing, if query
 			if (Array.isArray(data) && data.length) {
-				this.state.loading = true;
-				this.forceUpdate();
+				this.setState({ loading: true, });
 				this.roomClicked = -1;
 				// for now, default to the first floor
 				this.getFloorplan();
@@ -297,8 +292,8 @@ class App extends Component {
 				</div>
 				);
 				var query = this.state.rooms;
-			    for (var i = 0; i < query.length; i++) {
-			      var iRoom = query[i];
+			    for (var j = 0; j < query.length; j++) {
+			      var iRoom = query[j];
 			      // print how many sqft the room is on the console
 			      if (iRoom.room_id == this.roomid) {
 
@@ -325,8 +320,7 @@ class App extends Component {
 			      }
 			   }
 		   	console.log("did i reach here", this.currRoom.floor);
-		        this.forceUpdate();
-		        this.state.loading = false;
+		        this.setState({ loading: false, });
 			}
 	      })
 	      .catch(error => console.log(error));
@@ -334,12 +328,6 @@ class App extends Component {
 	}
 
 	handleFavoritesClick = (obj, num, event) => {
-		/*var query = this.state.rooms;
-		for (var i = 0; i < query.length; i++) {
-			var iRoom = query[i]; 
-			if (iRoom.room_id == this.roomIDRendered[num])
-				this.roomid = iRoom.room_id; 
-		}*/
 		this.updateFavorites();
 		console.log("success?");
 	}
@@ -408,7 +396,7 @@ class App extends Component {
 		var searchData = "";
 		var numField = 0;
 		console.log(values);
-		Object.keys(values).map(function(key, index) {
+		Object.keys(values).map( function(key, index) {
 				if (values[key]) {
 					if (numField > 0) { searchData += "&"; }
 					searchData += (key + "=" + values[key]);
@@ -423,11 +411,12 @@ class App extends Component {
 		this.getQuery();
 	}
 	
+	/* validate: process the values returned when a form is submitted.
+			If something is invalid, then return an error array. */
 	validate = (values) => {
 		const errArray = {};
-	  if (!values.building) { 
-			errArray.building = 'Required';
-			console.log("Validation Fired!"); 
+	  if (values.building) {
+			if (values.building.length > 30) { errArray.building = 'Too Long'; } 
 		}
 	  return errArray;
 	}
@@ -469,18 +458,19 @@ class App extends Component {
 		return imageWidthScaled;
 	}
 
-
+	/* Render: Builds the content block in JSX, then returns the 
+			formatted output. */
 	render() {
 		const { classes } = this.props;
 		const { value } = this.state;
 
-		/*=====================================================================*/
-		/* Default to to error message, should theoretically never happen      */
-		/*=====================================================================*/
+		/*===============================================================*/
+		/* Default to to error message, should NEVER happen              */
+		/*===============================================================*/
 		var content = (
 				<div>
-					<img id = "brokenDoor" src = {BrokenDoor} alt="404 Error" height={window.innerHeight*0.8}/>
-					<div id = "pageNotFound">
+					<img id="brokenDoor" src={BrokenDoor} alt="404 Error" height={window.innerHeight*0.8}/>
+					<div id="pageNotFound">
 						<h1>Page Not Found</h1>
 						<h2>Oh no!</h2>
 						<p>Something went terribly wrong!</p>
@@ -489,9 +479,9 @@ class App extends Component {
 				</div>
 			);
 
-		/*=====================================================================*/
-		/* Change to the default mapping — main screen !                       */
-		/*=====================================================================*/
+		/*================================================================*/
+		/* Change to the default mapping — main screen !                  */
+		/*================================================================*/
 		if (this.state.pageNum < 0) {		
 			// Process the JSON received from Back-End
 			var retQuery = this.state.rooms;
@@ -500,7 +490,7 @@ class App extends Component {
 			var imageWidthScaled = window.innerWidth*0.6;
 			var ratio = imageWidthScaled/2550.0;
 
-			// run only once
+			// Run Only Once
 			if (this.start === 0) {
 				imageWidthScaled = this.processBuildingJSON();
 			}
@@ -543,20 +533,18 @@ class App extends Component {
 				}
 			}
 
-			// Make the MAP to be drawn in for floor plans
+			// Make the MAP to be drawn over the floor plans.
 			var MAP = {
 				name: 'my-map',
 				areas: areaArray,
 			};
-			// fill color for floors
 			var fillColor = "rgba(255, 165, 0, 0.7)";
-			// border color for floors
 			var borderColor = "rgba(255, 255, 255, 0)";
 
 			var info = (
 					<div id = "roomInfo">
 						<div id = "roomNotClicked">
-							<h3>Click a Room!</h3>
+							<FontAwesomeIcon icon={faBed}/>
 						</div>
 					</div>
 				);
@@ -609,133 +597,130 @@ class App extends Component {
 							</ul>
 						</div>
 					</div>
-					);
-			}
-
-			// update the content!
-			content = (
-					<div>
-						<div id="formBlock">
-							<Form
-								onSubmit={this.onSubmit}
-								validate={this.validate}
-								render={({ handleSubmit, pristine, submitting, values }) => (
-									<form onSubmit={handleSubmit}>
-										<div>
-											<label>Building Name</label>
-											<Field
-												name="building"
-												items={buildings}
-												component={DownshiftInput}
-												placeholder="Start typing..."
-											/>
-										</div>
-										<div>
-											<label>Floor</label>
-											<Field name="level" component="select">
-												<option />
-												<option value="A">A</option>
-												<option value="00">0</option>
-												<option value="01">1</option>
-												<option value="02">2</option>
-												<option value="03">3</option>
-												<option value="04">4</option>
-												<option value="05">5</option>
-											</Field>
-										</div>
-										<div>
-											<label>Draw Section</label>
-											<Field name="draws_in_id" component="select">
-												<option />
-												<option value="1">Butler</option>
-												<option value="2">Forbes</option>
-												<option value="3">Independent</option>
-												<option value="4">Mathey</option>
-												<option value="5">Rockefeller</option>
-												<option value="6">Upperclass</option>
-												<option value="7">Whitman</option>
-												<option value="8">Wilson</option>
-											</Field>
-										</div>
-										<div>
-											<Field
-												name="sqft"
-												component="input"
-												type="number"
-												min="0" 
-												max="1000"
-											/>
-										</div>
-										<div className="buttons">
-											<button
-												id="submitButton" 
-												type="submit"
-												disabled={submitting || pristine}>
-													<FontAwesomeIcon icon = {faSearch}/>
-											</button>
-										</div>
-									</form>
-								)}
-							/>
-						</div>
-						
-						<div id = "mainContent">
-							<div id="centerContent">
-								<Center>
-										<ImageMapper	
-											src={this.imagePath} 
-											map={MAP} 
-											fillColor={fillColor}
-											strokeColor={borderColor}
-											width={imageWidthScaled}
-											onClick={(obj, num, event) => this.handleClick(obj, num, event)}
-											lineWidth='3'
-										/>
-								</Center>
-							</div>
-
-							<div id = "rightContent">
-								{this.floorNameLabel}
-								<ul id = "floorButtons">
-									{this.floorListB2M.map(listValue =>
-										<li class="backToMap">
-											<a href="/">
-											<input id={listValue}
-											value="Back To Map"
-											type="button"/></a>
-										</li>
-									)}
-									{this.floorList.map(listValue => 
-										<li>
-											<input id={listValue}
-											value={"Floor " + listValue} 
-											type="button"
-											onClick={(event) => this.changeFloor(event)}/>
-										</li>
-									)}
-								</ul>
-
-								{info}
-
-							</div>
-
-							<div id="loading">
-								<RingLoader
-									color={'#ffa500'} 
-									loading={this.state.loading} 
-							    />
-						    </div>
-
-						</div>
-
-					</div>
 				);
+			}
+		/*================================================================*/
+		/* The Content Block                                              */
+		/*================================================================*/
+		content = (
+				<div>
+					<div id="formBlock">
+						<Form
+							onSubmit={this.onSubmit}
+							validate={this.validate}
+							render={({ handleSubmit, pristine, submitting, values }) => (
+								<form onSubmit={handleSubmit}>
+									<div>
+										<label>Building Name</label>
+										<Field
+											name="building"
+											items={buildings}
+											component={DownshiftInput}
+										/>
+									</div>
+									<div>
+										<label>Floor</label>
+										<Field name="level" component="select">
+											<option />
+											<option value="A">A</option>
+											<option value="00">0</option>
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+										</Field>
+									</div>
+									<div>
+										<label>Draw Section</label>
+										<Field name="draws_in_id" component="select">
+											<option />
+											<option value="1">Butler</option>
+											<option value="2">Forbes</option>
+											<option value="3">Independent</option>
+											<option value="4">Mathey</option>
+											<option value="5">Rockefeller</option>
+											<option value="6">Upperclass</option>
+											<option value="7">Whitman</option>
+											<option value="8">Wilson</option>
+										</Field>
+									</div>
+									<div>
+										<label>Minimum Size</label>
+										<Field
+											name="sqft__gte"
+											component="input"
+											type="number"
+											min="0" 
+											max="1150"
+										/>
+									</div>
+									<div className="buttons">
+										<button
+											id="submitButton" 
+											type="submit"
+											disabled={submitting || pristine}>
+												<FontAwesomeIcon icon = {faSearch}/>
+										</button>
+									</div>
+								</form>
+							)}
+						/>
+					</div>
+					
+					<div id="leftContent">
+						<p>Left Box</p>
+					</div>
+					
+					<div id="centerContent">
+						<Center>
+							<ImageMapper
+								src={this.imagePath} 
+								map={MAP} 
+								fillColor={fillColor}
+								strokeColor={borderColor}
+								width={imageWidthScaled}
+								onClick={(obj, num, event) => this.handleClick(obj, num, event)}
+								lineWidth='3'
+							/>
+						</Center>
+					</div>
 
+					<div id="rightContent">
+						{this.floorNameLabel}
+						<ul id="floorButtons">
+							{this.floorListB2M.map(listValue =>
+								<li class="backToMap">
+									<a href="/">
+									<input id={listValue}
+									value="Back To Map"
+									type="button"/></a>
+								</li>
+							)}
+							{this.floorList.map(listValue => 
+								<li>
+									<input id={listValue}
+									value={"Floor " + listValue} 
+									type="button"
+									onClick={(event) => this.changeFloor(event)}/>
+								</li>
+							)}
+						</ul>
+						{info}
+					</div>
+
+					<div id="loading">
+						<RingLoader
+							color={'#ffa500'} 
+							loading={this.state.loading} 
+						/>
+					</div>
+				</div>
+			);
 		}
-		
-		/*=====================================================================*/
-		/* Change to About page                                                */
-		/*=====================================================================*/
+		/*================================================================*/
+		/* The About Page                                                 */
+		/*================================================================*/
 		else if (this.state.pageNum === 0) {
 			content = (
 					<div id = "aboutDiv">
@@ -826,8 +811,11 @@ class App extends Component {
 			window.location.replace("/accounts/logout");
 		}
 		
+		/*================================================================*/
+		/* Information to be Rendered                                     */
+		/*================================================================*/
 		return (
-				<div className = "App" id="AppBackground">
+				<div className="App" id="AppBackground">
 					
 					<div id = "header" className={classes.root}>
 						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>

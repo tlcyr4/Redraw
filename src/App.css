@@ -77,7 +77,7 @@ div.form {
 }
 
 /*********************************************************/
-/********************** Submit button ********************/
+/********************** Submit Button ********************/
 /*********************************************************/
 
 button#submitButton {
@@ -107,6 +107,16 @@ button#submitButton:active {
 /***************** Right side of content *****************/
 /***************** Display panel bottom R ****************/
 /*********************************************************/
+
+div#leftContent {
+  margin: 0 auto;
+  width: 15%;
+  height: 75%;
+	left: 3%;
+	top: 20%;
+  position: absolute;
+  float: left;
+}
 
 div#rightContent {
   display: table;

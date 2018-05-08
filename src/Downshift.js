@@ -42,7 +42,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
                   background: 'white',
                   position: 'absolute',
                   top: '100%',
-                  left: 15,
+                  left: 0,
                   right: 0,
                   zIndex: 4
                 }}
