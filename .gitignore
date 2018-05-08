@@ -15,4 +15,5 @@ colored/
 preprocessed/
 shrunk/
 resized/
+marked/
 data/polygons/*.png
