@@ -69,7 +69,7 @@ const materialStyle = theme => ({
 
 	expPanel: {
 		color: 'white',
-		height: window.innerHeight*0.06,
+		width: window.innerWidth*0.16,
 	}
 
 });

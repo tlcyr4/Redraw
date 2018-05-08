@@ -418,9 +418,8 @@ div.squad p.normalFont {
 
 /* Style the left side (generally) */
 div#leftContent {
-  display: table;
-  margin: 0 auto;
-  width: 17%;
+  display: inline-block;
+  margin: 0;
   height: 77%;
   position: absolute;
   left: 1%;
@@ -428,4 +427,5 @@ div#leftContent {
   text-align: center;
   background-color: #D0DFDF;
   overflow: scroll;
+  float: left;
 }
