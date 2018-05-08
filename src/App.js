@@ -10,6 +10,19 @@ import ImageMapper from './ImageMapper';
 
 // material imports
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { MenuItem } from 'material-ui/Menu';
+// Expansion panel section
+import ExpansionPanel, {
+	ExpansionPanelSummary,
+	ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from 'material-ui/Typography';
+import { withStyles, } from 'material-ui/styles';
+
+// heart icons
+import FaHeart from 'react-icons/lib/fa/heart';
+import FaHeartO from 'react-icons/lib/fa/heart-o';
 
 // Imports for AutoSuggestion
 import buildings from './buildings';
@@ -35,7 +48,35 @@ import './styling/styles.css';
 import BuildingCoordData from './json/building_polygons.json';
 import BuildingQueryName from './json/buildings.json';
 
-// The main logic of the page
+/*===========================================================================*/
+/* Change up the styling!                                                    */
+/*===========================================================================*/
+const materialStyle = theme => ({
+	// a root styling
+	root: {
+	    flexGrow: 1,
+	    width: '100%',
+	    backgroundColor: theme.palette.background.paper,
+	},
+
+
+	expansionSlot: {
+		color: 'green',
+		height: window.innerHeight*0.3,
+	},
+
+	// styling for the hearts
+	heartStyling: {
+		backgroundColor: theme.palette.background.pink
+	},
+
+});
+
+/*===========================================================================*/
+/*===========================================================================*/
+/*===========================================================================*/
+
+// Manages the main logic of the page
 class App extends Component {
 	
   constructor(props) {
@@ -77,8 +118,8 @@ class App extends Component {
 		this.roomClicked = -1;
 		this.currRoom = [];	
 
-		// To be used by ChuChu
-		this.favoritesList = []; 
+		this.favoritesList = []; // favorites
+		this.loadFavorites = 0; // load the favorites when you open up the website
 
 		// Create a legend! (one time thing!)
 		this.items = [
@@ -95,6 +136,10 @@ class App extends Component {
 		this.getQuery = this.getQuery.bind(this);
 		this.getPolygons = this.getPolygons.bind(this);
 		this.getFloorplan = this.getFloorplan.bind(this);
+		
+		// Methods related to favorites
+		this.updateFavorites = this.updateFavorites.bind(this);
+		this.getFavorites = this.getFavorites.bind(this);
 		
 		// Methods that are related to user search
 		this.formSubmit = this.formSubmit.bind(this);
@@ -223,6 +268,57 @@ class App extends Component {
 				this.forceUpdate();
 			})
 			.catch(error => console.log(error));
+	}
+
+	// update the favorites list
+	updateFavorites() {
+		const url = '/api/favorites/?room_id='+this.roomClicked; 
+		fetch(url, {credentials: 'same-origin'})
+				.then(response => {
+					return response.json();
+				})
+				.then((data) => {
+					this.getFavorites();
+				})
+				.catch(error => console.log(error));
+	}
+
+	// get the favorites from the server so we can preserve the order
+	getFavorites() {
+		const url = '/api/favorites/?room_id=0'; 
+
+		fetch(url, {credentials: 'same-origin'})
+			.then(response => {
+					return response.json();
+				})
+			.then((faveData) => {
+			this.favoritesList = [];
+			if (Array.isArray(faveData) && faveData.length) {
+				for (var i = 0; i < faveData.length; i++) {
+					var entry = faveData[i];
+					this.favoritesList.push({
+						level: entry.level,
+						buildingName: entry.building_name,
+						RoomNum: entry.number, 
+						RoomID: entry.room_id
+					});
+				}
+			}
+			// force update so that we can update buttons
+			if (this.loadFavorites > 0)
+				this.forceUpdate();
+			if (this.loadFavorites === 0)
+				this.loadFavorites = 1;
+			})  
+			.catch(error => console.log(error));
+	}
+	
+	handleExpansion = () => { this.forceUpdate(); }
+	
+	// when the favorites button is clicked, handle the case
+	handleFavoritesClick = (obj, num, event) => {
+		this.updateFavorites();
+		this.forceUpdate();
 	}
 
 	// Handles the click for the Polygons in the ImageMapper
@@ -355,11 +451,16 @@ class App extends Component {
 /*====================================================================*/
 
 	render() {
+		const { classes } = this.props;
 		const { value } = this.state;
 
-		/*===============================================================*/
-		/* Default to to error message, should NEVER happen              */
-		/*===============================================================*/
+		if (this.loadFavorites === 0) {
+			this.getFavorites(); 
+		}
+
+		/*=====================================================================*/
+		/* Default to to error message, should theoretically never happen      */
+		/*=====================================================================*/
 		var content = (
 				<div>
 					<img id="brokenDoor" src={BrokenDoor} alt="404 Error" height={window.innerHeight*0.8}/>
@@ -469,16 +570,29 @@ class App extends Component {
 				);
 			}
 
+			// if the room is clicked, then display the information
 			if (parseInt(this.roomClicked, 10) >= 0) {
 				var subFree = "No";
 				if (this.currRoom.sub_free)
 					subFree = "Yes";
 
+				// change the icon if it is favorited 
+				var heartIcon = (<FaHeartO className = {classes.heartStyling} />);
+				for (var l = 0; l < this.favoritesList.length; l++) {
+					if(this.roomClicked == this.favoritesList[l].RoomID) {
+						heartIcon = (<FaHeart className = {classes.heartStyling} />);
+					    break; 
+					}
+				}
 				info = (
 					<div id = "roomInfo">
 						<div id = "roomClicked">
 							<h4>{this.building}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
+
+							<button id="heartButton" onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
+								{heartIcon} 
+							</button>
 
 							<ul>
 								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
@@ -562,19 +676,44 @@ class App extends Component {
 					</div>
 					
 					<div id="leftContent">
-						<ul id="roomButtons">
-						{this.state.search_results.map( r => 
-							<li>
-								<input 
-									id={r['room_id']}
-									value={r['building_name'] + " " + r['number']}
-									bldg={r['building_name']}
-									floor={r['level']}
-									type="button"
-									onClick={ (e) => this.handleFloorplanSwitch(e) }/>
-							</li>
-						)}
-						</ul>
+						<ExpansionPanel onClick={this.handleExpansion}>
+									<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+											<Typography>Favorites</Typography>
+									</ExpansionPanelSummary>
+									<ul>
+										{this.favoritesList.map((room, index)=>(
+											<ExpansionPanelDetails >
+										<MenuItem
+											id={room.RoomID}
+											floor={room.level}
+											bldg={room.buildingName}
+											onClick={ (e) => this.handleFloorplanSwitch(e) }> 
+											{room.buildingName} {room.RoomNum} 
+										</MenuItem>
+									</ExpansionPanelDetails>
+								))}
+									</ul>
+						</ExpansionPanel>
+						<ExpansionPanel>
+							<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+									<Typography>Search Results</Typography>
+							</ExpansionPanelSummary>
+								<ul id="roomButtons">
+								{this.state.search_results.map( r => 
+									<ExpansionPanelDetails>
+										<MenuItem 
+											id={r['room_id']}
+											bldg={r['building_name']}
+											floor={r['level']}
+											type="button"
+											onClick={ (e) => this.handleFloorplanSwitch(e) }
+										>
+											{r['building_name'] + " " + r['number']}
+										</MenuItem>
+									</ExpansionPanelDetails>
+								)}
+								</ul>
+						</ExpansionPanel>
 					</div>
 					
 					<div id="centerContent">
@@ -643,44 +782,43 @@ class App extends Component {
 								Special acknowledgement for all who have helped us along the way.
 							</p>
 						</div>
-						<div id="aboutSquadDiv">
-							<h1 id = "aboutSquad">Meet The Team</h1>
-						</div>
+
 						<div id = "squadImages">
+							<h1 id = "aboutSquad">Meet The Team</h1>
 							<div id = "TC" class = "squad">
-								<img src = {Tigar} class = "picSquad" alt="Tigar"/>
 								<div class = "squadInfoB">
-									<p>Tigar Cyr</p>
-									<p>Backend Developer & Team Manager</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {Tigar} class = "picSquad" alt="Tigar"/>
+									<p class = "nameBigger">Tigar Cyr</p>
+									<p class = "basicFont">Backend Developer & Team Manager</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "DC" class = "squad">
-								<img src = {DChae} class = "picSquad" alt="DChae"/>
 								<div class = "squadInfoO">
-									<p>Daniel Chae</p>
-									<p>Full Stack Developer</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {DChae} class = "picSquad" alt="DChae"/>
+									<p class = "nameBigger">Daniel Chae</p>
+									<p class = "basicFont">Full Stack Developer</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "KD" class = "squad">
-								<img src = {Kesin} class = "picSquad" alt="Kesin"/>
 								<div class = "squadInfoB">
-									<p>Kesin Ryan Dehejia</p>
-									<p>Frontend Developer</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {Kesin} class = "picSquad" alt="Kesin"/>
+									<p class = "nameBigger">Kesin Ryan Dehejia</p>
+									<p class = "basicFont">Frontend Developer</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "CC" class = "squad">
-								<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
 								<div class = "squadInfoO">
-									<p>Chris Chu</p>
-									<p>Frontend Developer</p>
-									<p>Civil and Environmental Engineering</p>
-									<p>Class of 2019</p>
+									<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
+									<p class = "nameBigger">Chris Chu</p>
+									<p class = "basicFont">Frontend Developer</p>
+									<p class = "majorItalics">Civil and Environmental Engineering</p>
+									<p class = "basicFont">Class of 2019</p>
 								</div>
 							</div>
 						</div>
@@ -701,6 +839,10 @@ class App extends Component {
 							be sure to get back to you, as needed!
 						</p>
 						<p class = "aboutInfo">
+							Or take <a href="https://goo.gl/forms/2dHxJSRLhcgi2wjM2">this survey</a> to give us an evaluation of the site!
+							 We take your input very seriously and are always striving to improve the site.
+						</p>
+						<p class = "aboutInfo">
 							Thank you!
 						</p>
 						<p class = "aboutInfo">
@@ -718,9 +860,7 @@ class App extends Component {
 			window.location.replace("/accounts/logout");
 		}
 		
-		/*================================================================*/
-		/* Information to be Rendered                                     */
-		/*================================================================*/
+		// return with the known header and different content, as needed
 		return (
 				<div className="App" id="AppBackground">
 					
@@ -743,4 +883,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default withStyles(materialStyle)(App);
