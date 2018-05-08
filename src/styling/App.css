@@ -122,9 +122,25 @@ div#leftContent {
   margin: 0 auto;
   width: 15%;
   height: 75%;
-	left: 3%;
+	left: 1%;
 	top: 20%;
   position: absolute;
+}
+
+/* Style the list of buttons for changing floors */
+ul#roomButtons {
+  display: inline-block;
+  list-style: none !important;
+  overflow: scroll;
+}
+
+ul#roomButtons input {
+  margin: 0.05vw 0vw;
+  color: white;
+  padding: 0.5vw 1vw;
+  text-align: left;
+  display: inline-block;
+  font-size: 1vw;
 }
 
 div#rightContent {
@@ -181,7 +197,6 @@ ul#floorButtons {
 ul#floorButtons li {
   margin-left: -12%;
 }
-
 
 ul#floorButtons input {
   width: 70%;

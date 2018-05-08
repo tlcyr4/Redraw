@@ -562,7 +562,7 @@ class App extends Component {
 					</div>
 					
 					<div id="leftContent">
-						<ul id="roomsButton">
+						<ul id="roomButtons">
 						{this.state.search_results.map( r => 
 							<li>
 								<input 
