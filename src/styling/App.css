@@ -120,11 +120,11 @@ button#submitButton:active {
 div#rightContent {
   display: table;
   margin: 0 auto;
-  width: 15%;
-  height: 75%;
+  width: 17%;
+  height: 78%;
   position: absolute;
-  right: 3%;
-  top: 20%;
+  right: 1%;
+  top: 17%;
   text-align: center;
 }
 
@@ -321,12 +321,15 @@ div#aboutDiv {
 
 /* The top section div */
 div#aboutInfoDiv {
-  background-color: #ADD8E6;
-  opacity: 0.8;
+  background-color: rgba(173, 216, 230, 0.85);
   width: 80%;
   margin-left: auto;
   margin-right: auto;
   padding: 2vh 0vh;
+}
+
+div#aboutInfoDiv p {
+  font-size: 1vw;
 }
 
 /* header for both sections */
@@ -336,37 +339,29 @@ div#aboutDiv h1 {
   color: #F0F0F0;
   text-shadow: 0.1vw 0.1vw 0 #000;
   margin-top: 1vh;
-  margin-bottom: 4vh;
+  margin-bottom: 2.5vh;
   padding-bottom: 1vh;
-}
-
-/* paragraph for both sections */
-div#aboutDiv p {
-  font-size: 1vw;
-}
-
-/* div to margin the second header from the first section */
-div#aboutSquadDiv {
-  margin-top: 2vh;
 }
 
 /* header of the second section */
 h1#aboutSquad {
   font-size: 2vw;
-  background-color: #ADD8E6;
-  opacity: 0.8;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  padding: 2vh 0vh;
+  padding: 1vh 0vh;
+  margin-bottom: 1vh;
 }
 
 /* Entire second section content styling */
 div#squadImages {
-  margin-top: 3vh;
-  width: 100%;
+  background-color: rgba(173, 216, 230, 0.85);
+  display: inline-block;
+  margin-top: 2vh;
+  width: 95%;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 1vh;
 }
 
 /* Each of the members get their own sections */
@@ -379,18 +374,21 @@ div.squad {
 div.squadInfoB, div.squadInfoO {
   padding: 0.5vh 0vh;
   width: 90%;
-  opacity: 0.9;
+  opacity: 1;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 1vh;
+  padding-top: 2vh;
   color: white;
+  border-radius: 10%;
 }
 
 div.squadInfoB {
-  background-color: #007bff;
+  background-color: rgba(0, 123, 255, 1);
 }
 
 div.squadInfoO {
-  background-color: #ffa500;
+  background-color: rgba(255, 165, 0, 1);
 }
 
 /* Image of the teammates styled to be rounded */
@@ -399,9 +397,35 @@ img.picSquad {
   border-radius: 50%;
 }
 
+/* Make the name bolded, so a little bigger */
+div.squad p.nameBigger {
+  font-size: 1.15vw;
+}
+
+/* Make majors italics */
+div.squad p.majorItalics {
+  font-style: italic;
+}
+
+/* make all other normal text be a default size of 1vw */
+div.squad p.normalFont {
+  font-size: 1vw;
+}
 
 /*********************************************************/
-/***************** Report Problems Page ******************/
+/******************* Left side content *******************/
 /*********************************************************/
 
-
+/* Style the left side (generally) */
+div#leftContent {
+  display: table;
+  margin: 0 auto;
+  width: 17%;
+  height: 78%;
+  position: absolute;
+  left: 1%;
+  top: 17%;
+  text-align: center;
+  background-color: #D0DFDF;
+  overflow: scroll;
+}
