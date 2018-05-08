@@ -162,7 +162,8 @@ class App extends Component {
           loading: false,
         });
 				if (Array.isArray(data) && data.length) {
-					this.setState({ loading: true, });
+					this.state.loading = true;
+					this.forceUpdate();
 					this.roomClicked = -1;
 					
 					// Default to the first floor
@@ -203,8 +204,8 @@ class App extends Component {
 							<p id="floorNumberName" class=".centerLabel">{"Floor " + this.floor}</p>
 						</div>
 					);
-					this.setState({ loading: false, });
 					this.forceUpdate();
+					this.state.loading = false;
 				}
 			})
 		.catch(error => console.log(error));
@@ -243,14 +244,13 @@ class App extends Component {
 
 	// On-Click Event, fetch a new floorplan filepath from Back-End.
 	handleFloorplanSwitch = (event) => {
-		
+		console.log("Room Clicked (2) = " + this.roomClicked);
 		/* We need to check if this is necessary or not */
-		
 		const url = '/api/floorplan/?room_id=' + event.target.id;
 		
 		this.building = event.target.getAttribute('bldg');
 		this.roomid = event.target.id;
-		this.roomClicked = -1;
+		this.roomClicked = event.target.id;
 		this.floorButtonClicked = 1;
 		
 		var alphabet = parseInt(event.target.getAttribute('floor'), 10);
@@ -265,7 +265,37 @@ class App extends Component {
 				var objectURL = URL.createObjectURL(data);
 				this.imagePath = objectURL;
 				this.getPolygons();
-				this.forceUpdate();
+				
+				var query = this.state.rooms_displayed;
+		    for (var i = 0; i < query.length; i++) {
+		      var iRoom = query[i];
+		      // print how many sqft the room is on the console
+		      if (iRoom.room_id == this.roomid) {
+						
+		      	// update the room info
+		      	this.roomClicked = iRoom.room_id;
+		      	var checkAlpha = parseInt(iRoom.level, 10);
+		      	if (isNaN(checkAlpha))
+		      		this.currRoom.floor = iRoom.level;
+		      	else
+		      		this.currRoom.floor = checkAlpha;
+							
+		      	this.currRoom.roomNum = iRoom.number;
+						
+		      	// make sure that the entry is not undefined
+		      	if (iRoom.num_rooms === null) { this.currRoom.num_rooms = iRoom.num_occupants; }
+		      	else { this.currRoom.num_rooms = iRoom.num_rooms; }
+							
+		      	this.currRoom.num_occupants = iRoom.num_occupants;
+		      	this.currRoom.sqft = iRoom.sqft;
+		      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+		      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+		      		+ this.currRoom.drawType.slice(1);
+						console.log("Room Clicked (3) = " + this.roomClicked);
+		      	this.forceUpdate();
+		        break;
+		      }
+				}
 			})
 			.catch(error => console.log(error));
 	}
@@ -451,6 +481,7 @@ class App extends Component {
 /*====================================================================*/
 
 	render() {
+		console.log("Room Clicked = " + this.roomClicked);
 		const { classes } = this.props;
 		const { value } = this.state;
 
@@ -536,8 +567,8 @@ class App extends Component {
 			var borderColor = "rgba(255, 255, 255, 0)";
 
 			var info = (
-					<div id = "roomInfo">
-						<div id = "roomNotClicked">
+					<div id="roomInfo">
+						<div id="roomNotClicked">
 							<FontAwesomeIcon icon={faBed}/>
 						</div>
 					</div>
@@ -585,15 +616,13 @@ class App extends Component {
 					}
 				}
 				info = (
-					<div id = "roomInfo">
-						<div id = "roomClicked">
+					<div id="roomInfo">
+						<div id="roomClicked">
 							<h4>{this.building}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
-
 							<button id="heartButton" onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
 								{heartIcon} 
 							</button>
-
 							<ul>
 								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
 								<li class="roomContent"><p>{"Room Size: " + this.currRoom.sqft + " sqft"}</p></li>
@@ -694,26 +723,20 @@ class App extends Component {
 								))}
 									</ul>
 						</ExpansionPanel>
-						<ExpansionPanel>
-							<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-									<Typography>Search Results</Typography>
-							</ExpansionPanelSummary>
-								<ul id="roomButtons">
-								{this.state.search_results.map( r => 
-									<ExpansionPanelDetails>
-										<MenuItem 
-											id={r['room_id']}
-											bldg={r['building_name']}
-											floor={r['level']}
-											type="button"
-											onClick={ (e) => this.handleFloorplanSwitch(e) }
-										>
-											{r['building_name'] + " " + r['number']}
-										</MenuItem>
-									</ExpansionPanelDetails>
-								)}
-								</ul>
-						</ExpansionPanel>
+						<ul id="roomButtons">
+						{this.state.search_results.map( r => 
+							<li>
+								<input 
+									id={r['room_id']}
+									bldg={r['building_name']}
+									floor={r['level']}
+									type="button"
+									value={r['building_name'] + " " + r['number']}
+									onClick={ (e) => this.handleFloorplanSwitch(e) }
+								/>
+							</li>
+							)}
+						</ul>
 					</div>
 					
 					<div id="centerContent">
