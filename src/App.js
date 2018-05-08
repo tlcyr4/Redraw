@@ -59,14 +59,18 @@ const materialStyle = theme => ({
 
 
 	expansionSlot: {
-		color: 'green',
 		height: window.innerHeight*0.3,
 	},
 
 	// styling for the hearts
 	heartStyling: {
-		backgroundColor: theme.palette.background.pink
+		backgroundColor: theme.palette.background.pink,
 	},
+
+	expPanel: {
+		color: 'white',
+		height: window.innerHeight*0.06,
+	}
 
 });
 
@@ -686,7 +690,7 @@ class App extends Component {
 							</div>
 
 							<div id="leftContent">
-								<ExpansionPanel onClick={this.handleExpansion}>
+								<ExpansionPanel className = {classes.expPanel} onClick={this.handleExpansion}>
 	        						<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
 	        						    <Typography>Favorites</Typography>
 	        						</ExpansionPanelSummary>

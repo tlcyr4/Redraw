@@ -121,10 +121,10 @@ div#rightContent {
   display: table;
   margin: 0 auto;
   width: 17%;
-  height: 78%;
+  height: 77%;
   position: absolute;
   right: 1%;
-  top: 17%;
+  top: 18%;
   text-align: center;
 }
 
@@ -421,10 +421,10 @@ div#leftContent {
   display: table;
   margin: 0 auto;
   width: 17%;
-  height: 78%;
+  height: 77%;
   position: absolute;
   left: 1%;
-  top: 17%;
+  top: 18%;
   text-align: center;
   background-color: #D0DFDF;
   overflow: scroll;
