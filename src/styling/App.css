@@ -66,7 +66,7 @@ div#tabs {
   margin: 1vw 0.5vw 1vw 0.5vw;
 }
 
-form,
+form, 
 div.form {
   position: relative;
 	display: flex;
@@ -117,6 +117,15 @@ button#submitButton:active {
 /***************** Right side of content *****************/
 /***************** Display panel bottom R ****************/
 /*********************************************************/
+
+div#leftContent {
+  margin: 0 auto;
+  width: 15%;
+  height: 75%;
+	left: 3%;
+	top: 20%;
+  position: absolute;
+}
 
 div#rightContent {
   display: table;
