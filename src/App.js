@@ -36,30 +36,15 @@ import './styling/styles.css';
 import BuildingCoordData from './json/building_polygons.json';
 import BuildingQueryName from './json/buildings.json';
 
-/*===========================================================================*/
-/* Change up the styling!                                                    */
-/*===========================================================================*/
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-});
-
-/*===========================================================================*/
-/*===========================================================================*/
-/*===========================================================================*/
-
-// Manages the main logic of the page
+// The main logic of the page
 class App extends Component {
 	
   constructor(props) {
     super(props);
 		
     this.state = {
-			rooms: [], 				// All rooms returned by a specific query
-			roomsToDraw: [], 	// The rooms which should be renderd over a floorplan
+			search_results: [],  // All rooms returned by a specific query
+			rooms_displayed: [], // The rooms which should be renderd over a floorplan
 			favorites: [], 
 			openDrawer: false,
 			loading: false, 	// for the loading wheel
@@ -69,6 +54,7 @@ class App extends Component {
 		this.roomid = 0;		// Room-ID representing the floor
 		this.roomidFloorList = []; // Keep track of which roomID the floor is
 
+		this.buildingString = "";
 		this.floorNameLabel = (<p></p>);
 		this.floor = 0;	// Floor-ID for the Rooms
 		this.floorList = []; // Holds onto a list of all the floors in a building
@@ -116,7 +102,56 @@ class App extends Component {
 		this.getFavorites = this.getFavorites.bind(this);
 	}
 
-	// Makes an API call to return all rooms associated with the building
+	// updateImgPath: changes the main display of the page
+	updateImgPath() {
+		if (Array.isArray(this.state.rooms_displayed) && this.state.rooms_displayed.length) {
+			this.setState({ loading: true, });
+			this.roomClicked = -1;
+			
+			const data = this.state.rooms_displayed;
+			// Default to the first floor
+			if (!this.floorButtonClicked) {
+				var alphabet = parseInt([0].level, 10);
+				if (isNaN(alphabet))
+					this.floor = data[0].level;
+				else
+					this.floor = alphabet;
+				this.roomid = data[0].room_id;
+			}
+			this.getFloorplan();
+			
+			this.floorList = [];
+			this.roomidFloorList = [];
+			this.floorListB2M = [];
+			var currFloorID = -1;
+			
+			// Handle the number of floors there are
+			for (var i = 0; i < data.length; i++) {
+				var entry = data[i];
+				if (currFloorID !== entry.level) {
+					var alphabet2 = parseInt(entry.level, 10);
+					if (isNaN(alphabet2))
+						this.floorList.push(entry.level);
+					else
+						this.floorList.push(alphabet2);
+
+					// get the room_id for that specific level
+					this.roomidFloorList.push(entry.room_id);
+					currFloorID = entry.level;
+				}
+			}
+			this.floorListB2M.push("H");
+			this.floorNameLabel = (
+				<div id="floorLabel">
+					<p id="floorBuildingName" class = ".centerLabel">{this.buildingString}</p>
+					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
+				</div>
+			);
+			this.setState({ loading: false, });
+		}
+	}
+
+	// Makes an API call to return all rooms
 	getQuery() {
     const url = '/api/search/?'+this.searchLink;
 
@@ -126,100 +161,55 @@ class App extends Component {
       })
       .then(data => {
         this.setState({
-          rooms: data,
+          search_results: data,
           loading: false,
         });
-        // Update the room image pathing, if query
-		if (Array.isArray(data) && data.length) {
-			this.setState({ loading: true, });
-			this.roomClicked = -1;
-			// For now, default to the first floor
-			if (!this.floorButtonClicked) {
-				var alphabet = parseInt(data[0].level, 10);
-				if (isNaN(alphabet))
-					this.floor = data[0].level;
-				else
-					this.floor = alphabet;
-				this.roomid = data[0].room_id;
-			}
-			this.getFloorplan();
-			
-      console.log("New Rooms", this.state.rooms);
-
-      this.floorList = [];
-      this.roomidFloorList = [];
-      this.floorListB2M = [];
-      var currFloorID = -1;
-      // handle the number of floors there are
-      for (var i = 0; i < data.length; i++) {
-      	var entry = data[i];
-      	if (currFloorID !== entry.level) {
-      		var alphabet2 = parseInt(entry.level, 10);
-      		if (isNaN(alphabet2))
-      			this.floorList.push(entry.level);
-      		else
-      			this.floorList.push(alphabet2);
-
-      		// get the room_id for that specific level
-      		this.roomidFloorList.push(entry.room_id);
-
-      		currFloorID = entry.level;
-      	}
-      }
-      this.floorListB2M.push("H");
-	    this.floorNameLabel = (
-				<div id="floorLabel">
-					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
-					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
-				</div>
-			);
-			this.setState({ loading: false, });
-		}
       })
       .catch(error => console.log(error));
   	}
 
-  	updateFavorites() {
-  		const url = '/api/favorites/?room_id='+this.roomClicked; 
-  		fetch(url, {credentials: 'same-origin'})
-  		    .then(response => {
-        		return response.json();
-      		})
-      		.then((data) => {
-      			console.log(data);
-      		})
-      		.catch(error => console.log(error))
-  	}
+	updateFavorites() {
+		const url = '/api/favorites/?room_id='+this.roomClicked; 
+		fetch(url, {credentials: 'same-origin'})
+		    .then(response => {
+      		return response.json();
+    		})
+    		.then((data) => {
+    			console.log(data);
+    		})
+    		.catch(error => console.log(error))
+	}
 
-  	getFavorites() {
-  		const url = '/api/favorites/?room_id=0'; 
+	getFavorites() {
+		const url = '/api/favorites/?room_id=0'; 
 
-  		fetch(url, {credentials: 'same-origin'})
-  			.then(response => {
-        		return response.json();
-      		})
-  			.then((data) => {
-				
-				this.favoritesList = [];
-				if (Array.isArray(data) && data.length) {
-					for (var i = 0; i < data.length; i++) {
-						var entry = data[i];
-						this.favoritesList.push({
-							level: entry.level,
-							buildingName: entry.building_name,
-							RoomNum: entry.number, 
-							RoomID: entry.room_id
-						});
-					}
+		fetch(url, {credentials: 'same-origin'})
+			.then(response => {
+      		return response.json();
+    		})
+			.then((data) => {
+			
+			this.favoritesList = [];
+			if (Array.isArray(data) && data.length) {
+				for (var i = 0; i < data.length; i++) {
+					var entry = data[i];
+					this.favoritesList.push({
+						level: entry.level,
+						buildingName: entry.building_name,
+						RoomNum: entry.number, 
+						RoomID: entry.room_id
+					});
 				}
-				console.log("favorites: " + this.favoritesList);
-  			})  
-  			.catch(error => console.log(error))
-  	}
+			}
+			console.log("favorites: " + this.favoritesList);
+			})  
+			.catch(error => console.log(error))
+	}
 
 	// Using ROOM-ID, receive floorplan filepath from Back-End.
-	getFloorplan() {
-		const url = '/api/floorplan/?room_id='+this.roomid;
+	getFloorplan = (event) => {
+		/* We need to check if this is necessary or not */
+		const url = '/api/floorplan/?room_id='+event.target.id;
 
 		fetch(url, {credentials: 'same-origin'})
 			.then((response) => { return response.blob(); })
@@ -231,117 +221,15 @@ class App extends Component {
 			.catch(error => console.log(error));
 	}
 
-	handleDrawerOpen = (obj, num, event) => {
-		this.setState({openDrawer: true});
-		this.getFavorites(); 
-	}
-
-	handleDrawerClose = () => this.setState({openDrawer: false})
-
-	handleFavoritesSearch = (room, e) => {
-		this.searchLink = room.buildingName;
-		this.roomid = room.RoomID; 
-		this.floor = room.level; 
-		this.setState({openDrawer: false});
-
-		const url = '/api/search/?building='+this.searchLink;
-
-	    fetch(url, {credentials: "same-origin"})
-	      .then(response => {
-	        return response.json();
-	      })
-	      .then(data => {
-	        this.setState({
-	          rooms: data,
-	          loading: false,
-	        });
-	        // Update the room image pathing, if query
-			if (Array.isArray(data) && data.length) {
-				this.setState({ loading: true, });
-				this.roomClicked = -1;
-				// for now, default to the first floor
-				this.getFloorplan();
-
-		        console.log("New Rooms", this.state.rooms);
-
-		        this.floorList = [];
-		        this.roomidFloorList = [];
-		        this.floorListB2M = [];
-		        var currFloorID = -1;
-		        // handle the number of floors there are
-		        for (var i = 0; i < data.length; i++) {
-		        	var entry = data[i];
-		        	if (currFloorID !== entry.level) {
-		        		var alphabet2 = parseInt(entry.level, 10);
-		        		if (isNaN(alphabet2))
-		        			this.floorList.push(entry.level);
-		        		else
-		        			this.floorList.push(alphabet2);
-
-		        		// get the room_id for that specific level
-		        		this.roomidFloorList.push(entry.room_id);
-
-		        		currFloorID = entry.level;
-		        	}
-		        }
-		        this.floorListB2M.push("H");
-		        this.floorNameLabel = (
-				<div id="floorLabel">
-					<p id="floorBuildingName" class = ".centerLabel">{this.searchLink}</p>
-					<p id="floorNumberName" class = ".centerLabel">{"Floor " + this.floor}</p>
-				</div>
-				);
-				var query = this.state.rooms;
-			    for (var j = 0; j < query.length; j++) {
-			      var iRoom = query[j];
-			      // print how many sqft the room is on the console
-			      if (iRoom.room_id == this.roomid) {
-
-			      	// update the room info
-			      	this.roomClicked = iRoom.room_id;
-			      	var checkAlpha = parseInt(iRoom.level, 10);
-			      	if (isNaN(checkAlpha))
-			      		this.currRoom.floor = iRoom.level;
-			      	else
-			      		this.currRoom.floor = checkAlpha;
-			      	this.currRoom.roomNum = iRoom.number;
-			      	// make sure that the entry is not undefined
-			      	if (iRoom.num_rooms === null)
-			      		this.currRoom.num_rooms = iRoom.num_occupants;
-			      	else	   
-			      		this.currRoom.num_rooms = iRoom.num_rooms;
-			      	this.currRoom.num_occupants = iRoom.num_occupants;
-			      	this.currRoom.sqft = iRoom.sqft;
-			      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
-			      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
-			      		+ this.currRoom.drawType.slice(1);
-			      	this.forceUpdate();
-			        break;
-			      }
-			   }
-		   	console.log("did i reach here", this.currRoom.floor);
-		        this.setState({ loading: false, });
-			}
-	      })
-	      .catch(error => console.log(error));
-	      
-	}
-
-	handleFavoritesClick = (obj, num, event) => {
-		this.updateFavorites();
-		console.log("success?");
-	}
-
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
-
 		if (this.imagePath === HomeMap) {
 			var buildingQ = this.buildingIDRendered[num].id;
 			this.searchLink = "building=" + BuildingQueryName[buildingQ].name;
 			this.getQuery();
 		}
 		else {
-		    var query = this.state.rooms;
+		    var query = this.state.roomsToDraw;
 		    for (var i = 0; i < query.length; i++) {
 		      var iRoom = query[i];
 		      // print how many sqft the room is on the console
@@ -416,8 +304,16 @@ class App extends Component {
 	validate = (values) => {
 		const errArray = {};
 	  if (values.building) {
-			if (values.building.length > 30) { errArray.building = 'Too Long'; } 
+			if (values.building.length > 30) { errArray.building = 'Name is too long'; }
+			else {
+				var valid = false;
+				for (var i = 0; i < buildings.length; i++) {
+					if (buildings[i]['value'] == values.building) { valid=true; break; }
+				}
+				if (!valid) { errArray.building = 'Does not exist' }
+			}
 		}
+		console.log(errArray);
 	  return errArray;
 	}
 	
@@ -461,7 +357,6 @@ class App extends Component {
 	/* Render: Builds the content block in JSX, then returns the 
 			formatted output. */
 	render() {
-		const { classes } = this.props;
 		const { value } = this.state;
 
 		/*===============================================================*/
@@ -484,7 +379,7 @@ class App extends Component {
 		/*================================================================*/
 		if (this.state.pageNum < 0) {		
 			// Process the JSON received from Back-End
-			var retQuery = this.state.rooms;
+			var retQuery = this.state.search_results;
 			var areaArray = [];
 			this.roomIDRendered = [];
 			var imageWidthScaled = window.innerWidth*0.6;
@@ -669,7 +564,14 @@ class App extends Component {
 					</div>
 					
 					<div id="leftContent">
-						<p>Left Box</p>
+						{this.state.search_results.map( r => 
+							<li>
+								<input id={r['room_id']}
+								value={r['building_name'] + " " + r['number']} 
+								type="button"
+								onClick={(event) => this.getFloorplan(event)}/>
+							</li>
+						)}
 					</div>
 					
 					<div id="centerContent">
@@ -817,7 +719,7 @@ class App extends Component {
 		return (
 				<div className="App" id="AppBackground">
 					
-					<div id = "header" className={classes.root}>
+					<div id="header">
 						<a href="/"><img id ="headerImg" src={Logo} alt="Logo"/><p>edraw</p></a>
 
 						<div id = "tabs">
@@ -836,4 +738,4 @@ class App extends Component {
 	}
 }
 
-export default withStyles(styles)(App);
+export default App;
