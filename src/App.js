@@ -59,12 +59,10 @@ const materialStyle = theme => ({
 	    backgroundColor: theme.palette.background.paper,
 	},
 
-
 	expansionSlot: {
 		color: 'green',
 		height: window.innerHeight*0.3,
 	},
-
 	// styling for the hearts
 	heartStyling: {
 		backgroundColor: theme.palette.background.pink
@@ -164,7 +162,6 @@ class App extends Component {
 				if (Array.isArray(data) && data.length) {
 					this.state.loading = true;
 					this.forceUpdate();
-					this.roomClicked = -1;
 					
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
@@ -359,6 +356,7 @@ class App extends Component {
 			this.getPolygons();
 		}
 		else {
+				this.roomClicked = -1;
 		    var query = this.state.rooms_displayed;
 		    for (var i = 0; i < query.length; i++) {
 		      var iRoom = query[i];
