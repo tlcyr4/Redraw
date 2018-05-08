@@ -15,6 +15,17 @@ import orange from 'material-ui/colors/orange';
 import Drawer from 'material-ui/Drawer';
 import {MenuItem} from 'material-ui/Menu';
 import Button from 'material-ui/Button';
+// expansion panel section
+import ExpansionPanel, {
+	ExpansionPanelSummary,
+	ExpansionPanelDetails,
+} from 'material-ui/ExpansionPanel';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from 'material-ui/Typography';
+
+// heart icons
+import FaHeart from 'react-icons/lib/fa/heart';
+import FaHeartO from 'react-icons/lib/fa/heart-o';
 
 // image import
 import HomeMap from './images/homeMap.png';
@@ -38,15 +49,26 @@ import BuildingQueryName from './json/buildings.json';
 /*===========================================================================*/
 /* Change up the styling!                                                    */
 /*===========================================================================*/
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-});
+const materialStyle = theme => ({
+	// a root styling
+	root: {
+	    flexGrow: 1,
+	    width: '100%',
+	    backgroundColor: theme.palette.background.paper,
+	},
 
-const primary = orange[300];
+
+	expansionSlot: {
+		color: 'green',
+		height: window.innerHeight*0.3,
+	},
+
+	// styling for the hearts
+	heartStyling: {
+		backgroundColor: theme.palette.background.pink
+	},
+
+});
 
 /*===========================================================================*/
 /*===========================================================================*/
@@ -92,6 +114,7 @@ class App extends Component {
 		this.currRoom = [];	
 
 		this.favoritesList = []; // favorites
+		this.loadFavorites = 0; // load the favorites when you open up the website
 
 		// make a legend! (one time thing!)
 		this.items = [
@@ -178,45 +201,6 @@ class App extends Component {
       .catch(error => console.log(error));
   	}
 
-  	updateFavorites() {
-  		const url = '/api/favorites/?room_id='+this.roomClicked; 
-  		fetch(url, {credentials: 'same-origin'})
-  		    .then(response => {
-        		return response.json();
-      		})
-      		.then((data) => {
-      			console.log(data);
-      		})
-      		.catch(error => console.log(error))
-  	}
-
-  	getFavorites() {
-  		const url = '/api/favorites/?room_id=0'; 
-
-  		fetch(url, {credentials: 'same-origin'})
-  			.then(response => {
-        		return response.json();
-      		})
-  			.then((data) => {
-				
-				this.favoritesList = [];
-				if (Array.isArray(data) && data.length) {
-					for (var i = 0; i < data.length; i++) {
-						var entry = data[i];
-						this.favoritesList.push({
-							level: entry.level,
-							buildingName: entry.building_name,
-							RoomNum: entry.number, 
-							RoomID: entry.room_id
-						});
-					}
-				}
-				console.log("favorites:");
-				console.log(this.favoritesList);
-  			})  
-  			.catch(error => console.log(error))
-  	}
-
 	// Using ROOM-ID, receive floorplan filepath from Back-End.
 	getFloorplan() {
 		const url = '/api/floorplan/?room_id='+this.roomid;
@@ -231,12 +215,53 @@ class App extends Component {
 			.catch(error => console.log(error));
 	}
 
-	handleDrawerOpen = (obj, num, event) => {
-		this.setState({openDrawer: true});
-		this.getFavorites(); 
-	}
+	// update the favorites list
+  	updateFavorites() {
+  		const url = '/api/favorites/?room_id='+this.roomClicked; 
+  		fetch(url, {credentials: 'same-origin'})
+  		    .then(response => {
+        		return response.json();
+      		})
+      		.then((data) => {
+      			this.getFavorites();
+      		})
+      		.catch(error => console.log(error));
+  	}
 
-	handleDrawerClose = () => this.setState({openDrawer: false})
+  	// get the favorites from the server so we can preserve the order
+  	getFavorites() {
+  		const url = '/api/favorites/?room_id=0'; 
+
+  		fetch(url, {credentials: 'same-origin'})
+  			.then(response => {
+        		return response.json();
+      		})
+  			.then((faveData) => {
+				
+				this.favoritesList = [];
+				if (Array.isArray(faveData) && faveData.length) {
+					for (var i = 0; i < faveData.length; i++) {
+						var entry = faveData[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
+				}
+				// force update so that we can update buttons
+				if (this.loadFavorites > 0)
+					this.forceUpdate();
+				if (this.loadFavorites === 0)
+					this.loadFavorites = 1;
+  			})  
+  			.catch(error => console.log(error));
+  	}
+
+  	handleExpansion = () => {
+  		this.forceUpdate();
+  	}
 
 	handleFavoritesSearch = (room, e) => {
 		this.searchLink = room.buildingName;
@@ -320,7 +345,6 @@ class App extends Component {
 			        break;
 			      }
 			   }
-		   	console.log("did i reach here", this.currRoom.floor);
 		        this.forceUpdate();
 		        this.state.loading = false;
 			}
@@ -329,15 +353,10 @@ class App extends Component {
 	      
 	}
 
+	// when the favorites button is clicked, handle the case
 	handleFavoritesClick = (obj, num, event) => {
-		/*var query = this.state.rooms;
-		for (var i = 0; i < query.length; i++) {
-			var iRoom = query[i]; 
-			if (iRoom.room_id == this.roomIDRendered[num])
-				this.roomid = iRoom.room_id; 
-		}*/
 		this.updateFavorites();
-		console.log("success?");
+		this.forceUpdate();
 	}
 
 	// Handles the click for the Polygons in the ImageMapper
@@ -455,6 +474,10 @@ class App extends Component {
 		const { classes } = this.props;
 		const { value } = this.state;
 
+		if (this.loadFavorites === 0) {
+			this.getFavorites(); 
+		}
+
 		/*=====================================================================*/
 		/* Default to to error message, should theoretically never happen      */
 		/*=====================================================================*/
@@ -569,16 +592,29 @@ class App extends Component {
 				);
 			}
 
+			// if the room is clicked, then display the information
 			if (parseInt(this.roomClicked, 10) >= 0) {
 				var subFree = "No";
 				if (this.currRoom.sub_free)
 					subFree = "Yes";
 
+				// change the icon if it is favorited 
+				var heartIcon = (<FaHeartO className = {classes.heartStyling} />);
+				for (var i = 0; i < this.favoritesList.length; i++) {
+					if(this.roomClicked == this.favoritesList[i].RoomID) {
+						heartIcon = (<FaHeart className = {classes.heartStyling} />);
+					    break; 
+					}
+				}
 				info = (
 					<div id = "roomInfo">
 						<div id = "roomClicked">
 							<h4>{this.searchLink}</h4>
 							<h5>{"Floor " + this.currRoom.floor}</h5>
+
+							<button id="heartButton" onClick={(obj, num, event)=>this.handleFavoritesClick(obj, num, event)}> 
+								{heartIcon} 
+							</button>
 
 							<ul>
 								<li class="roomContent"><p>{"Room Number: " + this.currRoom.roomNum}</p></li>
@@ -649,6 +685,23 @@ class App extends Component {
 
 							</div>
 
+							<div id="leftContent">
+								<ExpansionPanel onClick={this.handleExpansion}>
+	        						<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+	        						    <Typography>Favorites</Typography>
+	        						</ExpansionPanelSummary>
+	        						<ul>
+	        							{this.favoritesList.map((room, index)=>(
+	        								<ExpansionPanelDetails >
+												<MenuItem onClick={(e)=>this.handleFavoritesSearch(room, e)}> 
+													{room.buildingName} {room.RoomNum} 
+												</MenuItem>
+											</ExpansionPanelDetails>
+										))}
+	        						</ul>
+								</ExpansionPanel> 
+							</div> 
+
 							<div id="loading">
 								<RingLoader
 									color={'#ffa500'} 
@@ -685,39 +738,39 @@ class App extends Component {
 						<div id = "squadImages">
 							<h1 id = "aboutSquad">Meet The Team</h1>
 							<div id = "TC" class = "squad">
-								<img src = {Tigar} class = "picSquad" alt="Tigar"/>
 								<div class = "squadInfoB">
-									<p>Tigar Cyr</p>
-									<p>Backend Developer & Team Manager</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {Tigar} class = "picSquad" alt="Tigar"/>
+									<p class = "nameBigger">Tigar Cyr</p>
+									<p class = "basicFont">Backend Developer & Team Manager</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "DC" class = "squad">
-								<img src = {DChae} class = "picSquad" alt="DChae"/>
 								<div class = "squadInfoO">
-									<p>Daniel Chae</p>
-									<p>Full Stack Developer</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {DChae} class = "picSquad" alt="DChae"/>
+									<p class = "nameBigger">Daniel Chae</p>
+									<p class = "basicFont">Full Stack Developer</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "KD" class = "squad">
-								<img src = {Kesin} class = "picSquad" alt="Kesin"/>
 								<div class = "squadInfoB">
-									<p>Kesin Ryan Dehejia</p>
-									<p>Frontend Developer</p>
-									<p>Computer Science BSE</p>
-									<p>Class of 2020</p>
+									<img src = {Kesin} class = "picSquad" alt="Kesin"/>
+									<p class = "nameBigger">Kesin Ryan Dehejia</p>
+									<p class = "basicFont">Frontend Developer</p>
+									<p class = "majorItalics">Computer Science BSE</p>
+									<p class = "basicFont">Class of 2020</p>
 								</div>
 							</div>
 							<div id = "CC" class = "squad">
-								<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
 								<div class = "squadInfoO">
-									<p>Chris Chu</p>
-									<p>Frontend Developer</p>
-									<p>Civil and Environmental Engineering</p>
-									<p>Class of 2019</p>
+									<img src = {ChooChoo} class = "picSquad" alt="ChuChu"/>
+									<p class = "nameBigger">Chris Chu</p>
+									<p class = "basicFont">Frontend Developer</p>
+									<p class = "majorItalics">Civil and Environmental Engineering</p>
+									<p class = "basicFont">Class of 2019</p>
 								</div>
 							</div>
 						</div>
@@ -759,6 +812,7 @@ class App extends Component {
 			window.location.replace("/accounts/logout");
 		}
 		
+		// return with the known header and different content, as needed
 		return (
 				<div className = "App" id="AppBackground">
 					
@@ -780,4 +834,4 @@ class App extends Component {
 	}
 }
 
-export default withStyles(styles)(App);
+export default withStyles(materialStyle)(App);
