@@ -68,7 +68,6 @@ const materialStyle = theme => ({
 	},
 
 	expPanel: {
-		color: 'white',
 		width: window.innerWidth*0.16,
 	}
 
@@ -691,8 +690,8 @@ class App extends Component {
 
 							<div id="leftContent">
 								<ExpansionPanel className = {classes.expPanel} onClick={this.handleExpansion}>
-	        						<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-	        						    <Typography>Favorites</Typography>
+	        						<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} >
+	        						    <Typography style={{width: '100%'}}>Favorites</Typography>
 	        						</ExpansionPanelSummary>
 	        						<ul>
 	        							{this.favoritesList.map((room, index)=>(
