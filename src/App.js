@@ -257,6 +257,8 @@ class App extends Component {
 		else
 			this.floor = alphabet;
 		
+		this.state.loading = true;
+		this.forceUpdate()
 		// fetch data
 		fetch(url, {credentials: 'same-origin'})
 			.then((response) => { return response.blob(); })
@@ -265,18 +267,16 @@ class App extends Component {
 				this.imagePath = objectURL;
 				
 				const url = '/api/search/?building=' + this.building;
-		    fetch(url, {credentials: "same-origin"})
-		      .then(res => {
-		        return res.json();
-		      })
-		      .then(data2 => {
-		        this.setState({
-		          rooms_displayed: data2,
-		          loading: false,
-		        });
+			    fetch(url, {credentials: "same-origin"})
+			      .then(res => {
+			        return res.json();
+			      })
+			      .then(data2 => {
+				        this.setState({
+				          rooms_displayed: data2,
+				          loading: true,
+				        });
 						if (Array.isArray(data2) && data2.length) {
-							this.state.loading = true;
-							this.forceUpdate();
 							
 							this.getFloorplan(this.roomid);
 							
@@ -308,12 +308,11 @@ class App extends Component {
 								</div>
 							);
 							this.forceUpdate();
-							this.state.loading = false;
 						}
 						var query = data2;
 				    for (var i = 0; i < query.length; i++) {
 				      var iRoom = query[i];
-				      // print how many sqft the room is on the console
+				      // make sure there is a match
 				      if (iRoom.room_id == this.roomid) {
 								
 				      	// update the room info
@@ -335,6 +334,7 @@ class App extends Component {
 				      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
 				      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
 				      		+ this.currRoom.drawType.slice(1);
+				      	this.state.loading = false;
 				      	this.forceUpdate();
 				        break;
 				      }
@@ -380,12 +380,14 @@ class App extends Component {
 						});
 					}
 				}
-				// force update so that we can update buttons
-				if (this.loadFavorites > 0)
-					this.forceUpdate();
-				if (this.loadFavorites === 0)
-					this.loadFavorites = 1;
 				this.state.loading = false;
+				// force update so that we can update buttons
+				if (this.loadFavorites > 0) {
+					this.forceUpdate();
+				}
+				if (this.loadFavorites === 0) {
+					this.loadFavorites = 1;
+				}
 			})  
 			.catch(error => console.log(error));
 	}
