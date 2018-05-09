@@ -69,4 +69,3 @@ def favorites(request):
 		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
 		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 	return HttpResponse(json.dumps(rooms), content_type="application/json")
-
