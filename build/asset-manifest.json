@@ -3,16 +3,6 @@
   "main.css.map": "static/css/main.845f5d6c.css.map",
   "main.js": "static/js/main.c204dec5.js",
   "main.js.map": "static/js/main.c204dec5.js.map",
-<<<<<<< HEAD
-  "static\\media\\404Door.png": "static/media/404Door.0ddcc674.png",
-  "static\\media\\Chuchu.png": "static/media/Chuchu.f0d7f331.png",
-  "static\\media\\DC.png": "static/media/DC.76d68d34.png",
-  "static\\media\\Kesin.png": "static/media/Kesin.ace91d3b.png",
-  "static\\media\\Tigar.png": "static/media/Tigar.17decaf8.png",
-  "static\\media\\background.png": "static/media/background.5867828f.png",
-  "static\\media\\homeMap.png": "static/media/homeMap.cce97d1b.png",
-  "static\\media\\raw.jpg": "static/media/raw.0145f3c8.jpg"
-=======
   "static/media/404Door.png": "static/media/404Door.0ddcc674.png",
   "static/media/Chuchu.png": "static/media/Chuchu.f0d7f331.png",
   "static/media/DC.png": "static/media/DC.76d68d34.png",
@@ -21,5 +11,4 @@
   "static/media/background.png": "static/media/background.5867828f.png",
   "static/media/homeMap.png": "static/media/homeMap.cce97d1b.png",
   "static/media/raw.jpg": "static/media/raw.0145f3c8.jpg"
->>>>>>> 25bd40b964c62929aa509e89be39ac58de45c330
 }
