@@ -64,8 +64,11 @@ const materialStyle = theme => ({
 
 	expPanel: {
 		margin: '0',
-	}
+	},
 
+	headerLabels: {
+		fontSize: '16'
+	}
 });
 
 /*===========================================================================*/
@@ -718,15 +721,14 @@ class App extends Component {
 										<label>Building Name</label>
 									</div>
 									<div id="buildingNameSearch">
-										
 										<Field
 											name="building"
 											items={buildings}
 											component={DownshiftInput}
-											placeholder="Enter Building Name..."
+											placeholder="Search for Building..."
 										/>
 									</div>
-									<div>
+									<div id="floorSearch">
 										<label>Floor</label>
 										<Field name="level" component="select">
 											<option />
@@ -739,7 +741,7 @@ class App extends Component {
 											<option value="05">5</option>
 										</Field>
 									</div>
-									<div>
+									<div id="drawSearch">
 										<label>Draw Section</label>
 										<Field name="draws_in_id" component="select">
 											<option />
@@ -753,7 +755,7 @@ class App extends Component {
 											<option value="8">Wilson</option>
 										</Field>
 									</div>
-									<div>
+									<div id="sizeSearch">
 										<label>Minimum Size</label>
 										<Field
 											name="sqft__gte"
@@ -779,7 +781,7 @@ class App extends Component {
 					<div id="leftContent">
 						<ExpansionPanel onClick={this.handleExpansion} className = "expPanel">
 									<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-											<Typography>Favorites</Typography>
+											<Typography variant="subheading">Favorites</Typography>
 									</ExpansionPanelSummary>
 									<ul id="favoriteButtons">
 										{this.favoritesList.map((room, index)=>(
@@ -952,9 +954,9 @@ class App extends Component {
 
 						<div id = "tabs">
 							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
-								<Tab label = "About"/>
-								<Tab label = "Feedback"/>
-								<Tab label = "Logout"/>
+								<Tab label = "About" className={classes.headerLabels}/>
+								<Tab label = "Feedback" className={classes.headerLabels}/>
+								<Tab label = "Logout" className={classes.headerLabels}/>
 							</Tabs>
 						</div>
 					</div>
