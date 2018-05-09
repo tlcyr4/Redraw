@@ -70,8 +70,7 @@ div#tabs {
 form {
   width: 96%;
   text-align: center;
-  margin-top: auto;
-  margin-bottom: auto;
+
 
   position: block;
 	display: flex;
@@ -83,7 +82,9 @@ form {
 	font-size: 1vw;
 }
 
-div#buildingName {
+form#searchForm div {
+  margin-top: auto;
+  margin-bottom: auto;
   display: inline-block;
   width: 50%;
   float:left;

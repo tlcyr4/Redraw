@@ -713,15 +713,16 @@ class App extends Component {
 							onSubmit={this.formSubmit}
 							validate={this.formValidate}
 							render={({ handleSubmit, pristine, submitting, values }) => (
-								<form onSubmit={handleSubmit}>
-									<label>Building Name</label>
+								<form id="searchForm" onSubmit={handleSubmit}>
 									<div id="buildingName">
+										<label>Building Name</label>
+									</div>
+									<div id="buildingNameSearch">
 										
 										<Field
 											name="building"
 											items={buildings}
 											component={DownshiftInput}
-											style={{width: "50"}}
 										/>
 									</div>
 									<div>
