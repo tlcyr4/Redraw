@@ -9,7 +9,7 @@
     "@material-ui/icons": "^1.0.0-beta.43",
     "ajv": "^6.4.0",
     "ajv-keywords": "^3.2.0",
-    "downshift": "^1.31.13",
+    "downshift": "^1.31.14",
     "final-form": "^4.6.1",
     "font-awesome": "^4.7.0",
     "image-map": "^1.0.8",
