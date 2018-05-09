@@ -795,6 +795,7 @@ class App extends Component {
 													floor={room.level}
 													bldg={room.buildingName}
 													onClick={ (e) => this.handleFloorplanSwitch(e) }
+													type="button"
 													value = {room.buildingName + " " + room.RoomNum}/> 
 											</ExpansionPanelDetails>
 											</li>
