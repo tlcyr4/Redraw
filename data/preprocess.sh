@@ -242,6 +242,8 @@ for polyfile in glob("polygons/*.json"):
         id = building + " " + level + " " + polygon["number"].zfill(3)
         x0 = polygon["origin"][0]
         y0 = polygon["origin"][1]
+        if building == "0668" and level in ["0", "00"]:
+            y0 -= 500
         # xrat = 10200.0 / float(polygon["dimensions"][1])
         # yrat = 6600.0 / float(polygon["dimensions"][0])
         xpad = (10200 - polygon["dimensions"][1])/2
