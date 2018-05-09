@@ -10,7 +10,6 @@ import ImageMapper from './ImageMapper';
 
 // material imports
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { MenuItem } from 'material-ui/Menu';
 // Expansion panel section
 import ExpansionPanel, {
 	ExpansionPanelSummary,
@@ -62,15 +61,14 @@ const materialStyle = theme => ({
 	expansionSlot: {
 		height: window.innerHeight*0.3,
 	},
-	// styling for the hearts
-	heartStyling: {
-		backgroundColor: theme.palette.background.pink,
-	},
 
 	expPanel: {
-		width: window.innerWidth*0.16,
-	}
+		margin: '0',
+	},
 
+	headerLabels: {
+		fontSize: '16'
+	}
 });
 
 /*===========================================================================*/
@@ -87,7 +85,6 @@ class App extends Component {
 			search_results: [],  // All rooms returned by a specific query
 			rooms_displayed: [], // The rooms which should be renderd over a floorplan
 			favorites: [], 
-			openDrawer: false,
 			loading: false, 	// for the loading wheel
 			pageNum: -1, 			// decides which page is loaded
 		};
@@ -162,15 +159,11 @@ class App extends Component {
 	      .then(data => {
 	        this.setState({
 	          rooms_displayed: data,
-	          loading: false,
+	          loading: true,
 	        });
+	        	this.forceUpdate();
 				if (Array.isArray(data) && data.length) {
-					this.state.loading = true;
-					this.forceUpdate();
-					if (this.searchSwitch === 0)
-						this.roomClicked = -1;
-					else
-						this.searchSwitch = 0;
+					this.roomClicked = -1;
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
 						var alphabet = parseInt([0].level, 10);
@@ -210,8 +203,8 @@ class App extends Component {
 						</div>
 					);
 					this.forceUpdate();
-					this.state.loading = false;
 				}
+				this.state.loading = false;
 			})
 		.catch(error => console.log(error));
 	}
@@ -342,7 +335,6 @@ class App extends Component {
 				      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
 				      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
 				      		+ this.currRoom.drawType.slice(1);
-								console.log("Room Clicked (3) = " + this.roomClicked);
 				      	this.forceUpdate();
 				        break;
 				      }
@@ -375,23 +367,25 @@ class App extends Component {
 					return response.json();
 				})
 			.then((faveData) => {
-			this.favoritesList = [];
-			if (Array.isArray(faveData) && faveData.length) {
-				for (var i = 0; i < faveData.length; i++) {
-					var entry = faveData[i];
-					this.favoritesList.push({
-						level: entry.level,
-						buildingName: entry.building_name,
-						RoomNum: entry.number, 
-						RoomID: entry.room_id
-					});
+				this.state.loading = true;
+				this.favoritesList = [];
+				if (Array.isArray(faveData) && faveData.length) {
+					for (var i = 0; i < faveData.length; i++) {
+						var entry = faveData[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
 				}
-			}
-			// force update so that we can update buttons
-			if (this.loadFavorites > 0)
-				this.forceUpdate();
-			if (this.loadFavorites === 0)
-				this.loadFavorites = 1;
+				// force update so that we can update buttons
+				if (this.loadFavorites > 0)
+					this.forceUpdate();
+				if (this.loadFavorites === 0)
+					this.loadFavorites = 1;
+				this.state.loading = false;
 			})  
 			.catch(error => console.log(error));
 	}
@@ -417,7 +411,6 @@ class App extends Component {
 		      var iRoom = query[i];
 		      // print how many sqft the room is on the console
 		      if (iRoom.room_id == this.roomIDRendered[num]) {
-
 		      	// update the room info
 		      	this.roomClicked = iRoom.room_id;
 		      	var checkAlpha = parseInt(iRoom.level, 10);
@@ -475,6 +468,7 @@ class App extends Component {
 		});	
 		this.searchLink = searchData;
 		this.floorButtonClicked = 0;
+		this.searchSwitch = 1;
 		this.getQuery();
 	}
 	
@@ -534,7 +528,6 @@ class App extends Component {
 /*====================================================================*/
 
 	render() {
-		console.log("Room Clicked = " + this.roomClicked);
 		const { classes } = this.props;
 		const { value } = this.state;
 
@@ -645,7 +638,7 @@ class App extends Component {
 						</div>
 						<div id = "legendDiv">
 							<DiscreteColorLegend
-							    height={window.innerHeight*0.4}
+							    height={window.innerHeight*0.35}
 							    width={window.innerWidth*0.1}
 							    items={this.items}
 							/>
@@ -661,10 +654,10 @@ class App extends Component {
 					subFree = "Yes";
 
 				// change the icon if it is favorited 
-				var heartIcon = (<FaHeartO className = {classes.heartStyling} />);
+				var heartIcon = (<div style={{color: 'DeepPink'}}><FaHeartO size={30} /></div>);
 				for (var l = 0; l < this.favoritesList.length; l++) {
 					if(this.roomClicked == this.favoritesList[l].RoomID) {
-						heartIcon = (<FaHeart className = {classes.heartStyling} />);
+						heartIcon = (<div style={{color: 'DeepPink'}}><FaHeart size={30} /></div>);
 					    break; 
 					}
 				}
@@ -688,6 +681,29 @@ class App extends Component {
 					</div>
 				);
 			}
+
+			// for displaying the search results, as needed
+			var resultsContent = (<div></div>);
+			if (this.searchSwitch > 0) {
+				resultsContent = (
+					<div>
+						<ul id="roomSearchButtons">
+							{this.state.search_results.map( r => 
+								<li>
+									<input 
+										id={r['room_id']}
+										bldg={r['building_name']}
+										floor={r['level']}
+										type="button"
+										value={r['building_name'] + " " + r['number']}
+										onClick={ (e) => this.handleFloorplanSwitch(e) }
+									/>
+								</li>
+								)}
+						</ul>
+						<p>{this.state.search_results.length + " Results Found"}</p>
+					</div>);
+			}
 		/*================================================================*/
 		/* The Content Block                                              */
 		/*================================================================*/
@@ -698,18 +714,21 @@ class App extends Component {
 							onSubmit={this.formSubmit}
 							validate={this.formValidate}
 							render={({ handleSubmit, pristine, submitting, values }) => (
-								<form onSubmit={handleSubmit}>
-									<div>
+								<form id="searchForm" onSubmit={handleSubmit}>
+									<div id="buildingNameLabel">
 										<label>Building Name</label>
+									</div>
+									<div id="buildingNameSearch">
 										<Field
 											name="building"
 											items={buildings}
 											component={DownshiftInput}
+											placeholder="Search for Building..."
 										/>
 									</div>
-									<div>
+									<div id="floorSearch">
 										<label>Floor</label>
-										<Field name="level" component="select">
+										<Field name="level" component="select" placeholder="#">
 											<option />
 											<option value="A">A</option>
 											<option value="00">0</option>
@@ -720,8 +739,10 @@ class App extends Component {
 											<option value="05">5</option>
 										</Field>
 									</div>
-									<div>
+									<div id="drawLabel">
 										<label>Draw Section</label>
+									</div>
+									<div id="drawSearch">
 										<Field name="draws_in_id" component="select">
 											<option />
 											<option value="1">Butler</option>
@@ -734,7 +755,7 @@ class App extends Component {
 											<option value="8">Wilson</option>
 										</Field>
 									</div>
-									<div>
+									<div id="sizeSearch">
 										<label>Minimum Size</label>
 										<Field
 											name="sqft__gte"
@@ -742,9 +763,10 @@ class App extends Component {
 											type="number"
 											min="0" 
 											max="1150"
+											placeholder="###"
 										/>
 									</div>
-									<div className="buttons">
+									<div id="divSubmitButton" className="buttons">
 										<button
 											id="submitButton" 
 											type="submit"
@@ -758,38 +780,26 @@ class App extends Component {
 					</div>
 					
 					<div id="leftContent">
-						<ExpansionPanel onClick={this.handleExpansion}>
+						<ExpansionPanel onClick={this.handleExpansion} className = "expPanel">
 									<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-											<Typography>Favorites</Typography>
+											<Typography variant="subheading">Favorites</Typography>
 									</ExpansionPanelSummary>
-									<ul>
+									<ul id="favoriteButtons">
 										{this.favoritesList.map((room, index)=>(
-											<ExpansionPanelDetails >
-										<MenuItem
-											id={room.RoomID}
-											floor={room.level}
-											bldg={room.buildingName}
-											onClick={ (e) => this.handleFloorplanSwitch(e) }> 
-											{room.buildingName} {room.RoomNum} 
-										</MenuItem>
-									</ExpansionPanelDetails>
-								))}
+											<li>
+											<ExpansionPanelDetails>
+												<input
+													id={room.RoomID}
+													floor={room.level}
+													bldg={room.buildingName}
+													onClick={ (e) => this.handleFloorplanSwitch(e) }
+													value = {room.buildingName + " " + room.RoomNum}/> 
+											</ExpansionPanelDetails>
+											</li>
+										))}
 									</ul>
 						</ExpansionPanel>
-						<ul id="roomButtons">
-						{this.state.search_results.map( r => 
-							<li>
-								<input 
-									id={r['room_id']}
-									bldg={r['building_name']}
-									floor={r['level']}
-									type="button"
-									value={r['building_name'] + " " + r['number']}
-									onClick={ (e) => this.handleFloorplanSwitch(e) }
-								/>
-							</li>
-							)}
-						</ul>
+						{resultsContent}
 					</div>
 					
 					<div id="centerContent">
@@ -945,9 +955,9 @@ class App extends Component {
 
 						<div id = "tabs">
 							<Tabs value={value} onChange={this.handlePage} scrollable scrollButtons="off" indicatorColor="primary">
-								<Tab label = "About"/>
-								<Tab label = "Feedback"/>
-								<Tab label = "Logout"/>
+								<Tab label = "About" className={classes.headerLabels}/>
+								<Tab label = "Feedback" className={classes.headerLabels}/>
+								<Tab label = "Logout" className={classes.headerLabels}/>
 							</Tabs>
 						</div>
 					</div>

@@ -41,6 +41,7 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
                 style={{
                   background: 'white',
                   position: 'absolute',
+                  width: '27vw',
                   top: '100%',
                   left: 0,
                   right: 0,
@@ -56,7 +57,10 @@ const DownshiftInput = ({ input, meta, placeholder, items, ...rest }) => (
                       style: {
                         backgroundColor:
                           highlightedIndex === index ? 'lightgray' : 'white',
-                        fontWeight: selectedItem === value ? 'bold' : 'normal'
+                        fontWeight: selectedItem === value ? 'bold' : 'normal',
+                        width: '97.5%',
+                        border: '0.05vw solid rgba(70,70,70,0.1)',
+                        margin: '0 auto'
                       }
                     })}
                   >
