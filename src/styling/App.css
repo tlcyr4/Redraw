@@ -147,10 +147,10 @@ div#rightContent {
   display: table;
   margin: 0 auto;
   width: 17%;
-  height: 78%;
+  height: 77%;
   position: absolute;
   right: 1%;
-  top: 17%;
+  top: 18%;
   text-align: center;
 }
 
@@ -247,7 +247,7 @@ div#buildingInfo {
   width: 100%;
   height: 60%;
   background-color: #D0DFDF;
-  top-margin: 0.5vw;
+  margin-top: 0.5vw;
   position: absolute;
   bottom: 0%;
   overflow: auto;
@@ -268,7 +268,7 @@ div#legendDiv {
 }
 
 div#roomClicked {
-  margin-top: 10%;
+  margin-top: 0.5vw;
   text-align: center;
 }
 
@@ -444,13 +444,13 @@ div.squad p.normalFont {
 /* Style the left side (generally) */
 div#leftContent {
   display: table;
-  margin: 0 auto;
-  width: 17%;
-  height: 78%;
+  margin: 0;
+  height: 77%;
   position: absolute;
   left: 1%;
-  top: 17%;
+  top: 18%;
   text-align: center;
   background-color: #D0DFDF;
   overflow: scroll;
+  float: left;
 }

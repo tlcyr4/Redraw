@@ -60,13 +60,16 @@ const materialStyle = theme => ({
 	},
 
 	expansionSlot: {
-		color: 'green',
 		height: window.innerHeight*0.3,
 	},
 	// styling for the hearts
 	heartStyling: {
-		backgroundColor: theme.palette.background.pink
+		backgroundColor: theme.palette.background.pink,
 	},
+
+	expPanel: {
+		width: window.innerWidth*0.16,
+	}
 
 });
 
