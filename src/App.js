@@ -159,11 +159,10 @@ class App extends Component {
 	      .then(data => {
 	        this.setState({
 	          rooms_displayed: data,
-	          loading: false,
+	          loading: true,
 	        });
+	        	this.forceUpdate();
 				if (Array.isArray(data) && data.length) {
-					this.state.loading = true;
-					this.forceUpdate();
 					this.roomClicked = -1;
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
@@ -204,8 +203,8 @@ class App extends Component {
 						</div>
 					);
 					this.forceUpdate();
-					this.state.loading = false;
 				}
+				this.state.loading = false;
 			})
 		.catch(error => console.log(error));
 	}
@@ -336,7 +335,6 @@ class App extends Component {
 				      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
 				      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
 				      		+ this.currRoom.drawType.slice(1);
-								console.log("Room Clicked (3) = " + this.roomClicked);
 				      	this.forceUpdate();
 				        break;
 				      }
@@ -369,23 +367,25 @@ class App extends Component {
 					return response.json();
 				})
 			.then((faveData) => {
-			this.favoritesList = [];
-			if (Array.isArray(faveData) && faveData.length) {
-				for (var i = 0; i < faveData.length; i++) {
-					var entry = faveData[i];
-					this.favoritesList.push({
-						level: entry.level,
-						buildingName: entry.building_name,
-						RoomNum: entry.number, 
-						RoomID: entry.room_id
-					});
+				this.state.loading = true;
+				this.favoritesList = [];
+				if (Array.isArray(faveData) && faveData.length) {
+					for (var i = 0; i < faveData.length; i++) {
+						var entry = faveData[i];
+						this.favoritesList.push({
+							level: entry.level,
+							buildingName: entry.building_name,
+							RoomNum: entry.number, 
+							RoomID: entry.room_id
+						});
+					}
 				}
-			}
-			// force update so that we can update buttons
-			if (this.loadFavorites > 0)
-				this.forceUpdate();
-			if (this.loadFavorites === 0)
-				this.loadFavorites = 1;
+				// force update so that we can update buttons
+				if (this.loadFavorites > 0)
+					this.forceUpdate();
+				if (this.loadFavorites === 0)
+					this.loadFavorites = 1;
+				this.state.loading = false;
 			})  
 			.catch(error => console.log(error));
 	}
@@ -411,7 +411,6 @@ class App extends Component {
 		      var iRoom = query[i];
 		      // print how many sqft the room is on the console
 		      if (iRoom.room_id == this.roomIDRendered[num]) {
-
 		      	// update the room info
 		      	this.roomClicked = iRoom.room_id;
 		      	var checkAlpha = parseInt(iRoom.level, 10);
@@ -529,7 +528,6 @@ class App extends Component {
 /*====================================================================*/
 
 	render() {
-		console.log("Room Clicked = " + this.roomClicked);
 		const { classes } = this.props;
 		const { value } = this.state;
 
@@ -717,7 +715,7 @@ class App extends Component {
 							validate={this.formValidate}
 							render={({ handleSubmit, pristine, submitting, values }) => (
 								<form id="searchForm" onSubmit={handleSubmit}>
-									<div id="buildingName">
+									<div id="buildingNameLabel">
 										<label>Building Name</label>
 									</div>
 									<div id="buildingNameSearch">
@@ -730,7 +728,7 @@ class App extends Component {
 									</div>
 									<div id="floorSearch">
 										<label>Floor</label>
-										<Field name="level" component="select">
+										<Field name="level" component="select" placeholder="#">
 											<option />
 											<option value="A">A</option>
 											<option value="00">0</option>
@@ -741,8 +739,10 @@ class App extends Component {
 											<option value="05">5</option>
 										</Field>
 									</div>
-									<div id="drawSearch">
+									<div id="drawLabel">
 										<label>Draw Section</label>
+									</div>
+									<div id="drawSearch">
 										<Field name="draws_in_id" component="select">
 											<option />
 											<option value="1">Butler</option>
@@ -763,9 +763,10 @@ class App extends Component {
 											type="number"
 											min="0" 
 											max="1150"
+											placeholder="###"
 										/>
 									</div>
-									<div className="buttons">
+									<div id="divSubmitButton" className="buttons">
 										<button
 											id="submitButton" 
 											type="submit"
