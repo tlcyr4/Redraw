@@ -69,7 +69,7 @@ const materialStyle = theme => ({
 
 	expPanel: {
 		width: window.innerWidth*0.16,
-	}
+	},
 
 });
 
@@ -122,7 +122,7 @@ class App extends Component {
 		this.favoritesList = []; // favorites
 		this.loadFavorites = 0; // load the favorites when you open up the website
 
-		this.searchSwitch = 0; // this would allow us to make suren ot to reset roomClicked in getPolygons
+		this.searchSwitch = 0; // this would allow us to make sure to only render search results if searched
 
 		// Create a legend! (one time thing!)
 		this.items = [
@@ -167,10 +167,8 @@ class App extends Component {
 				if (Array.isArray(data) && data.length) {
 					this.state.loading = true;
 					this.forceUpdate();
-					if (this.searchSwitch === 0)
-						this.roomClicked = -1;
-					else
-						this.searchSwitch = 0;
+					this.roomClicked = -1;
+
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
 						var alphabet = parseInt([0].level, 10);
@@ -475,6 +473,7 @@ class App extends Component {
 		});	
 		this.searchLink = searchData;
 		this.floorButtonClicked = 0;
+		this.searchSwitch = 1;
 		this.getQuery();
 	}
 	
@@ -688,6 +687,26 @@ class App extends Component {
 					</div>
 				);
 			}
+
+			// search results initially empty
+			var searchContent = (<div></div>);
+			if (this.searchSwitch > 0) {
+				searchContent = (<ul id="roomButtons">
+						{this.state.search_results.map( r => 
+							<li>
+								<input 
+									id={r['room_id']}
+									bldg={r['building_name']}
+									floor={r['level']}
+									type="button"
+									value={r['building_name'] + " " + r['number']}
+									onClick={ (e) => this.handleFloorplanSwitch(e) }
+								/>{r['']}
+							</li>
+							)}
+						</ul>
+					);
+			}
 		/*================================================================*/
 		/* The Content Block                                              */
 		/*================================================================*/
@@ -767,6 +786,7 @@ class App extends Component {
 											<ExpansionPanelDetails >
 										<MenuItem
 											id={room.RoomID}
+											className="faveItems"
 											floor={room.level}
 											bldg={room.buildingName}
 											onClick={ (e) => this.handleFloorplanSwitch(e) }> 
@@ -776,20 +796,7 @@ class App extends Component {
 								))}
 									</ul>
 						</ExpansionPanel>
-						<ul id="roomButtons">
-						{this.state.search_results.map( r => 
-							<li>
-								<input 
-									id={r['room_id']}
-									bldg={r['building_name']}
-									floor={r['level']}
-									type="button"
-									value={r['building_name'] + " " + r['number']}
-									onClick={ (e) => this.handleFloorplanSwitch(e) }
-								/>
-							</li>
-							)}
-						</ul>
+						
 					</div>
 					
 					<div id="centerContent">
