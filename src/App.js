@@ -10,7 +10,6 @@ import ImageMapper from './ImageMapper';
 
 // material imports
 import Tabs, { Tab } from 'material-ui/Tabs';
-import { MenuItem } from 'material-ui/Menu';
 // Expansion panel section
 import ExpansionPanel, {
 	ExpansionPanelSummary,
@@ -62,14 +61,10 @@ const materialStyle = theme => ({
 	expansionSlot: {
 		height: window.innerHeight*0.3,
 	},
-	// styling for the hearts
-	heartStyling: {
-		backgroundColor: theme.palette.background.pink,
-	},
 
 	expPanel: {
-		width: window.innerWidth*0.16,
-	},
+		margin: '0',
+	}
 
 });
 
@@ -87,7 +82,6 @@ class App extends Component {
 			search_results: [],  // All rooms returned by a specific query
 			rooms_displayed: [], // The rooms which should be renderd over a floorplan
 			favorites: [], 
-			openDrawer: false,
 			loading: false, 	// for the loading wheel
 			pageNum: -1, 			// decides which page is loaded
 		};
@@ -122,7 +116,7 @@ class App extends Component {
 		this.favoritesList = []; // favorites
 		this.loadFavorites = 0; // load the favorites when you open up the website
 
-		this.searchSwitch = 0; // this would allow us to make sure to only render search results if searched
+		this.searchSwitch = 0; // this would allow us to make suren ot to reset roomClicked in getPolygons
 
 		// Create a legend! (one time thing!)
 		this.items = [
@@ -168,7 +162,6 @@ class App extends Component {
 					this.state.loading = true;
 					this.forceUpdate();
 					this.roomClicked = -1;
-
 					// Default to the first floor
 					if (!this.floorButtonClicked) {
 						var alphabet = parseInt([0].level, 10);
@@ -644,7 +637,7 @@ class App extends Component {
 						</div>
 						<div id = "legendDiv">
 							<DiscreteColorLegend
-							    height={window.innerHeight*0.4}
+							    height={window.innerHeight*0.35}
 							    width={window.innerWidth*0.1}
 							    items={this.items}
 							/>
@@ -660,10 +653,10 @@ class App extends Component {
 					subFree = "Yes";
 
 				// change the icon if it is favorited 
-				var heartIcon = (<FaHeartO className = {classes.heartStyling} />);
+				var heartIcon = (<div style={{color: 'DeepPink'}}><FaHeartO size={30} /></div>);
 				for (var l = 0; l < this.favoritesList.length; l++) {
 					if(this.roomClicked == this.favoritesList[l].RoomID) {
-						heartIcon = (<FaHeart className = {classes.heartStyling} />);
+						heartIcon = (<div style={{color: 'DeepPink'}}><FaHeart size={30} /></div>);
 					    break; 
 					}
 				}
@@ -688,24 +681,27 @@ class App extends Component {
 				);
 			}
 
-			// search results initially empty
-			var searchContent = (<div></div>);
+			// for displaying the search results, as needed
+			var resultsContent = (<div></div>);
 			if (this.searchSwitch > 0) {
-				searchContent = (<ul id="roomButtons">
-						{this.state.search_results.map( r => 
-							<li>
-								<input 
-									id={r['room_id']}
-									bldg={r['building_name']}
-									floor={r['level']}
-									type="button"
-									value={r['building_name'] + " " + r['number']}
-									onClick={ (e) => this.handleFloorplanSwitch(e) }
-								/>{r['']}
-							</li>
-							)}
+				resultsContent = (
+					<div>
+						<ul id="roomSearchButtons">
+							{this.state.search_results.map( r => 
+								<li>
+									<input 
+										id={r['room_id']}
+										bldg={r['building_name']}
+										floor={r['level']}
+										type="button"
+										value={r['building_name'] + " " + r['number']}
+										onClick={ (e) => this.handleFloorplanSwitch(e) }
+									/>
+								</li>
+								)}
 						</ul>
-					);
+						<p>{this.state.search_results.length + " Results Found"}</p>
+					</div>);
 			}
 		/*================================================================*/
 		/* The Content Block                                              */
@@ -718,12 +714,14 @@ class App extends Component {
 							validate={this.formValidate}
 							render={({ handleSubmit, pristine, submitting, values }) => (
 								<form onSubmit={handleSubmit}>
-									<div>
-										<label>Building Name</label>
+									<label>Building Name</label>
+									<div id="buildingName">
+										
 										<Field
 											name="building"
 											items={buildings}
 											component={DownshiftInput}
+											style={{width: "50"}}
 										/>
 									</div>
 									<div>
@@ -777,26 +775,26 @@ class App extends Component {
 					</div>
 					
 					<div id="leftContent">
-						<ExpansionPanel onClick={this.handleExpansion}>
+						<ExpansionPanel onClick={this.handleExpansion} className = "expPanel">
 									<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
 											<Typography>Favorites</Typography>
 									</ExpansionPanelSummary>
-									<ul>
+									<ul id="favoriteButtons">
 										{this.favoritesList.map((room, index)=>(
-											<ExpansionPanelDetails >
-										<MenuItem
-											id={room.RoomID}
-											className="faveItems"
-											floor={room.level}
-											bldg={room.buildingName}
-											onClick={ (e) => this.handleFloorplanSwitch(e) }> 
-											{room.buildingName} {room.RoomNum} 
-										</MenuItem>
-									</ExpansionPanelDetails>
-								))}
+											<li>
+											<ExpansionPanelDetails>
+												<input
+													id={room.RoomID}
+													floor={room.level}
+													bldg={room.buildingName}
+													onClick={ (e) => this.handleFloorplanSwitch(e) }
+													value = {room.buildingName + " " + room.RoomNum}/> 
+											</ExpansionPanelDetails>
+											</li>
+										))}
 									</ul>
 						</ExpansionPanel>
-						
+						{resultsContent}
 					</div>
 					
 					<div id="centerContent">
