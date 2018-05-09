@@ -210,7 +210,7 @@ class App extends Component {
 
 	// Returns a series of rooms based on a search query
 	getQuery() {
-    const url = '/api/search/?'+this.searchLink;
+    const url = '/api/search/?' + this.searchLink;
 
     fetch(url, {credentials: "same-origin"})
       .then(response => {
@@ -241,7 +241,6 @@ class App extends Component {
 
 	// On-Click Event, fetch a new floorplan filepath from Back-End.
 	handleFloorplanSwitch = (event) => {
-		console.log("Room Clicked (2) = " + this.roomClicked);
 		/* We need to check if this is necessary or not */
 		const url = '/api/floorplan/?room_id=' + event.target.id;
 		
@@ -261,38 +260,85 @@ class App extends Component {
 			.then((data) => {
 				var objectURL = URL.createObjectURL(data);
 				this.imagePath = objectURL;
-				this.getPolygons();
 				
-				var query = this.state.rooms_displayed;
-		    for (var i = 0; i < query.length; i++) {
-		      var iRoom = query[i];
-		      // print how many sqft the room is on the console
-		      if (iRoom.room_id == this.roomid) {
-						
-		      	// update the room info
-		      	this.roomClicked = iRoom.room_id;
-		      	var checkAlpha = parseInt(iRoom.level, 10);
-		      	if (isNaN(checkAlpha))
-		      		this.currRoom.floor = iRoom.level;
-		      	else
-		      		this.currRoom.floor = checkAlpha;
+				const url = '/api/search/?building=' + this.building;
+		    fetch(url, {credentials: "same-origin"})
+		      .then(res => {
+		        return res.json();
+		      })
+		      .then(data2 => {
+		        this.setState({
+		          rooms_displayed: data2,
+		          loading: false,
+		        });
+						if (Array.isArray(data2) && data2.length) {
+							this.state.loading = true;
+							this.forceUpdate();
 							
-		      	this.currRoom.roomNum = iRoom.number;
-						
-		      	// make sure that the entry is not undefined
-		      	if (iRoom.num_rooms === null) { this.currRoom.num_rooms = iRoom.num_occupants; }
-		      	else { this.currRoom.num_rooms = iRoom.num_rooms; }
+							this.getFloorplan(this.roomid);
 							
-		      	this.currRoom.num_occupants = iRoom.num_occupants;
-		      	this.currRoom.sqft = iRoom.sqft;
-		      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
-		      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
-		      		+ this.currRoom.drawType.slice(1);
-						console.log("Room Clicked (3) = " + this.roomClicked);
-		      	this.forceUpdate();
-		        break;
-		      }
-				}
+							this.floorList = [];
+							this.roomidFloorList = [];
+							this.floorListB2M = [];
+							var currFloorID = -1;
+							
+							// Handle the number of floors there are
+							for (var i = 0; i < data2.length; i++) {
+								var entry = data2[i];
+								if (currFloorID !== entry.level) {
+									var alphabet2 = parseInt(entry.level, 10);
+									if (isNaN(alphabet2))
+										this.floorList.push(entry.level);
+									else
+										this.floorList.push(alphabet2);
+											
+									// get the room_id for that specific level
+									this.roomidFloorList.push(entry.room_id);
+									currFloorID = entry.level;
+								}
+							}
+							this.floorListB2M.push("H");
+							this.floorNameLabel = (
+								<div id="floorLabel">
+									<p id="floorBuildingName" class=".centerLabel">{this.building}</p>
+									<p id="floorNumberName" class=".centerLabel">{"Floor " + this.floor}</p>
+								</div>
+							);
+							this.forceUpdate();
+							this.state.loading = false;
+						}
+						var query = data2;
+				    for (var i = 0; i < query.length; i++) {
+				      var iRoom = query[i];
+				      // print how many sqft the room is on the console
+				      if (iRoom.room_id == this.roomid) {
+								
+				      	// update the room info
+				      	this.roomClicked = iRoom.room_id;
+				      	var checkAlpha = parseInt(iRoom.level, 10);
+				      	if (isNaN(checkAlpha))
+				      		this.currRoom.floor = iRoom.level;
+				      	else
+				      		this.currRoom.floor = checkAlpha;
+									
+				      	this.currRoom.roomNum = iRoom.number;
+								
+				      	// make sure that the entry is not undefined
+				      	if (iRoom.num_rooms === null) { this.currRoom.num_rooms = iRoom.num_occupants; }
+				      	else { this.currRoom.num_rooms = iRoom.num_rooms; }
+									
+				      	this.currRoom.num_occupants = iRoom.num_occupants;
+				      	this.currRoom.sqft = iRoom.sqft;
+				      	this.currRoom.drawType = iRoom.draws_in.toLowerCase();
+				      	this.currRoom.drawType = this.currRoom.drawType.charAt(0).toUpperCase() 
+				      		+ this.currRoom.drawType.slice(1);
+								console.log("Room Clicked (3) = " + this.roomClicked);
+				      	this.forceUpdate();
+				        break;
+				      }
+						}
+					})
+					.catch(error => console.log(error));
 			})
 			.catch(error => console.log(error));
 	}
