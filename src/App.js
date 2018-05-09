@@ -786,7 +786,7 @@ class App extends Component {
 									type="button"
 									value={r['building_name'] + " " + r['number']}
 									onClick={ (e) => this.handleFloorplanSwitch(e) }
-								/>{r['']}
+								/>
 							</li>
 							)}
 						</ul>
