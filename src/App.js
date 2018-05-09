@@ -723,6 +723,7 @@ class App extends Component {
 											name="building"
 											items={buildings}
 											component={DownshiftInput}
+											placeholder="Enter Building Name..."
 										/>
 									</div>
 									<div>
