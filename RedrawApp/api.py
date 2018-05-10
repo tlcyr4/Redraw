@@ -11,6 +11,8 @@ def query(request):
 		queries['floor__building__name'] = queries.pop('building').replace("%20"," ")
 	if 'level' in queries:
 		queries['floor__level'] = queries.pop('level')
+	if 'draw' in queries:
+		queries['draws_in_id__name'] = queries.pop('draw').upper()
 	queried = Room.objects.filter(**queries).order_by('floor__level')
 	results = list(queried.values())
 

@@ -745,16 +745,16 @@ class App extends Component {
 										<label>Draw Section</label>
 									</div>
 									<div id="drawSearch">
-										<Field name="draws_in_id" component="select">
+										<Field name="draw" component="select">
 											<option />
-											<option value="1">Butler</option>
-											<option value="2">Forbes</option>
-											<option value="3">Independent</option>
-											<option value="4">Mathey</option>
-											<option value="5">Rockefeller</option>
-											<option value="6">Upperclass</option>
-											<option value="7">Whitman</option>
-											<option value="8">Wilson</option>
+											<option value="Butler">Butler</option>
+											<option value="Forbes">Forbes</option>
+											<option value="Independent">Independent</option>
+											<option value="Mathey">Mathey</option>
+											<option value="Rockefeller">Rockefeller</option>
+											<option value="Upperclass">Upperclass</option>
+											<option value="Whitman">Whitman</option>
+											<option value="Wilson">Wilson</option>
 										</Field>
 									</div>
 									<div id="sizeSearch">
