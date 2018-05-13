@@ -266,7 +266,9 @@ Finally, to color images, run:
 
 ## Front-End Systems
 
-To make any changes to what the frontend looks like, simply change the src/App.js file. To make any style changes, apply changes to src/styling/App.css. The App.js file is a single-page application that handles all the rendering of the React components. It has been written and maintained in a single page in order to have all components under one location.
+To make any changes to what the front-end looks like, simply change the src/App.js file. To make any style changes, apply changes to src/styling/App.css. The App.js file is a single-page application that handles all the rendering of the React components. It has been written and maintained in a single page in order to have all components under one location.
+
+In order to make the front-end work, fontawesome, react-vis, react-spinners, image mapper, material_ui, react_icons, react-final-form, and react-center packages were used. A special acknowledgement for open source! :)
 
 ## Maintenance
 
