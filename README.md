@@ -24,19 +24,13 @@
 		- [Floorplans](#floorplans)
 			- [Prerequisites](#prerequisites)
 	- [Front-End Systems](#front-end-systems)
-- [Project Report] 
-	- [Reflections]
-		- [Milestones]
-		- [Design Decisions]
-			- [UI Design]
-			- [Back-End Design]
-
+	- [Maintenance](#maintenance)
 
 
 # Introduction
 
 ## Design Document
-Our design document can be found [Here](https://tigerredraw.azurewebsites.net/).
+Our design document can be found [Here](https://tigerredraw.azurewebsites.net/) (https://tigerredraw.azurewebsites.net/).
 
 ## The Team
 - Tigar Cyr, '20, Project Lead, Backend Developer
@@ -45,7 +39,7 @@ Our design document can be found [Here](https://tigerredraw.azurewebsites.net/).
 - Chris Chu '19, Frontend Developer
 		
 # Product Guide
-[Redraw](https://predraw.herokuapp.com) is a website built for Princeton 
+[Redraw](https://predraw.herokuapp.com) (https://predraw.herokuapp.com/) is a website built for Princeton 
 undergraduate students and is equipped with an intuitive, fast, and 
 powerful way of planning for Room Draw. The system allows students to 
 find specific dorm rooms that would be the best fit for their campus 
@@ -56,6 +50,12 @@ A highly interactive GUI enhances the experience while providing detailed
 information about each of the rooms in every dorm building. The data 
 available to the student body from the Housing Department’s website is 
 conveniently formatted and conveyed to the users.
+
+There are two ways of using the application. First, narrow down the rooms by searching on the top search bar.
+Upon using this search bar, search results will be displayed on the left, below the expandable favorites bar.
+The second way of navigating is simply clicking. Clicking a building by default leads to the ground floor floor plan.
+All floor plans are interactive and rooms can be clicked to display information on the bottom right. If the user wishes to
+add the room to the favorites list, then simply click the heart button. The user can switch to different floors by clicking the floor buttons (if they exist).
 
 ## Searching for Rooms
 
@@ -84,7 +84,7 @@ npm start
 ```
 
 ### Run Django Local
-Run on the terminal
+Run on the terminal (this command is for Python 3.x, make sure to run Python 3.x, which is compatible with Django 2.0)
 ```sh
 ./manage.py runserver
 ```
@@ -264,18 +264,11 @@ Finally, to color images, run:
 
 	python scripts/color.py <image filename(s)>
 
-# Project Report
-
-## Reflections
-
-### Milestones
-
-### Design Decisions
-
-#### UI Design
-
-#### Back-End Design
-
-The back end design was straightforward, almost cookie-cutter, once we decided to use Django.  The one exception to that was the database schema: because of the row limit (10,000) on Heroku's free tier, to ensure we stayed under even with every user in the database, we resorted to an unorthodox method for handling many-to-many relationships.  Rather than using an intermediate table as best practices suggest, we stored arrays within records to map elements of different tables to each other.  This ensures we stay under our row-limit, but is something we would change in an instant in the event we get funding to move up to a paid plan.
-
 ## Front-End Systems
+
+To make any changes to what the frontend looks like, simply change the src/App.js file. To make any style changes, apply changes to src/styling/App.css. The App.js file is a single-page application that handles all the rendering of the React components. It has been written and maintained in a single page in order to have all components under one location.
+
+## Maintenance
+
+Maintenance of the site will be handled by the creators until graduation. Upon our graduation, then we anticipate passing the repository to a student interested in maintaining the site. Another possible route could be to pass this project on as a TigerApps app, which was the original intent of the creators of the repository.
+
