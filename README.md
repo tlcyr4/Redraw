@@ -43,8 +43,7 @@ Our design document can be found [Here](https://tigerredraw.azurewebsites.net/) 
 undergraduate students and is equipped with an intuitive, fast, and 
 powerful way of planning for Room Draw. The system allows students to 
 find specific dorm rooms that would be the best fit for their campus 
-life the following year. Using Redraw, students can connect to other 
-students who are in their draw group to favorite potential rooms together.
+life the following year.
 
 A highly interactive GUI enhances the experience while providing detailed 
 information about each of the rooms in every dorm building. The data 
