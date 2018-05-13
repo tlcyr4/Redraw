@@ -102,13 +102,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Back-End Systems
 The back-end uses the Django framework hosted on Heroku with a Postgres database.  This section will help you interact with the database and web serving components of the system.
 
-![hi there](/backend.png)
+<!-- ![hi there](/backend.png) -->
 ### Database
 
 Redraw uses a Heroku Postgres database, managed through the Django ORM.  This section will help you set up the database to run on a local machine and manage it with Django commands. 
 #### Schema
 
-![The database was here a second ago...](/schema.png "Redraw DB Schema")
+<!-- ![The database was here a second ago...](/schema.png "Redraw DB Schema") -->
 The database schema is managed and documented through a Lucidchart diagram.
 
 
@@ -145,24 +145,25 @@ These are the setting Django uses to run the database while testing locally.  On
 
 The big benefit of this postgres distribution is that it comes with pgAdmin 4, which is super nice for looking at the database directly.  It has a lot of features, but we're only using a few, so let's walk through all you need to know to get started:
 
-When you open up pgAdmin, you'll see a screen like this:
-![It was here a second ago...](/pgAdmin_open.PNG)
+When you open up pgAdmin, you'll see an expandable dropdown on the left.
+<!-- ![It was here a second ago...](/pgAdmin_open.PNG) -->
 
 Expand out the "Servers" dropdown on the left, and double-click on "PostgreSQL 10" (there should be a red x indicating you're not yet connected).  pgAdmin will then prompt you to log in.  Type in "Redraw255", and you should be fine.  Now you can expand out the tree structure until you can see the tables themselves:
 
-![It was here a second ago...](/pgAdmin_expanded.PNG)
+<!-- ![It was here a second ago...](/pgAdmin_expanded.PNG) -->
 
 Click on one of the table to select it.  Then go to the tools menu and open up the query tool:
 
-![It was here a second ago...](/pgAdmin_menu.PNG)
+<!-- ![It was here a second ago...](/pgAdmin_menu.PNG) -->
 
-Once you open it up, it should look like this:
+<!-- Once you open it up, it should look like this: -->
 
-![It was here a second ago...](/pgAdmin_query_tool.PNG)
+<!-- ![It was here a second ago...](/pgAdmin_query_tool.PNG) -->
 
-Now you can start typing in SQL queries.  Just make sure you end them with a semicolon and use the lightining bolt button to execute them.  Here's an example:
+Now you can start typing in SQL queries.  Just make sure you end them with a semicolon and use the lightining bolt button to execute them.  
+<!-- Here's an example: -->
 
-![It was here a second ago...](/pgAdmin_query.PNG)
+<!-- ![It was here a second ago...](/pgAdmin_query.PNG) -->
 
 #### Managing With Django
 
