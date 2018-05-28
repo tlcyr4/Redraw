@@ -6,33 +6,42 @@ import json
 @login_required
 def query(request):
 	queries = request.GET.dict()
+
+	# remove empty queries
+	queries = {k:v for k,v in queries.items() if v != ""}
+
 	if 'building' in queries:
-		print("foo")
 		queries['floor__building__name'] = queries.pop('building').replace("%20"," ")
 	if 'level' in queries:
+		if queries['level'].isdigit():
+			queries['level'] = queries['level'].zfill(2)
 		queries['floor__level'] = queries.pop('level')
 	if 'draw' in queries:
 		queries['draws_in_id__name'] = queries.pop('draw').upper()
+	
 	queried = Room.objects.filter(**queries).order_by('floor__level')
 	results = list(queried.values())
 
 	for room in results:
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
-		room['level'] = Floor.objects.get(id=room['floor_id']).level
-		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+		room['level'] = Floor.objects.get(id=room['floor_id']).level[-1]
+		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name.capitalize()
 		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
+		if room['num_rooms'] == None:
+			room['num_rooms'] = "Unknown"
 	return HttpResponse(json.dumps(results), content_type='application/json')
 
 @login_required
 def get_floorplan(request):
 
-	room_id = request.GET.get('room_id','')
-	if room_id == '':
+	building_num = request.GET.get('building','')
+	level = request.GET.get('level', '')
+	if level == '' or building_num == '':
 		return HttpResponseBadRequest()
-	floor = Room.objects.get(room_id=room_id).floor
-	number = floor.building.number
-	level = floor.level
-	filename = 'data/floorplans/' + number + '-' + level + '.png'
+	
+	if level.isdigit():
+		level = level.zfill(2)
+	filename = 'data/floorplans/' + building_num + '-' + level + '.png'
 	floorplan = open(filename,'rb').read()
 	return HttpResponse(floorplan, content_type='image/png')
 
@@ -48,8 +57,8 @@ def favorites(request):
 		rooms = list(Room.objects.filter(pk__in=trimmed).values())
 		for room in rooms:
 			room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
-			room['level'] = Floor.objects.get(id=room['floor_id']).level
-			room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
+			room['level'] = Floor.objects.get(id=room['floor_id']).level[-1]
+			room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name.capitalize()
 			room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
 		return HttpResponse(json.dumps(rooms), content_type="application/json")
 	if room_id not in favorites:
@@ -67,7 +76,9 @@ def favorites(request):
 	rooms = list(Room.objects.filter(pk__in=trimmed).values())
 	for room in rooms:
 		room['dimensions'] = Floor.objects.get(id=room['floor_id']).dimensions
-		room['level'] = Floor.objects.get(id=room['floor_id']).level
+		room['level'] = Floor.objects.get(id=room['floor_id']).level[-1]
 		room['draws_in'] = Draw.objects.get(id=room['draws_in_id']).name
 		room['building_name'] = Floor.objects.get(id=room['floor_id']).building.name
+		if room['num_rooms'] == None:
+			room['num_rooms'] = "Unknown"
 	return HttpResponse(json.dumps(rooms), content_type="application/json")
