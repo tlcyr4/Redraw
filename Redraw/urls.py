@@ -21,11 +21,11 @@ import django_cas_ng.views
 from django.views.generic.base import RedirectView
 from RedrawApp import api
 
-favicon_view = RedirectView.as_view(url='../build/redraw.ico', permanent=True)
+favicon_view = RedirectView.as_view(url='/static/redraw.ico', permanent=True)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^favicon.ico$', favicon_view),
+    re_path(r'^favicon\.ico$', favicon_view),
     re_path('^$', django_cas_ng.views.login, name='cas_ng_login'),
     re_path('^accounts/logout$', django_cas_ng.views.logout, name='cas_ng_logout'),
     re_path('^accounts/callback$', django_cas_ng.views.callback, name='cas_ng_callback'),
