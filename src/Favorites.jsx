@@ -22,12 +22,12 @@ function Favorites(props) {
             <li>
             <ExpansionPanelDetails>
                 <input
-                    id={room.room_id}
-                    level={room.level}
-                    bldg={room.building_name}
-                    onClick={ (e) => props.handleFloorplanSwitch(e) }
-                    type="button"
-                    value = {room.building_name + " " + room.number}/> 
+                  id={room.room_id}
+                  level={room.level}
+                  bldg={room.building_name}
+                  onClick={e => props.handleFloorplanSwitch(e)}
+                  type="button"
+                  value = {room.building_name + " " + room.number}/> 
             </ExpansionPanelDetails>
             </li>
         ))}

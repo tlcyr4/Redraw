@@ -1,7 +1,5 @@
 // library imports
 import React, { Component } from 'react';
-import Center from 'react-center';
-import ImageMapper from './ImageMapper';
 
 // material imports
 
@@ -95,7 +93,8 @@ function FloorButtons(props) {
 					  id={level}
 					  value={'Floor ' + level} 
 					  type="button"
-					  onClick={(event) => props.changeFloor(event)}
+					  onClick={e => 
+						props.getPolygons(props.building, level, null)}
 					/>
 				</li>
 			)}
@@ -165,7 +164,6 @@ class App extends Component {
 		
 		// Methods that are related to user search
 		this.formSubmit = this.formSubmit.bind(this);
-		this.formValidate = this.formValidate.bind(this);
 		
 		this.imageWidthScaled = window.innerWidth * 0.43;
 		this.getFavorites();
@@ -216,13 +214,14 @@ class App extends Component {
 					})
 				});
 			})
-			var roomClicked;
-			if (roomClickedID !== null) {
-				roomClicked = data.find(r => r.room_id === roomClickedID);
-			}
-			else {
-				roomClicked = null;
-			}
+			var roomClicked = (roomClickedID === null) ? null : 
+				data.find(r => r.room_id === roomClickedID);
+			// if (roomClickedID !== null) {
+			// 	roomClicked = data.find(r => r.room_id === roomClickedID);
+			// }
+			// else {
+			// 	roomClicked = null;
+			// }
 
 			let floors = getBuilding(building)['floors']
 			this.setState({
@@ -293,13 +292,6 @@ class App extends Component {
 		this.setState({roomClicked : room})
 	}
 
-	// Handles the changing of the floors
-	changeFloor = (event) => {
-		let level = event.target.id;
-		let buildingName = this.state.building;
-		this.getPolygons(buildingName, level, null);
-	}
-
 	// Handles the form submission by making a call to the API
 	formSubmit = async values => {
 		let pairs = Object.entries(values);
@@ -307,21 +299,7 @@ class App extends Component {
 		this.getQuery(queries.join('&'));
 	}
 	
-	/* validate: process the values returned when a form is submitted.
-			If something is invalid, then return an error array. */
-	formValidate = (values) => {
-		var errArray = {};
-		if (values.building) {
-			let buildingName = values.building;
-			if (buildingName.length > 30) {
-				errArray.building = 'Name is too long';
-			}
-			else if (!name2Num.hasOwnProperty(buildingName)) {
-				errArray.building = 'Does not exist';
-			}
-		}
-	  return errArray;
-	}
+	
 	
 	// handle change of page!
 	handlePage = (event, value) => {
@@ -333,8 +311,6 @@ class App extends Component {
 	render() {
 		const { classes } = this.props;
 		const { value } = this.state;
-
-		
 		
 		var imageWidthScaled = this.imageWidthScaled;
 		var ratio = imageWidthScaled/2550.0;
@@ -377,8 +353,7 @@ class App extends Component {
 			}
 		var searchBar = (
 			<Search 
-			  formSubmit={this.formSubmit} 
-			  formValidate={this.formValidate}
+			  formSubmit={this.formSubmit}
 			/>
 		);
 		var leftPanel = (
@@ -409,14 +384,15 @@ class App extends Component {
 			<div id="rightContent">
 				{(!isMap &&
 					<FloorLabel 
-						building={this.state.building} 
-						level={this.state.floor}
+					  building={this.state.building} 
+					  level={this.state.floor}
 					/>
 				)}
 				<FloorButtons 
-					isMap={this.state.imagePath === HomeMap}
-					floorList={this.state.floorList}
-					changeFloor={this.changeFloor}
+				  isMap={this.state.imagePath === HomeMap}
+				  floorList={this.state.floorList}
+				  getPolygons={this.getPolygons}
+				  building={this.state.building}
 				/>
 				
 				{info}

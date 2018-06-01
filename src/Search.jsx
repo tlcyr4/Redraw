@@ -1,6 +1,8 @@
 import React from 'react';
 import buildings from './json/buildings.json';
 
+import name2Num from './json/name2num.json';
+
 // Imports for AutoSuggestion
 import DownshiftInput from './Downshift';
 import { Form, Field } from 'react-final-form';
@@ -89,11 +91,31 @@ function SubmitButton(props) {
     )
 }
 
+
+
+/* validate: process the values returned when a form is submitted.
+			If something is invalid, then return an error array. */
+function formValidate(values) {
+    var errArray = {};
+    if (values.building) {
+        let buildingName = values.building;
+        if (buildingName.length > 30) {
+            errArray.building = 'Name is too long';
+        }
+        else if (!name2Num.hasOwnProperty(buildingName)) {
+            errArray.building = 'Does not exist';
+        }
+    }
+    return errArray;
+}
+
+
+
 function Search(props) {return (
 <div id="formBlock">
     <Form
       onSubmit={props.formSubmit}
-      validate={props.formValidate}
+      validate={formValidate}
       render={({ handleSubmit, pristine, submitting, values }) => (
         <form id="searchForm" onSubmit={handleSubmit}>
             <div id="buildingNameLabel">
