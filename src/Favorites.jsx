@@ -9,6 +9,11 @@ import ExpansionPanel, {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from 'material-ui/Typography';
 
+import RoomCard from './RoomCard'
+
+
+
+
 function Favorites(props) {
     return (
 <ExpansionPanel 
@@ -18,18 +23,13 @@ function Favorites(props) {
         <Typography variant="subheading">Favorites</Typography>
     </ExpansionPanelSummary>
     <ul id="favoriteButtons">
-        {props.favoritesList.map((room, index)=>(
-            <li>
-            <ExpansionPanelDetails>
-                <input
-                  id={room.room_id}
-                  level={room.level}
-                  bldg={room.building_name}
-                  onClick={e => props.handleFloorplanSwitch(e)}
-                  type="button"
-                  value = {room.building_name + " " + room.number}/> 
-            </ExpansionPanelDetails>
-            </li>
+        {props.favoritesList.map(room => (
+            <RoomCard 
+              room={room} 
+              getPolygons={props.getPolygons} 
+              updateFavorites={props.updateFavorites}
+              isFavorite={true}
+            />
         ))}
     </ul>
 </ExpansionPanel>

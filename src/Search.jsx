@@ -11,6 +11,8 @@ import { Form, Field } from 'react-final-form';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faSearch from '@fortawesome/fontawesome-free-solid/faSearch';
 
+import RoomCard from './RoomCard'
+
 function BuildingSearch(props) {
     return (
         <div id="buildingNameSearch">
@@ -145,21 +147,19 @@ function Search(props) {return (
 function SearchResults(props) {
     return (
         <div>
+            <p>{props.results.length + " Search Results"}</p>
             <ul id="roomSearchButtons">
-                {props.results.map( r => 
-                    <li>
-                        <input 
-                            id={r['room_id']}
-                            bldg={r['building_name']}
-                            level={r['level']}
-                            type="button"
-                            value={r['building_name'] + " " + r['number']}
-                            onClick={ (e) => props.handleFloorplanSwitch(e) }
-                        />
-                    </li>
+                {props.results.map( room => 
+                    <RoomCard 
+                      room={room} 
+                      getPolygons={props.getPolygons} 
+                      updateFavorites={props.updateFavorites}
+                      isFavorite={props.favoritesList.some(r => r.room_id === room.room_id)}
+                    />
                     )}
             </ul>
-            <p>{props.results.length + " Results Found"}</p>
+            
+            
         </div>
     )
 }

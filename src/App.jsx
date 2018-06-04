@@ -40,15 +40,12 @@ const materialStyle = theme => ({
 	    width: '100%',
 	    backgroundColor: theme.palette.background.paper,
 	},
-
 	expansionSlot: {
 		height: window.innerHeight*0.3,
 	},
-
 	expPanel: {
 		margin: '0',
 	},
-
 	headerLabels: {
 		fontSize: '16'
 	}
@@ -81,8 +78,6 @@ function BackToMap(props) {
 	);
 }
 
-
-
 function FloorButtons(props) {
 	return (
 		<ul id="floorButtons">
@@ -102,7 +97,6 @@ function FloorButtons(props) {
 	);
 }
 
-
 function FloorLabel(props) {
 	return (
 		<div id="floorLabel">
@@ -119,7 +113,6 @@ function FloorLabel(props) {
 		</div>
 	);
 }
-
 
 function getBuildingID(buildingName) {
 	return name2Num[buildingName]
@@ -167,8 +160,6 @@ class App extends Component {
 		
 		this.imageWidthScaled = window.innerWidth * 0.43;
 		this.getFavorites();
-
-		
 	}
 
 	// getPolygons: updates the rooms_displayed state variable.
@@ -181,9 +172,7 @@ class App extends Component {
 		// Set default
 		if (level === null)
 			level = getBuilding(building)['floors'][0];
-		
 		this.getFloorplan(building, level);
-		
 		var ratio = this.imageWidthScaled / 2550.0 / 4;
 		
 		let url = '/api/search/?building=' + building;
@@ -214,15 +203,8 @@ class App extends Component {
 					})
 				});
 			})
-			var roomClicked = (roomClickedID === null) ? null : 
-				data.find(r => r.room_id === roomClickedID);
-			// if (roomClickedID !== null) {
-			// 	roomClicked = data.find(r => r.room_id === roomClickedID);
-			// }
-			// else {
-			// 	roomClicked = null;
-			// }
-
+			let roomClicked = (roomClickedID === null) ? null : 
+				rooms_displayed.find(r => r.room_id === roomClickedID);
 			let floors = getBuilding(building)['floors']
 			this.setState({
 				roomIDRendered 	:	polygonIDs,
@@ -256,33 +238,42 @@ class App extends Component {
 	getFloorplan(buildingName, level) {
 		let buildingID = getBuildingID(buildingName);
 		let url = '/api/floorplan/?building=' + buildingID + '&level=' + level;
-		
 		fetch(url, {credentials: 'same-origin'})
 			.then(response => response.blob())
 			.then(data => this.setState({imagePath:URL.createObjectURL(data)}))
 			.catch(error => console.log(error));
 	}
 
-	// On-Click Event, fetch a new floorplan filepath from Back-End.
-	handleFloorplanSwitch = (event) => {
-		let buildingName = event.target.getAttribute('bldg');
-		let level = event.target.getAttribute('level');
-		let roomID = parseInt(event.target.id, 10);
+	// update the favorites list
+	updateFavorites(room) {
+		let roomID = room.room_id;
+
+		// toggle
+		if (!this.state.favoritesList.some(r => r.room_id === roomID)) {
+			this.setState(prevState => ({
+				favoritesList: [...prevState.favoritesList, room]
+			}));
+		}
+		else {
+			this.setState(prevState => ({
+				favoritesList: prevState.favoritesList.filter(r => r.room_id !== roomID)
+			}));
+		}
 		
-		this.getPolygons(buildingName, level, roomID);
+		// update backend
+		const url = '/api/favorites/?room_id=' + roomID;
+		fetch(url, {credentials: 'same-origin'})
+			.catch(error => console.log(error));
 	}
 
-	// update the favorites list
-	updateFavorites(roomID) {
-		const url = '/api/favorites/?room_id=' + roomID;
+	// Retrieve favorites from backend
+	getFavorites() {
+		const url = '/api/favorites/?room_id=0';
 		fetch(url, {credentials: 'same-origin'})
 			.then(response => response.json())
 			.then(faveData => this.setState({favoritesList : faveData}))
 			.catch(error => console.log(error));
 	}
-
-	// Just retrieve favorites from backend
-	getFavorites() {this.updateFavorites(0)}
 
 	// Handles the click for the Polygons in the ImageMapper
 	handleClick = (obj, num, event) => {
@@ -298,8 +289,6 @@ class App extends Component {
 		let queries = pairs.map(pair => pair.join('='));
 		this.getQuery(queries.join('&'));
 	}
-	
-	
 	
 	// handle change of page!
 	handlePage = (event, value) => {
@@ -329,27 +318,20 @@ class App extends Component {
 		}
 		else if (this.state.pageNum === pageEnum.FLOORPLAN) {
 			var isMap = this.state.imagePath === HomeMap;		
-			
+			var info;
 
-			var info = <DefaultInfo />;
-			
-			// overwrite for cases when home screen
+			let room = this.state.roomClicked;
+			let favorites = this.state.favoritesList;
 			if (isMap) {
-				info = <MapInfo window={window} />
+				info = <MapInfo />;
 			}
-
-			// if the room is clicked, then display the information
-			if (this.state.roomClicked !== null) {
-				let roomID = this.state.roomClicked.room_id;
-				let favorites = this.state.favoritesList;
-				let isFavorite = favorites.some(r => r.room_id === roomID);
+			else if (room !== null) {
 				info = (
 					<RoomInfo 
-					  room={this.state.roomClicked} 
+					  room={room} 
 					  updateFavorites={this.updateFavorites}
-					  isFavorite={isFavorite}
-					/>
-				);
+					  isFavorite={favorites.some(r => r.room_id === room.room_id)}
+					/>)
 			}
 		var searchBar = (
 			<Search 
@@ -359,12 +341,15 @@ class App extends Component {
 		var leftPanel = (
 			<div id="leftContent">
 				<Favorites 
-				  handleFloorplanSwitch={this.handleFloorplanSwitch} 
+				  getPolygons={this.getPolygons} 
 				  favoritesList={this.state.favoritesList}
+				  updateFavorites={this.updateFavorites}
 				/>
 				<SearchResults 
 				  results={this.state.search_results} 
-				  handleFloorplanSwitch={this.handleFloorplanSwitch}
+				  getPolygons={this.getPolygons}
+				  updateFavorites={this.updateFavorites}
+				  favoritesList={this.state.favoritesList}
 				/>
 			</div>
 		);
@@ -401,7 +386,7 @@ class App extends Component {
 		/*================================================================*/
 		/* The Content Block                                              */
 		/*================================================================*/
-		content = (
+			content = (
 				<div>
 					{searchBar}
 					{leftPanel}
@@ -414,7 +399,6 @@ class App extends Component {
 		else {
 			content = <Error window={window} />;
 		}
-		
 		
 		// return with the known header and different content, as needed
 		return (

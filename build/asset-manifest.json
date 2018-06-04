@@ -1,14 +1,20 @@
 {
-  "main.css": "static/css/main.fb97edc0.css",
-  "main.css.map": "static/css/main.fb97edc0.css.map",
-  "main.js": "static/js/main.ddf7f0a8.js",
-  "main.js.map": "static/js/main.ddf7f0a8.js.map",
+  "main.css": "static/css/main.e82131fa.css",
+  "main.css.map": "static/css/main.e82131fa.css.map",
+  "main.js": "static/js/main.3a09d153.js",
+  "main.js.map": "static/js/main.3a09d153.js.map",
   "static\\media\\404Door.png": "static/media/404Door.0ddcc674.png",
   "static\\media\\Chuchu.png": "static/media/Chuchu.f0d7f331.png",
   "static\\media\\DC.png": "static/media/DC.76d68d34.png",
   "static\\media\\Kesin.png": "static/media/Kesin.ace91d3b.png",
   "static\\media\\Tigar.png": "static/media/Tigar.17decaf8.png",
   "static\\media\\background.png": "static/media/background.5867828f.png",
+  "static\\media\\butler.png": "static/media/butler.4b1aa631.png",
+  "static\\media\\forbes.png": "static/media/forbes.db08fc89.png",
   "static\\media\\homeMap.png": "static/media/homeMap.cce97d1b.png",
-  "static\\media\\raw.jpg": "static/media/raw.0145f3c8.jpg"
+  "static\\media\\princeton.png": "static/media/princeton.713b230e.png",
+  "static\\media\\raw.jpg": "static/media/raw.0145f3c8.jpg",
+  "static\\media\\rocky.png": "static/media/rocky.b9449a02.png",
+  "static\\media\\whitman.png": "static/media/whitman.712ad9f4.png",
+  "static\\media\\wilson.png": "static/media/wilson.95df3d2a.png"
 }

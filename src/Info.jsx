@@ -27,9 +27,9 @@ function MapInfo(props) {
 			</div>
 			<div id = "legendDiv">
 				<DiscreteColorLegend
-					height={props.window.innerHeight*0.35}
-					width={props.window.innerWidth*0.1}
-					items={items}
+				  height={window.innerHeight*0.35}
+				  width={window.innerWidth*0.1}
+				  items={items}
 				/>
 			</div>
 		</div>
@@ -42,7 +42,7 @@ function RoomInfo(props) {
 		<div id="roomClicked">
 			<h4>{props.room.building_name}</h4>
 			<h5>{"Floor " + props.room.level}</h5>
-			<button id="heartButton" onClick={()=>props.updateFavorites(props.room.room_id)}> 
+			<button id="heartButton" onClick={()=>props.updateFavorites(props.room)}> 
 				{
 				(<div style={{color:'DeepPink'}}>
 				{props.isFavorite ? <FaHeart size={30}/> : <FaHeartO size={30}/>}
